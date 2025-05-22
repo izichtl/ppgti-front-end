@@ -3,7 +3,7 @@ import { APIDecoratorWithBaseURI } from '../../service';
 export type CandidateLoginProps = {
   email: string;
   cpf: string;
-  name: string;
+  social_name: string;
 };
 
 export interface CourtesySaleRequesteResponse {

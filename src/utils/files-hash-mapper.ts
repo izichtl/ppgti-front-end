@@ -1,42 +1,53 @@
-// ARQUIVO BASE DE PREFIX USADO PARA MAPEAR
-// O OBJETIVO DO DOCUMENTO
-
 export const filePrefixes = [
   {
-    id: '_formulario_pontuacao_',
+    id: 'score_form',
     label:
       'Formulário de pontuação preenchido e documentos comprobatórios (anexo I):',
+    control: '',
   },
   {
-    id: '_diploma_certificado_',
-    label: 'Diploma ou Certificado de Conclusão de Curso de Graduação:',
+    id: 'diploma_certificate',
+    label: 'Diploma ou Certificado de Conclusão da Graduação:',
+    control: '',
   },
   {
-    id: '_historico_graducao_',
+    id: 'undergraduate_transcript',
     label: 'Histórico Escolar do Curso de Graduação:',
+    control: '',
   },
   {
-    id: '_identidade_cpf_',
+    id: 'registration_clearance',
     label: 'Carteira de Identidade e CPF:',
+    control: '',
   },
   {
-    id: '_quitacao_eleitoral_',
+    id: 'electoral_clearance',
     label: 'Comprovante de Quitação Eleitoral:',
+    control: '',
   },
   {
-    id: '_comprovante_residencia_',
+    id: 'proof_of_residence',
     label: 'Comprovante de Residência:',
+    control: '',
   },
   {
-    id: '_quitacao_militar_',
+    id: 'military_clearance',
     label: 'Comprovante de Quitação Militar:',
+    control: 'Masculino',
   },
   {
-    id: '_declaracao_cota_ingresso_',
-    label: 'Declaração de optante por cota de ingresso (Se aplicável):',
+    id: 'quota_declaration_admission',
+    label: 'Declaração de optante por cota de ingresso:',
+    control: 'afro_ou_inde',
   },
   {
-    id: '_declaracao_cota_servidor_',
-    label: 'Declaração de cota de servidor IFPB (Se aplicável):',
+    id: 'quota_declaration_admission',
+    label: 'Declaração de optante por cota de ingresso:',
+    control: 'pcd',
+  },
+  {
+    id: 'quota_declaration_if',
+    label: 'Declaração de cota de servidor IFPB:',
+    control: 'servidor_if',
   },
 ];

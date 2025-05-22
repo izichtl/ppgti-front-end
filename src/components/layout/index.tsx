@@ -2,10 +2,10 @@ import { Outlet } from 'react-router-dom';
 import Header from '../header';
 import Sidebar from '../sidebar';
 import { Box } from '@mui/material';
-import AuthLayout from './auth';
-import NoAuthLayout from './no-auth';
+import DrawerLayout from './drawer/index';
+import NoAuthLayout from './header';
 
-const GuardLayout = () => {
+const Layout = () => {
   // validate if user is logged in
   // const { status } = useAuth()
   // const LOCAL_EXECUTION = process.env.REACT_APP_LOCAL_EXECUTION === 'true'
@@ -24,6 +24,21 @@ const GuardLayout = () => {
   // }, []);
 
   const isAuth = false;
-  return <>{isAuth ? <AuthLayout /> : <NoAuthLayout />}</>;
+  // return <>{isAuth ? <DrawerLayout /> : <NoAuthLayout />}</>;
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Header />
+      <Box
+        sx={{
+          display: 'flex',
+          flexGrow: 1,
+        }}
+      >
+        <Box sx={{ flexGrow: 1 }}>
+          <Outlet />
+        </Box>
+      </Box>
+    </Box>
+  );
 };
-export default GuardLayout;
+export default Layout;

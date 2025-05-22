@@ -1,19 +1,19 @@
-import { createBrowserRouter, redirect } from 'react-router-dom';
-// import Home from '../pages/home';
+import { createBrowserRouter } from 'react-router-dom';
+import ErrorComponent from '../pages/error';
 import Login from '../pages/cadidate-login';
-import Layout from '../components/layout';
-// import Help from '../pages/help';
-// import Dashboard from '../pages/dashboard';
-import PDFViewer from '../pages/pdf-view';
-
-const ErrorComponent = () => {
-  return <h1>Pagina de erro generico</h1>;
-};
+import LandingPage from '../pages/landpage';
+import Blog from '../pages/blog';
+import Dashboard2 from '../pages/dashboard';
+import Layout from '../pages/layout';
 
 const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
+      {
+        path: '/',
+        element: <LandingPage />,
+      },
       {
         path: '*',
         element: <ErrorComponent />,
@@ -22,25 +22,17 @@ const router = createBrowserRouter([
         path: '/error',
         element: <ErrorComponent />,
       },
-      // {
-      //   path: '/dashboard',
-      //   element: <Dashboard />,
-      // },
+      {
+        path: '/dashboard',
+        element: <Dashboard2 />,
+      },
       {
         path: '/login',
         element: <Login />,
       },
-      // {
-      //   path: '/help',
-      //   element: <Help />,
-      // },
       {
-        path: '/pdf',
-        element: <PDFViewer />,
-      },
-      {
-        path: '/',
-        element: <Login />,
+        path: '/blog',
+        element: <Blog />,
       },
     ],
   },

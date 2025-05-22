@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+reference_to_trash
 dist-ssr
 *.local
 
