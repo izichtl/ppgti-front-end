@@ -5,6 +5,7 @@ import LandingPage from '../pages/landpage';
 import Blog from '../pages/blog';
 import Dashboard2 from '../pages/dashboard';
 import Layout from '../pages/layout';
+import UnderConstructionComponent from '../pages/under-contruction';
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/dashboard',
-        element: <Dashboard2 />,
+        element: <UnderConstructionComponent />,
+        // children: [
+        //   {
+        //     path: 'relatorios',
+        //     element: <UnderConstructionComponent />,
+        //   },
+        // ],
       },
       {
         path: '/login',
@@ -33,6 +40,14 @@ const router = createBrowserRouter([
       {
         path: '/blog',
         element: <Blog />,
+      },
+      {
+        path: '/documents',
+        element: <UnderConstructionComponent />,
+      },
+      {
+        path: '/about',
+        element: <UnderConstructionComponent />,
       },
     ],
   },

@@ -1,4 +1,4 @@
-import { Input, Button, Typography, Box } from '@mui/material';
+import { Input, Button, Typography, Box, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
 const UploaderField = ({
@@ -10,27 +10,79 @@ const UploaderField = ({
   onClick,
   onChange,
   title,
+  url,
 }: any) => {
-  // TODO PRECISA ADICIONAR UM BOTÃO
-  // PARA O USUÁRIO VISUALIZAR O PDF ENVIADO
+  const fileUrl = hasFile ? url : null;
+
   useEffect(() => {}, [hasFile]);
+
   return (
     <Box sx={{ marginBottom: '28px' }}>
       {!loading && (
         <>
-          <Typography variant='body2' color='primary'>
+          <Typography variant='body1' color='primary' sx={{ marginBottom: 1 }}>
             {title}
           </Typography>
+
           {hasFile ? (
-            <Typography variant='body2' color='success'>
-              {name} (Enviado)
-            </Typography>
+            <Stack
+              direction='row'
+              spacing={2}
+              alignItems='center'
+              sx={{ marginBottom: 1 }}
+            >
+              <Button
+                variant='contained'
+                component='span'
+                color='success'
+                onClick={() => window.open(fileUrl, '_blank')}
+              >
+                Visualizar documento
+              </Button>
+
+              <label htmlFor={`file-input-${filePrefix}`}>
+                <Input
+                  id={`file-input-${filePrefix}`}
+                  type='file'
+                  data-id={filePrefix}
+                  onChange={(e) => onChange(e, filePrefix)}
+                  inputProps={{
+                    accept: 'application/pdf',
+                    'data-id': filePrefix,
+                  }}
+                  style={{ display: 'none' }}
+                />
+                <Button variant='outlined' component='span' color='warning'>
+                  Escolher novo arquivo
+                </Button>
+              </label>
+            </Stack>
           ) : (
-            <Input
-              type='file'
-              onChange={(e) => onChange(e, filePrefix)}
-              inputProps={{ accept: 'application/pdf' }}
-            />
+            <>
+              <label htmlFor={`file-input-${filePrefix}`}>
+                <Input
+                  id={`file-input-${filePrefix}`}
+                  type='file'
+                  data-id={filePrefix}
+                  onChange={(e) => onChange(e, filePrefix)}
+                  inputProps={{
+                    accept: 'application/pdf',
+                    'data-id': filePrefix,
+                  }}
+                  style={{ display: 'none' }}
+                />
+                <Button variant='contained' component='span'>
+                  Escolher arquivo
+                </Button>
+              </label>
+              <Typography
+                variant='body2'
+                color='error'
+                sx={{ marginTop: 1, fontWeight: 500 }}
+              >
+                Nenhum documento enviado.
+              </Typography>
+            </>
           )}
         </>
       )}
@@ -46,6 +98,7 @@ const UploaderField = ({
         variant='contained'
         color='primary'
         onClick={onClick}
+        sx={{ marginTop: 1 }}
       >
         Enviar
       </Button>

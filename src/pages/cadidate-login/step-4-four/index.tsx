@@ -3,10 +3,10 @@ import {
   Box,
   Typography,
   Paper,
-  Grid,
   Button,
   useMediaQuery,
   useTheme,
+  Stack,
 } from '@mui/material';
 import { useFileUpload } from '../../../hooks/file-uploader';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
@@ -15,6 +15,9 @@ import { filePrefixes } from '../../../utils/files-hash-mapper';
 import { sanitizeFilename } from '../../../utils/file-sanitazer';
 import { useGetCandidateFiles } from '../../../hooks/file-lister';
 import FullScreenLoader from '../../../components/loading';
+import { mutate } from 'swr';
+import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 
 type FileNameProps = {
   prefix: string;
@@ -35,7 +38,7 @@ interface UserFiles {
   military_clearance: string | null;
 }
 
-const initialFiles = {
+const initialFiles: UserFiles = {
   cpf: '',
   id: 0,
   proof_of_residence: null,
@@ -50,23 +53,22 @@ const initialFiles = {
 };
 
 function extractFileName(fileName: string): string {
-  // console.log(fileName, 'fileName');
   const parts = fileName.split('_eh');
-  // console.log(parts, 'parts');
   return parts.length > 1 ? parts[1] : fileName;
 }
 
 const StepFour = ({ cpf, sex, quota }: any) => {
-  console.log(sex, quota, 'userInfo');
+  const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<FileNameProps>({
     prefix: '',
     name: '',
   });
   const [uploading, setUploading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [fileSelected, setFileSelected] = useState<string | null>(null);
   const [candidateFiles, setCandidateFiles] = useState<UserFiles>(initialFiles);
+  const [hasUploadedFile, setHasUploadedFile] = useState(true);
 
   const { files, filesLoading, filesError } = useGetCandidateFiles();
 
@@ -96,54 +98,77 @@ const StepFour = ({ cpf, sex, quota }: any) => {
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      setMessage('Nenhum arquivo selecionado.');
-      return;
-    }
+    if (!file) return;
 
     setUploading(true);
+    setRefreshing(true);
     try {
       await triggerUploader();
-      setMessage('Arquivo enviado com sucesso!');
-      setFile(null);
-      setFileSelected(null);
+      await mutate('/v1/file-manager/list/candidate', undefined, {
+        revalidate: true,
+      });
     } catch (error) {
-      setMessage('Erro ao enviar o arquivo.');
+      console.error('Erro ao enviar arquivo:', error);
     } finally {
       setUploading(false);
+      setFile(null);
+      setFileSelected(null);
     }
   };
 
+  const useGoToDashboard = () => {
+    navigate('/dashboard');
+  };
+
   useEffect(() => {
-    if (files[0] !== undefined) {
-      setCandidateFiles(files[0]);
+    if (files.id !== undefined) {
+      setCandidateFiles(files);
+      setRefreshing(false);
     }
-  }, [files, filesLoading, filesError]);
+  }, [files]);
+
+  useEffect(() => {
+    const inputs: any = document.querySelectorAll('input[type="file"]');
+    let hasFile = false;
+
+    for (const input of inputs) {
+      const key = input.dataset.id;
+      console.log('Verificando arquivo para:', key);
+      if (key && candidateFiles[key] === null) {
+        console.log('Arquivo presente para:', key);
+        hasFile = true;
+        break;
+      }
+    }
+    setHasUploadedFile(hasFile);
+  }, [candidateFiles]);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  if (refreshing || filesLoading) {
+    return (
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1300,
+          bgcolor: 'rgba(255,255,255,0.8)',
+        }}
+      >
+        <FullScreenLoader />
+      </Box>
+    );
+  }
+
   return (
     <>
-      {/* {candidateFiles.id === 0 && (
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1300,
-            bgcolor: 'rgba(255,255,255,0.8)',
-          }}
-        >
-          <FullScreenLoader />
-        </Box>
-      )} */}
-
       {candidateFiles.id !== 10 && (
         <Box sx={{ bgcolor: '#f0f4f8', minHeight: '100vh', p: 2, pt: 8 }}>
           <Paper
@@ -168,21 +193,19 @@ const StepFour = ({ cpf, sex, quota }: any) => {
               Anexe os documentos solicitados abaixo.
             </Typography>
 
-            <Grid container spacing={3}>
+            <Stack spacing={3}>
               {filePrefixes.map((input: any) => {
                 const id: string = input.id;
-                //@ts-expect-error
                 const name: string = candidateFiles[id];
                 const parsedName = name !== null ? extractFileName(name) : '';
                 const sexField = sex === input.control;
                 const quotaField = quota === input.control;
                 return (
                   (input.control === '' || quotaField || sexField) && (
-                    <Grid item xs={12} key={id}>
-                      {/* {!filesLoading && ( */}
+                    <Box key={id}>
                       <UploaderField
-                        //@ts-expect-error
                         hasFile={candidateFiles[id] !== null}
+                        url={candidateFiles[id]}
                         name={parsedName}
                         loading={isMutating}
                         fileSelected={fileSelected}
@@ -191,17 +214,17 @@ const StepFour = ({ cpf, sex, quota }: any) => {
                         onChange={handleFileChange}
                         title={input.label}
                       />
-                      {/* )} */}
-                    </Grid>
+                    </Box>
                   )
                 );
               })}
-            </Grid>
+            </Stack>
 
             <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end' }}>
               <Button
                 variant='contained'
                 color='primary'
+                disabled={hasUploadedFile}
                 size='large'
                 sx={{
                   px: 4,
@@ -209,10 +232,9 @@ const StepFour = ({ cpf, sex, quota }: any) => {
                   fontSize: '1.1rem',
                   borderRadius: 2,
                 }}
-                onClick={handleUpload}
-                disabled={uploading}
+                onClick={useGoToDashboard}
               >
-                {uploading ? 'Enviando...' : 'Enviar'}
+                {uploading ? 'Enviando...' : 'Finalizar'}
               </Button>
             </Box>
           </Paper>

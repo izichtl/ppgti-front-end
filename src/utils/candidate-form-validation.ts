@@ -30,17 +30,17 @@ export const stepTwoSchema = Yup.object({
   cell_phone: Yup.string()
     .required('Obrigatório')
     .matches(phoneRegex, 'Número de celular inválido'),
-  phone: Yup.string()
-    .nullable()
-    .matches(phoneRegex, 'Telefone inválido')
-    .notRequired(),
+  // phone: Yup.string()
+  //   .nullable()
+  //   .matches(phoneRegex, 'Telefone inválido')
+  //   .notRequired(),
   other_email: Yup.string().email('Email inválido'),
   quota: Yup.string().required('Obrigatório'),
-  quota_id: Yup.number().required('Obrigatório'),
+  // quota_id: Yup.number().required('Obrigatório'),
 });
 
 export const stepThreeSchema = Yup.object({
-  title: Yup.string(),
+  education_level: Yup.string(),
   graduation_course: Yup.string().required('Obrigatório'),
   graduation_year: Yup.string().required('Obrigatório'),
   graduation_institution: Yup.string().required('Obrigatório'),
@@ -56,8 +56,8 @@ export function getValidationSchema(step: number) {
       return stepOneSchema;
     case 2:
       return stepTwoSchema;
-    // case 3:
-    //   return stepThreeSchema;
+    case 3:
+      return stepThreeSchema;
     default:
       return Yup.object();
   }

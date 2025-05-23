@@ -7,12 +7,13 @@ import {
   useState,
   useCallback,
 } from 'react';
-
+import { useLocation } from 'react-router-dom';
 interface IAuthContext {
   accessToken: string;
   setAccessToken: (token: string) => void;
   login: (token: string) => void;
   logout: () => void;
+  isAuthenticated: () => boolean;
   getToken: () => string | null;
 }
 
@@ -34,6 +35,7 @@ export const AuthProvider: FC<PropsWithChildren<{}>> = ({
   );
 
   const login = useCallback((token: string): void => {
+    console.log('Login token:', token);
     setAccessToken(token);
     localStorage.setItem('userJWT', token);
   }, []);
@@ -47,9 +49,26 @@ export const AuthProvider: FC<PropsWithChildren<{}>> = ({
     return localStorage.getItem('userJWT');
   }, []);
 
+  const isAuthenticated = (): boolean => {
+    const location = useLocation();
+    const token = localStorage.getItem('userJWT');
+
+    // Retorna false se estiver na página de login
+    if (location.pathname === '/login') return false;
+
+    return Boolean(token && token.trim() !== '');
+  };
+
   return (
     <AuthContext.Provider
-      value={{ accessToken, setAccessToken, login, logout, getToken }}
+      value={{
+        accessToken,
+        setAccessToken,
+        login,
+        logout,
+        getToken,
+        isAuthenticated,
+      }}
     >
       {children}
     </AuthContext.Provider>
