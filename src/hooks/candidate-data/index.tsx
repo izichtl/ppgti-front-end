@@ -15,12 +15,10 @@ export const useCandidateUpdate = (
   payload: CandidateLoginProps,
   step: string = ''
 ) => {
-  console.log(step, 'step');
   const url =
     step === 'stepTwo'
       ? '/v1/candidate/personal-data'
       : '/v1/candidate/academic-data';
-  console.log(url, 'step');
   const useCandidateUpdateFetcher = async () => {
     return await APIDecoratorWithBaseURI().post(url, {
       ...payload,

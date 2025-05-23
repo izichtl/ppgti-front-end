@@ -8,10 +8,22 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    const errors = useFormikProps.errors;
+    // console.log(errors, 'academic errors');
+    if (Object.keys(errors).length === 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [useFormikProps]);
 
   return (
     <Box sx={{ bgcolor: '#f0f4f8', minHeight: '100vh', p: 2, pt: 8 }}>
@@ -40,17 +52,18 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
-              label='Título'
-              name='title'
+              label='Maior Titulação'
+              name='education_level'
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.title}
+              value={useFormikProps.values.education_level}
               onChange={useFormikProps.handleChange}
               error={
-                !!useFormikProps.errors.title && !!useFormikProps.touched.title
+                !!useFormikProps.errors.education_level &&
+                !!useFormikProps.touched.education_level
               }
-              helperText={useFormikProps.errors.title}
+              helperText={useFormikProps.errors.education_level}
             />
             <TextField
               label='Curso de Graduação'
@@ -180,6 +193,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               <Button
                 variant='contained'
                 color='primary'
+                disabled={disabled}
                 size='large'
                 sx={{
                   width: { xs: '100%', sm: '100%' },

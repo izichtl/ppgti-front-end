@@ -37,7 +37,6 @@ export default function Dashboard(props: { disableCustomTheme?: boolean }) {
             }}
           >
             <Header />
-            {/* <MainGrid /> */}
           </Stack>
         </Box>
       </Box>

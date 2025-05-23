@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Alert, Box, Snackbar } from '@mui/material';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { useCandidateLogin } from '../../hooks/candidate-login';
@@ -13,6 +13,7 @@ import { useAuth } from '../../hooks/auth';
 import { getValidationSchema } from '../../utils/candidate-form-validation';
 import { useCandidateUpdate } from '../../hooks/candidate-data';
 import StepFour from './step-4-four';
+import { mapUserToFormikValues } from '../../utils/formik-modeler';
 
 // TODO
 // revisar os dados do step 1
@@ -44,7 +45,7 @@ const Login: React.FC = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
 
   type initialCandidateProps = {
     // step-one
@@ -75,7 +76,7 @@ const Login: React.FC = () => {
 
     //  step-three
     // academic-data
-    title?: string;
+    education_level?: string;
     graduation_course?: string;
     graduation_year?: string;
     graduation_institution?: string;
@@ -87,10 +88,10 @@ const Login: React.FC = () => {
   };
 
   const initial: initialCandidateProps = {
-    email: 'ana.silva@example.com',
-    cpf: '987.654.321-00',
+    email: '',
+    cpf: '',
     name: '',
-    social_name: 'Fernanda Santos',
+    social_name: '',
     sex: '',
     registration_: '',
     registration_state: '',
@@ -107,7 +108,7 @@ const Login: React.FC = () => {
     other_email: '',
     quota: 'nao_optante',
     quota_id: 1,
-    title: '',
+    education_level: '',
     graduation_course: '',
     graduation_year: '',
     graduation_institution: '',
@@ -124,7 +125,7 @@ const Login: React.FC = () => {
       validateOnMount: false,
       validationSchema: getValidationSchema(currentStep),
       onSubmit: async (values: initialCandidateProps) => {
-        console.log(values, 'valors caputrados', currentStep);
+        // console.log(values, 'valors caputrados', currentStep);
         if (currentStep === 1) {
           await handlerLogin();
         }
@@ -172,7 +173,7 @@ const Login: React.FC = () => {
       const { token, islogin } = data.data;
       login(token);
       const user = await getUserFromToken(token);
-      useFormikProps.setValues(user as any);
+      useFormikProps.setValues(mapUserToFormikValues(user, initial));
       setCurrentStep((prevStep) => prevStep + 1);
     } catch (error: AxiosError | any) {
       const response = error?.response?.data;
@@ -202,6 +203,14 @@ const Login: React.FC = () => {
     useFormikProps.submitForm();
   };
 
+  const hasLoggedOut = useRef(false);
+
+  useEffect(() => {
+    if (!hasLoggedOut.current) {
+      logout();
+      hasLoggedOut.current = true;
+    }
+  }, []);
   return (
     <Box>
       {loginError && (

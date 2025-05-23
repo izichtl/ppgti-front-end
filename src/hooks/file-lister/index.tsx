@@ -1,6 +1,5 @@
 import useSWR from 'swr';
 import { AxiosResponse } from 'axios';
-import { useMemo } from 'react';
 import { APIDecoratorWithBaseURI } from '../../service';
 
 export interface TrackerResponse {
@@ -11,21 +10,18 @@ export interface TrackerResponse {
 
 export const useGetCandidateFiles = (): TrackerResponse => {
   const url: string = '/v1/file-manager/list/candidate';
+
   const fetchData = async (): Promise<AxiosResponse> => {
     return await APIDecoratorWithBaseURI().get(url);
   };
 
   const { data, error, isLoading } = useSWR<any>(url, fetchData);
-  const nestedData = useMemo(() => data?.data?.data || {}, [data]);
 
-  const memoizedValue = useMemo(
-    () => ({
-      files: nestedData,
-      filesLoading: isLoading,
-      filesError: error,
-    }),
-    [nestedData, error, isLoading]
-  );
+  const files = data?.data?.data || {};
 
-  return memoizedValue;
+  return {
+    files,
+    filesLoading: isLoading,
+    filesError: error,
+  };
 };

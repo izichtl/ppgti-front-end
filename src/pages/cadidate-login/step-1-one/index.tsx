@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -12,9 +12,11 @@ import {
   ToggleButtonGroup,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
+import { useAuth } from '../../../hooks/auth';
 
 const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
   const theme = useTheme();
+
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [accessType, setAccessType] = useState<'candidato' | 'comissao'>(
     'candidato'

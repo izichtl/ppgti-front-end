@@ -19,8 +19,7 @@ import brazilianStates from '../../../utils/state-list';
 import { quotaOptionsPros } from '..';
 
 const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
-  console.log(useFormikProps, 'useFormikProps');
-  const [selected, setSelected] = useState('');
+  // const [selected, setSelected] = useState('');
   const [disabled, setDisabled] = useState(true);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -32,16 +31,12 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
 
   useEffect(() => {
     const errors = useFormikProps.errors;
-    console.log(errors, 'errors');
-    console.log(errors, 'errors');
-    console.log(errors, 'errors');
     if (Object.keys(errors).length === 0) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
   }, [useFormikProps]);
-  const handleNextStep = async () => {};
 
   return (
     <Box sx={{ bgcolor: '#f0f4f8', minHeight: '100vh', p: 2, pt: 8 }}>
@@ -71,18 +66,17 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
           {/* Coluna Esquerda */}
           <Grid item xs={12} md={6}>
             <TextField
-              label='Nome Social'
-              name='social_name'
+              label='Nome de Registro'
+              name='name'
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.social_name}
+              value={useFormikProps.values.name}
               onChange={useFormikProps.handleChange}
               error={
-                !!useFormikProps.errors.social_name &&
-                !!useFormikProps.touched.social_name
+                !!useFormikProps.errors.name && !!useFormikProps.touched.name
               }
-              helperText={useFormikProps.errors.social_name}
+              helperText={useFormikProps.errors.name}
             />
             <TextField
               label='Registro Geral - RG'
@@ -113,10 +107,10 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               helperText={useFormikProps.errors.registration_place}
             />
             <FormControl fullWidth margin='normal'>
-              <InputLabel>UF</InputLabel>
+              <InputLabel>Estado</InputLabel>
               <Select
-                name='registration_state'
-                value={useFormikProps.values.registration_state}
+                name='address_state'
+                value={useFormikProps.values.address_state}
                 onChange={useFormikProps.handleChange}
                 label='UF'
               >
@@ -227,6 +221,21 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               }
               helperText={useFormikProps.errors.address_city}
             />
+            <FormControl fullWidth margin='normal'>
+              <InputLabel>UF</InputLabel>
+              <Select
+                name='registration_state'
+                value={useFormikProps.values.registration_state}
+                onChange={useFormikProps.handleChange}
+                label='UF'
+              >
+                {brazilianStates.map((estado) => (
+                  <MenuItem key={estado.sigla} value={estado.sigla}>
+                    {estado.nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               label='CEP'
               name='address_zipcode'

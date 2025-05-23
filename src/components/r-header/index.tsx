@@ -12,6 +12,7 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import Sitemark from '../r-icon/index'; // Mantido
+import { Link } from 'react-router-dom';
 // Removido import do ColorModeIconDropdown, já que está causando o quadrado vazio.
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -48,22 +49,26 @@ export default function AppAppBar() {
           <Box
             sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}
           >
-            <Sitemark />
+            <Link to='/'>
+              <Sitemark />
+            </Link>
             <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 4 }}>
-              <Button variant='text' color='info' size='small'>
+              <Button href='/login' variant='text' color='info' size='small'>
                 Inscrições
               </Button>
-              <Button variant='text' color='info' size='small'>
-                Editais
+              <Button
+                href='/documents'
+                variant='text'
+                color='info'
+                size='small'
+              >
+                Documentos
               </Button>
-              <Button variant='text' color='info' size='small'>
+              <Button href='/about' variant='text' color='info' size='small'>
                 Sobre
               </Button>
-              <Button variant='text' color='info' size='small'>
-                Contato
-              </Button>
-              <Button variant='text' color='info' size='small'>
-                Área do Candidato
+              <Button href='/blog' variant='text' color='info' size='small'>
+                Notícias
               </Button>
             </Box>
           </Box>
@@ -76,11 +81,13 @@ export default function AppAppBar() {
               alignItems: 'center',
             }}
           >
-            <Button color='primary' variant='text' size='small'>
-              Entrar
-            </Button>
-            <Button color='primary' variant='contained' size='small'>
-              Cadastrar-se
+            <Button
+              href='/login'
+              color='primary'
+              variant='contained'
+              size='small'
+            >
+              Acessar
             </Button>
             {/* ColorModeIconDropdown removido daqui */}
           </Box>
@@ -108,20 +115,43 @@ export default function AppAppBar() {
                   <CloseRoundedIcon />
                 </IconButton>
               </Box>
-              <MenuItem>Inscrições</MenuItem>
-              <MenuItem>Editais</MenuItem>
-              <MenuItem>Sobre</MenuItem>
-              <MenuItem>Contato</MenuItem>
-              <MenuItem>Área do Candidato</MenuItem>
+              <Link
+                to='/login'
+                onClick={toggleDrawer(false)}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <MenuItem>Inscrições</MenuItem>
+              </Link>
+              <Link
+                to='/documents'
+                onClick={toggleDrawer(false)}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <MenuItem>Documentos</MenuItem>
+              </Link>
+              <Link
+                to='/about'
+                onClick={toggleDrawer(false)}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <MenuItem>Sobre</MenuItem>
+              </Link>
+              <Link
+                to='/blog'
+                onClick={toggleDrawer(false)}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <MenuItem>Notícias</MenuItem>
+              </Link>
               <Divider sx={{ my: 3 }} />
               <MenuItem>
-                <Button color='primary' variant='contained' fullWidth>
-                  Cadastrar-se
-                </Button>
-              </MenuItem>
-              <MenuItem>
-                <Button color='primary' variant='outlined' fullWidth>
-                  Entrar
+                <Button
+                  href='/login'
+                  color='primary'
+                  variant='contained'
+                  fullWidth
+                >
+                  Acessar
                 </Button>
               </MenuItem>
             </Box>

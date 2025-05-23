@@ -42,7 +42,6 @@ export default function LandingPage() {
             size='large'
             endIcon={<ArrowRight />}
             href='/login'
-            target='_blank'
           >
             Inscreva-se Agora
           </Button>
@@ -51,7 +50,7 @@ export default function LandingPage() {
 
       {/* Sessão de Notícias */}
       <Container sx={{ my: 8 }}>
-        <Typography variant='h4' gutterBottom align='center'>
+        {/* <Typography variant='h4' gutterBottom align='center'>
           Últimas Notícias do PPGTI
         </Typography>
         <Grid container spacing={4}>
@@ -72,7 +71,7 @@ export default function LandingPage() {
               </Card>
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
       </Container>
     </>
   );

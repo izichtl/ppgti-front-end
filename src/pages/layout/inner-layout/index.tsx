@@ -8,13 +8,11 @@ import { Outlet } from 'react-router-dom';
 
 export default function InnerLayout(props: { disableCustomTheme?: boolean }) {
   return (
-    // <AppTheme {...props} themeComponents={xThemeComponents}>
     <>
       <CssBaseline enableColorScheme />
       <Box sx={{ display: 'flex' }}>
         <SideMenu />
         <AppNavbar />
-        {/* Main content */}
         <Box
           component='main'
           sx={(theme) => ({
@@ -35,15 +33,10 @@ export default function InnerLayout(props: { disableCustomTheme?: boolean }) {
             }}
           >
             <Header />
-            indeeashjahskjasjkahsjkhha indeeashjahskjasjkahsjkhha
-            indeeashjahskjasjkahsjkhha indeeashjahskjasjkahsjkhha
-            indeeashjahskjasjkahsjkhha indeeashjahskjasjkahsjkhha
-            indeeashjahskjasjkahsjkhha
             <Outlet />
           </Stack>
         </Box>
       </Box>
     </>
-    // </AppTheme>
   );
 }
