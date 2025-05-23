@@ -9,16 +9,14 @@ export default function SitemarkIcon() {
         viewBox='0 0 200 100'
         xmlns='http://www.w3.org/2000/svg'
       >
-        <text
-          x='0'
-          y='70'
-          fill='#1e6f2d'
-          fontSize='50'
-          fontFamily='Open Sans, Arial, sans-serif'
-          fontWeight='bold'
-        >
-          IFPB
-        </text>
+        <image
+          href="/public/ifpb.png"  // caminho da imagem
+          x="0"
+          y="0"
+          width="200"
+          height="100"
+          preserveAspectRatio="xMidYMid meet"
+        />
       </svg>
     </SvgIcon>
   );

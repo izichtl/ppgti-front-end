@@ -13,6 +13,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import Sitemark from '../r-icon/index'; // Mantido
 // Removido import do ColorModeIconDropdown, já que está causando o quadrado vazio.
+import Stack from '@mui/material/Stack';
+
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -49,23 +51,27 @@ export default function AppAppBar() {
             sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}
           >
             <Sitemark />
+
             <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 4 }}>
-              <Button variant='text' color='info' size='small'>
-                Inscrições
-              </Button>
-              <Button variant='text' color='info' size='small'>
-                Editais
-              </Button>
-              <Button variant='text' color='info' size='small'>
-                Sobre
-              </Button>
-              <Button variant='text' color='info' size='small'>
-                Contato
-              </Button>
-              <Button variant='text' color='info' size='small'>
-                Área do Candidato
-              </Button>
-            </Box>
+              <Stack direction="row" spacing={1}>
+                <Button variant="contained" color="success" size='small'>
+                  Inscrições
+                </Button>
+                <Button variant="contained" color="success" size='small'>
+                  Editais
+                </Button>
+                <Button variant="contained" color="success" size='small'>
+                  Sobre
+                </Button>
+                <Button variant="contained" color="success" size='small'>
+                  Contato
+                </Button>
+                <Button variant="contained" color="success" size='small'>
+                  Área do Candidato
+                </Button>
+              </Stack>  
+              </Box>
+         
           </Box>
 
           {/* Ações Desktop */}
