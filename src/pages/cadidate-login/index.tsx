@@ -1,35 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState, useRef } from 'react';
+import { Alert, Box, Snackbar } from '@mui/material';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { useCandidateLogin } from '../../hooks/candidate-login';
 import { AxiosError } from 'axios';
-import * as Yup from 'yup';
+
 import { useFormik, FormikProps } from 'formik';
-import StepOne from './step-one';
-import StepTWO from './step-two';
-import StepTwo from './step-two';
-import StepThree from './step-three';
+import StepOne from './step-1-one';
+import StepTwo from './step-2-two';
+import StepThree from './step-3-three';
 import { getUserFromToken } from '../../utils/get-user-from-token';
 import { useAuth } from '../../hooks/auth';
+import { getValidationSchema } from '../../utils/candidate-form-validation';
+import { useCandidateUpdate } from '../../hooks/candidate-data';
+import StepFour from './step-4-four';
+import { mapUserToFormikValues } from '../../utils/formik-modeler';
 
 // TODO
-// PRECISA VALIDAR TODOS OS CAMPOS
-// PRECISA AJUSTAR O TOGGLE DE COTAS
-// PRECISA DE FN PARA VALIDAR O PASSO QUE O USÁRIO ESTÁ
-// CASO TUDO PREENCHIDO ENVIAR PARA DASHBOARD
-// CASO INCOMPLETO ENVIAR PARA O PASSO A SER COMPLETO
-// PRECISA CONFIGURAR PARA ACEITAR QUE ELE SEJA CARREGADO PÓS LOGIN
-// PRECISA VALIDAR O SEXO DO USUÁRIO
-// CASO MASCULINO FAZER COM QUE RESERVISTA SEJA OBRIGATÓRIO
-// PRECISA VALIDAR SE TOGGLE DE COTA ESTÁ MARCADO, QUAL ESTA MARCADO
-// CASO ESTEJA, TORNAR AQUELE PDF ESPECÍFICO OBRIGATÓRIO
+// revisar os dados do step 1
+// revisar os dados do step 2
+// revisar os dados do step 3
+// ajustar os botões para padrão
+// ajustar e revisar o componente de upload
+// traduzir o componente de upload
+// implementar um botão de voltar ??
 
-// PRECISA CRIAR O SUMBIT STEP PARA 2
-// PRECISA CRIAR O SUBMIT STEP PARA 3 (TODOS OS PDFS PREENCHIDOS)
+// !TODO
+// ajustar o step 4 para receber os documentos
+
+export type quotaOptionsPros = {
+  id: number;
+  label: string;
+  value: string;
+};
+
+const quotaOptions: quotaOptionsPros[] = [
+  { id: 1, label: 'Não Optante', value: 'nao_optante' },
+  { id: 2, label: 'Afrodescendente ou Indígena', value: 'afro_ou_inde' },
+  { id: 3, label: 'Pessoa com Deficiência', value: 'pcd' },
+  { id: 4, label: 'Servidor permanente do IFPB', value: 'servidor_if' },
+];
 
 const Login: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const { login } = useAuth();
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const { login, logout } = useAuth();
 
   type initialCandidateProps = {
     // step-one
@@ -55,10 +71,12 @@ const Login: React.FC = () => {
     cell_phone: string;
     phone: string;
     other_email: string;
+    quota: string;
+    quota_id: number;
 
     //  step-three
     // academic-data
-    title?: string;
+    education_level?: string;
     graduation_course?: string;
     graduation_year?: string;
     graduation_institution?: string;
@@ -66,12 +84,8 @@ const Login: React.FC = () => {
     specialization_year?: string;
     specialization_institution?: string;
     lattes_link?: string;
+    // control
   };
-
-  //! IMPORTANT
-  //! PRECISA VALIDAR OS CAMPOS POR UMA FN
-  //! CASO A VALIDAÇÃO INFORME TODOS OS DADOS
-  //! PASSAR ELE DIRETO PARA A INSCRIÇÃO
 
   const initial: initialCandidateProps = {
     email: '',
@@ -92,7 +106,9 @@ const Login: React.FC = () => {
     cell_phone: '',
     phone: '',
     other_email: '',
-    title: '',
+    quota: 'nao_optante',
+    quota_id: 1,
+    education_level: '',
     graduation_course: '',
     graduation_year: '',
     graduation_institution: '',
@@ -107,16 +123,17 @@ const Login: React.FC = () => {
       initialValues: initial,
       validateOnBlur: false,
       validateOnMount: false,
-      // validationSchema: () => {
-      // },
+      validationSchema: getValidationSchema(currentStep),
       onSubmit: async (values: initialCandidateProps) => {
-        console.log(values, 'values');
+        // console.log(values, 'valors caputrados', currentStep);
         if (currentStep === 1) {
           await handlerLogin();
-          setCurrentStep((prevStep) => prevStep + 1);
         }
         if (currentStep === 2) {
-          setCurrentStep((prevStep) => prevStep + 1);
+          await handlerStepUpdate();
+        }
+        if (currentStep === 3) {
+          await handlerStepUpdate();
         }
       },
     });
@@ -124,7 +141,7 @@ const Login: React.FC = () => {
   const { useCandidateLoginFetcher } = useCandidateLogin({
     email: useFormikProps.values.email,
     cpf: useFormikProps.values.cpf,
-    name: useFormikProps.values.name,
+    social_name: useFormikProps.values.social_name,
   });
 
   const { trigger: triggerLogin, isMutating }: SWRMutationResponse<any> =
@@ -132,16 +149,53 @@ const Login: React.FC = () => {
       revalidate: false,
     });
 
+  const { useCandidateUpdateFetcher } = useCandidateUpdate(
+    useFormikProps.values,
+    currentStep === 2 ? 'stepTwo' : 'stepThree'
+  );
+
+  const {
+    trigger: triggerUpdateStepTwo,
+    isMutating: isMutatingStepTwo,
+  }: SWRMutationResponse<any> = useSWRMutation(
+    'useCandidateUpdateFetcher',
+    useCandidateUpdateFetcher,
+    {
+      revalidate: false,
+    }
+  );
+
   const handlerLogin = async () => {
     try {
       const response = await triggerLogin();
       const { data } = response;
-      const { token } = data.data;
+      // isLogin controla se ele esta sendo cadastrado ou logado
+      const { token, islogin } = data.data;
       login(token);
       const user = await getUserFromToken(token);
-      useFormikProps.setValues(user as any);
+      useFormikProps.setValues(mapUserToFormikValues(user, initial));
+      setCurrentStep((prevStep) => prevStep + 1);
     } catch (error: AxiosError | any) {
-      console.log(error!.response, 'error');
+      const response = error?.response?.data;
+      if (response?.code === '23505') {
+        setLoginError(
+          'O email ou CPF já estão em uso. A combinação precisa ser única.'
+        );
+      } else {
+        setLoginError(
+          'Ocorreu um erro ao tentar fazer login. Tente novamente.'
+        );
+      }
+      setShowSnackbar(true);
+    }
+  };
+  const handlerStepUpdate = async () => {
+    try {
+      await triggerUpdateStepTwo();
+      setCurrentStep((prevStep) => prevStep + 1);
+    } catch (error: AxiosError | any) {
+      setLoginError('Ocorreu um erro ao tentar fazer login. Tente novamente.');
+      setShowSnackbar(true);
     }
   };
 
@@ -149,17 +203,34 @@ const Login: React.FC = () => {
     useFormikProps.submitForm();
   };
 
+  const hasLoggedOut = useRef(false);
+
+  useEffect(() => {
+    if (!hasLoggedOut.current) {
+      logout();
+      hasLoggedOut.current = true;
+    }
+  }, []);
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-        backgroundColor: 'white',
-        padding: 1,
-      }}
-    >
+    <Box>
+      {loginError && (
+        <Box mb={2}>
+          <Snackbar
+            open={showSnackbar}
+            autoHideDuration={5000}
+            onClose={() => setShowSnackbar(false)}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert
+              severity='error'
+              onClose={() => setShowSnackbar(false)}
+              sx={{ width: '100%' }}
+            >
+              {loginError}
+            </Alert>
+          </Snackbar>
+        </Box>
+      )}
       {currentStep === 1 && (
         <StepOne
           useFormikProps={useFormikProps}
@@ -172,13 +243,22 @@ const Login: React.FC = () => {
           useFormikProps={useFormikProps}
           setCurrentStep={setCurrentStep}
           handlerNextStep={handleButtonClick}
+          quotaOptions={quotaOptions}
         />
       )}
       {currentStep === 3 && (
         <StepThree
-          // useFormikProps={useFormikProps}
-          // setCurrentStep={setCurrentStep}
+          useFormikProps={useFormikProps}
+          setCurrentStep={setCurrentStep}
+          handlerNextStep={handleButtonClick}
+          quotaOptions={quotaOptions}
+        />
+      )}
+      {currentStep === 4 && (
+        <StepFour
           cpf={useFormikProps.values.cpf}
+          sex={useFormikProps.values.sex}
+          quota={useFormikProps.values.quota}
           handlerNextStep={handleButtonClick}
         />
       )}

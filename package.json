@@ -19,17 +19,20 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "vercel-build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",
+    "@fontsource/open-sans": "^5.2.5",
     "@mui/icons-material": "7.0.0",
     "@mui/material": "7.0.0",
     "axios": "^1.8.4",
     "formik": "^2.4.6",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.511.0",
     "react": "19.0.0",
     "react-cookie": "^8.0.1",
     "react-dom": "19.0.0",
