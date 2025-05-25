@@ -1,10 +1,12 @@
-import { createBrowserRouter, redirect } from 'react-router-dom';
+import { createBrowserRouter, redirect } from "react-router-dom";
 // import Home from '../pages/home';
-import Login from '../pages/cadidate-login';
-import Layout from '../components/layout';
+import Login from "../pages/cadidate-login";
+import ComissaoLoginPage from "../pages/comissao/login";
+import Layout from "../components/layout";
 // import Help from '../pages/help';
 // import Dashboard from '../pages/dashboard';
-import PDFViewer from '../pages/pdf-view';
+import ComissaoDashboardPage from "../pages/comissao/dashboard";
+import PDFViewer from "../pages/pdf-view";
 
 const ErrorComponent = () => {
   return <h1>Pagina de erro generico</h1>;
@@ -15,11 +17,11 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '*',
+        path: "*",
         element: <ErrorComponent />,
       },
       {
-        path: '/error',
+        path: "/error",
         element: <ErrorComponent />,
       },
       // {
@@ -27,20 +29,28 @@ const router = createBrowserRouter([
       //   element: <Dashboard />,
       // },
       {
-        path: '/login',
+        path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/comissao/login",
+        element: <ComissaoLoginPage />,
       },
       // {
       //   path: '/help',
       //   element: <Help />,
       // },
       {
-        path: '/pdf',
+        path: "/pdf",
         element: <PDFViewer />,
       },
       {
-        path: '/',
+        path: "/",
         element: <Login />,
+      },
+      {
+        path: "/comissao/dashboard",
+        element: <ComissaoDashboardPage />,
       },
     ],
   },
