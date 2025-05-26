@@ -93,16 +93,19 @@ const StepOne = ({
             value={accessType}
             exclusive
             onChange={handleAccessChange}
-            sx={{ mb: 3 }}
+            sx={{ mb: 3, flexWrap: 'wrap' }} // permite quebra em telas pequenas
           >
             {['register', 'login'].map((type) => (
               <ToggleButton
                 key={type}
                 value={type}
-                sx={{
+                sx={(theme) => ({
                   textTransform: 'none',
-                  px: 4,
-                  borderRadius: 2,
+                  px: 3,
+                  py: 1,
+                  minWidth: 100,
+                  fontSize: 14,
+                  borderRadius: 1.5,
                   border: `1px solid ${theme.palette.primary.main}`,
                   color: 'primary.main',
                   '&.Mui-selected': {
@@ -113,9 +116,15 @@ const StepOne = ({
                     bgcolor: 'primary.dark',
                   },
                   '&:hover': {
-                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                    bgcolor: alpha(theme.palette.primary.main, 0.08),
                   },
-                }}
+
+                  [theme.breakpoints.down('sm')]: {
+                    flex: 1,
+                    px: 2,
+                    fontSize: 13,
+                  },
+                })}
               >
                 {type === 'register' ? 'Cadastrar' : 'Acessar'}
               </ToggleButton>
