@@ -1,17 +1,38 @@
 import { APIDecoratorWithBaseURI } from "../../service";
 
-export type ComissaoLoginProps = {
+export type ComissaoRegisterProps = {
   email: string;
-  cpf: string;
+  matricula: string;
   name: string;
   authorizationCode: string;
+  cpf: string;
+  password: string;
+};
+
+export type ComissaoLoginProps = {
+  matricula: string;
+  password: string;
+};
+
+export const useComissaoRegister = (payload: ComissaoRegisterProps) => {
+  const useComissaoRegisterFetcher = async () => {
+    return await APIDecoratorWithBaseURI().post(
+      "/v1/auth/comissao/register",
+      payload
+    );
+  };
+
+  return {
+    useComissaoRegisterFetcher,
+  };
 };
 
 export const useComissaoLogin = (payload: ComissaoLoginProps) => {
   const useComissaoLoginFetcher = async () => {
-    return await APIDecoratorWithBaseURI().post("/v1/auth/comissao/register", {
-      ...payload,
-    });
+    return await APIDecoratorWithBaseURI().post(
+      "/v1/auth/comissao/login",
+      payload
+    );
   };
 
   return {
