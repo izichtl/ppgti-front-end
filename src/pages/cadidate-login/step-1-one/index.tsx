@@ -40,17 +40,18 @@ const TextMaskCustom = React.forwardRef<HTMLInputElement, CustomProps>(
   }
 );
 
-const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
+const StepOne = ({
+  handlerNextStep,
+  useFormikProps,
+  setAccessType,
+  accessType,
+}: any) => {
   const theme = useTheme();
-
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [accessType, setAccessType] = useState<'candidato' | 'comissao'>(
-    'candidato'
-  );
 
   const handleAccessChange = (
     event: React.MouseEvent<HTMLElement>,
-    newAccessType: 'candidato' | 'comissao' | null
+    newAccessType: 'register' | 'login' | null
   ) => {
     if (newAccessType !== null) {
       setAccessType(newAccessType);
@@ -83,7 +84,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
           }}
         >
           <Typography variant='h5' align='center' gutterBottom>
-            {accessType === 'candidato'
+            {accessType === 'register'
               ? 'Faça sua inscrição'
               : 'Acesse a plataforma'}
           </Typography>
@@ -94,7 +95,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
             onChange={handleAccessChange}
             sx={{ mb: 3 }}
           >
-            {['candidato', 'comissao'].map((type) => (
+            {['register', 'login'].map((type) => (
               <ToggleButton
                 key={type}
                 value={type}
@@ -116,13 +117,13 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
                   },
                 }}
               >
-                {type === 'candidato' ? 'Cadastrar' : 'Acessar'}
+                {type === 'register' ? 'Cadastrar' : 'Acessar'}
               </ToggleButton>
             ))}
           </ToggleButtonGroup>
 
           <Typography variant='body1' align='center' gutterBottom>
-            {accessType === 'candidato'
+            {accessType === 'register'
               ? 'Preencha os campos para cadastrar sua inscrição, sua senha será o CPF combinado com Email.'
               : 'Caso tenha iniciado sua inscrição, acesse aqui.'}
           </Typography>
@@ -133,7 +134,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
             autoComplete='off'
             sx={{ width: '100%' }}
           >
-            {accessType === 'candidato' ? (
+            {accessType === 'register' ? (
               <>
                 <TextField
                   label='Nome Social'
@@ -231,7 +232,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
               sx={{ mt: 2 }}
               onClick={handlerNextStep}
             >
-              {accessType === 'candidato' ? 'Cadastrar' : 'Acessar'}
+              {accessType === 'register' ? 'Cadastrar' : 'Acessar'}
             </Button>
           </Box>
         </Paper>

@@ -44,6 +44,9 @@ const Login: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [accessType, setAccessType] = useState<'register' | 'login'>(
+    'register'
+  );
 
   const { login, logout } = useAuth();
 
@@ -123,7 +126,7 @@ const Login: React.FC = () => {
       initialValues: initial,
       validateOnBlur: false,
       validateOnMount: false,
-      validationSchema: getValidationSchema(currentStep),
+      validationSchema: getValidationSchema(currentStep, accessType),
       onSubmit: async (values: initialCandidateProps) => {
         // console.log(values, 'valors caputrados', currentStep);
         if (currentStep === 1) {
@@ -233,6 +236,8 @@ const Login: React.FC = () => {
       )}
       {currentStep === 1 && (
         <StepOne
+          setAccessType={setAccessType}
+          accessType={accessType}
           useFormikProps={useFormikProps}
           setCurrentStep={setCurrentStep}
           handlerNextStep={handleButtonClick}
