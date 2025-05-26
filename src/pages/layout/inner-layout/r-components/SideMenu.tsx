@@ -6,10 +6,10 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import SelectContent from './SelectContent';
 import MenuContent from './MenuContent';
 import CardAlert from './CardAlert';
-import OptionsMenu from './OptionsMenu';
+// import OptionsMenu from './OptionsMenu';
+import { useAuth } from '../../../../hooks/auth';
 
 const drawerWidth = 240;
 
@@ -25,6 +25,20 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export default function SideMenu() {
+  const [userData, setUserData] = React.useState<any>({
+    cpf: '',
+    email: '',
+    sex: '',
+    social_name: '',
+  });
+  const { getUserFromToken } = useAuth();
+  const user = getUserFromToken();
+
+  React.useEffect(() => {
+    if (user) {
+      setUserData(user);
+    }
+  }, [user]);
   return (
     <Drawer
       variant='permanent'
@@ -35,27 +49,6 @@ export default function SideMenu() {
         },
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          mt: 'calc(var(--template-frame-height, 0px) + 4px)',
-          p: 1.5,
-        }}
-      >
-        <SelectContent />
-      </Box>
-      <Divider />
-      <Box
-        sx={{
-          overflow: 'auto',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <MenuContent />
-        <CardAlert />
-      </Box>
       <Stack
         direction='row'
         sx={{
@@ -68,8 +61,10 @@ export default function SideMenu() {
       >
         <Avatar
           sizes='small'
-          alt='Riley Carter'
-          src='/static/images/avatar/7.jpg'
+          alt='NOME DO USUÁRIO'
+          src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+            userData.social_name
+          )}&background=random&color=fff&rounded=true`}
           sx={{ width: 36, height: 36 }}
         />
         <Box sx={{ mr: 'auto' }}>
@@ -77,14 +72,26 @@ export default function SideMenu() {
             variant='body2'
             sx={{ fontWeight: 500, lineHeight: '16px' }}
           >
-            Riley Carter
+            {userData.social_name}
           </Typography>
           <Typography variant='caption' sx={{ color: 'text.secondary' }}>
-            riley@email.com
+            {userData.email}
           </Typography>
         </Box>
-        <OptionsMenu />
+        {/* <OptionsMenu /> */}
       </Stack>
+      <Divider />
+      <Box
+        sx={{
+          overflow: 'auto',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <MenuContent />
+        <CardAlert />
+      </Box>
     </Drawer>
   );
 }

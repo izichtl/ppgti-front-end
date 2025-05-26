@@ -9,6 +9,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import ScrollToTop from '../../../components/scroll-top';
 
 const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
   const theme = useTheme();
@@ -37,6 +38,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
           bgcolor: '#fff',
         }}
       >
+        <ScrollToTop />
         <Typography variant='h5' align='center' gutterBottom>
           Formação Acadêmica
         </Typography>

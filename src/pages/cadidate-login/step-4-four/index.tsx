@@ -18,6 +18,7 @@ import FullScreenLoader from '../../../components/loading';
 import { mutate } from 'swr';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
+import ScrollToTop from '../../../components/scroll-top';
 
 type FileNameProps = {
   prefix: string;
@@ -181,6 +182,7 @@ const StepFour = ({ cpf, sex, quota }: any) => {
               bgcolor: '#fff',
             }}
           >
+            <ScrollToTop />
             <Typography variant='h5' align='center' gutterBottom>
               Comprovantes
             </Typography>

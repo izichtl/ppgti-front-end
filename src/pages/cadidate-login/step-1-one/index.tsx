@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { IMaskInput } from 'react-imask';
+import ScrollToTop from '../../../components/scroll-top';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -69,6 +70,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
       }}
     >
       <Container maxWidth='sm'>
+        <ScrollToTop />
         <Paper
           elevation={isMobile ? 0 : 3}
           sx={{

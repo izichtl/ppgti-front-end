@@ -3,7 +3,6 @@ import ErrorComponent from '../pages/error';
 import Login from '../pages/cadidate-login';
 import LandingPage from '../pages/landpage';
 import Blog from '../pages/blog';
-import Dashboard2 from '../pages/dashboard';
 import Layout from '../pages/layout';
 import UnderConstructionComponent from '../pages/under-contruction';
 
@@ -43,6 +42,10 @@ const router = createBrowserRouter([
       },
       {
         path: '/documents',
+        element: <UnderConstructionComponent />,
+      },
+      {
+        path: '/process',
         element: <UnderConstructionComponent />,
       },
       {
