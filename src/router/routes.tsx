@@ -1,62 +1,73 @@
-import { createBrowserRouter } from 'react-router-dom';
-import ErrorComponent from '../pages/error';
-import Login from '../pages/cadidate-login';
-import LandingPage from '../pages/landpage';
-import Blog from '../pages/blog';
-import Layout from '../pages/layout';
-import UnderConstructionComponent from '../pages/under-contruction';
-import EditaisTable from '../pages/documents';
+import { createBrowserRouter } from "react-router-dom";
+import ErrorComponent from "../pages/error";
+import Login from "../pages/cadidate-login";
+import LandingPage from "../pages/landpage";
+import Layout from "../pages/layout";
+import UnderConstructionComponent from "../pages/under-contruction";
+// import EditaisTable from '../pages/documents';
+import ComissaoLoginPage from "../pages/comissao/login";
+import ComissaoDashboardPage from "../pages/comissao/dashboard";
 
 const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <LandingPage />,
-        handle: { title: 'Início' },
+        handle: { title: "Início" },
       },
       {
-        path: '/login',
+        path: "/login",
         element: <Login />,
-        handle: { title: 'Login' },
+        handle: { title: "Login" },
       },
       {
-        path: '/blog',
+        path: "/blog",
         element: <UnderConstructionComponent />,
         // element: <Blog />,
-        handle: { title: 'Blog' },
+        handle: { title: "Blog" },
       },
       {
-        path: '/dashboard',
+        path: "/dashboard",
         element: <UnderConstructionComponent />,
-        handle: { title: 'Dashboard' },
+        handle: { title: "Dashboard" },
       },
       {
-        path: '/documents',
+        path: "/documents",
         element: <UnderConstructionComponent />,
         // element: <EditaisTable />,
-        handle: { title: 'Documentos' },
+        handle: { title: "Documentos" },
       },
       {
-        path: '/process',
+        path: "/process",
         element: <UnderConstructionComponent />,
-        handle: { title: 'Processo Seletivo' },
+        handle: { title: "Processo Seletivo" },
       },
       {
-        path: '/about',
+        path: "/about",
         element: <UnderConstructionComponent />,
-        handle: { title: 'Sobre' },
+        handle: { title: "Sobre" },
       },
       {
-        path: '/error',
+        path: "/error",
         element: <ErrorComponent />,
-        handle: { title: 'Erro' },
+        handle: { title: "Erro" },
       },
       {
-        path: '*',
+        path: "*",
         element: <ErrorComponent />,
-        handle: { title: 'Página não encontrada' },
+        handle: { title: "Página não encontrada" },
+      },
+      {
+        path: "/comissao/login",
+        element: <ComissaoLoginPage />,
+        handle: { title: "Login Comissão" },
+      },
+      {
+        path: "/comissao/dashboard",
+        element: <ComissaoDashboardPage />,
+        handle: { title: "Dashboard Comissão" },
       },
     ],
   },
