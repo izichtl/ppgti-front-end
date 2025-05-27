@@ -62,10 +62,12 @@ const router = createBrowserRouter([
       {
         path: "/comissao/login",
         element: <ComissaoLoginPage />,
+        handle: { title: "Login Comissão" },
       },
       {
         path: "/comissao/dashboard",
         element: <ComissaoDashboardPage />,
+        handle: { title: "Dashboard Comissão" },
       },
     ],
   },

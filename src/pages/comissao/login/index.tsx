@@ -11,8 +11,12 @@ import {
   useComissaoRegister,
 } from "../../../hooks/comissao-login";
 import { useAuth } from "../../../hooks/auth";
+import { getErrorMessage } from "../../../utils/error-messages";
+import ErrorSnackbar from "../../../components/error-snackbar";
 
 import Form from "./form";
+import StepOne from "./step-one";
+import StepTwo from "./step-two";
 
 const ComissaoLoginPage: React.FC = () => {
   const { login } = useAuth();
@@ -20,6 +24,9 @@ const ComissaoLoginPage: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isLoginMode, setIsLoginMode] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showSnackbar, setShowSnackbar] = useState(false);
 
   type initialComissaoLoginProps = {
     email: string;
@@ -39,38 +46,62 @@ const ComissaoLoginPage: React.FC = () => {
     password: "",
   };
 
+  const getValidationSchema = (step: number, isLogin: boolean) => {
+    if (isLogin) {
+      return Yup.object().shape({
+        matricula: Yup.string().required("Matrícula é obrigatório"),
+        password: Yup.string()
+          .min(6, "Senha deve ter pelo menos 6 caracteres")
+          .required("Senha é obrigatória"),
+      });
+    }
+
+    if (step === 1) {
+      return Yup.object().shape({
+        matricula: Yup.string().required("Matrícula é obrigatório"),
+        authorizationCode: Yup.string().required(
+          "Código de autorização é obrigatório"
+        ),
+      });
+    }
+
+    if (step === 2) {
+      return Yup.object().shape({
+        matricula: Yup.string().required("Matrícula é obrigatório"),
+        authorizationCode: Yup.string().required(
+          "Código de autorização é obrigatório"
+        ),
+        name: Yup.string().required("Nome é obrigatório"),
+        email: Yup.string()
+          .email("Email inválido")
+          .required("Email é obrigatório"),
+        cpf: Yup.string().required("CPF é obrigatório"),
+        password: Yup.string()
+          .min(6, "Senha deve ter pelo menos 6 caracteres")
+          .required("Senha é obrigatória"),
+      });
+    }
+
+    return Yup.object().shape({});
+  };
+
   const useFormikProps: FormikProps<initialComissaoLoginProps> =
     useFormik<initialComissaoLoginProps>({
       initialValues: initial,
       enableReinitialize: true,
       validateOnBlur: false,
       validateOnMount: false,
-      validationSchema: () => {
-        const baseSchema = {
-          matricula: Yup.string().required("Matrícula é obrigatório"),
-          password: Yup.string()
-            .min(6, "Senha deve ter pelo menos 6 caracteres")
-            .required("Senha é obrigatória"),
-        };
-
-        if (isLoginMode) {
-          return Yup.object().shape(baseSchema);
-        } else {
-          return Yup.object().shape({
-            ...baseSchema,
-            cpf: Yup.string().required("CPF é obrigatório"),
-            email: Yup.string()
-              .email("Email inválido")
-              .required("Email é obrigatório"),
-            name: Yup.string().required("Nome é obrigatório"),
-            authorizationCode: Yup.string().required(
-              "Código de autorização é obrigatório"
-            ),
-          });
-        }
-      },
+      validationSchema: () => getValidationSchema(currentStep, isLoginMode),
       onSubmit: async (values: initialComissaoLoginProps) => {
-        await handlerSubmit();
+        if (isLoginMode) {
+          await handlerLogin();
+        } else {
+          if (currentStep === 1) {
+            setCurrentStep(2);
+          } else {
+            await handlerRegister();
+          }
+        }
       },
     });
 
@@ -110,17 +141,31 @@ const ComissaoLoginPage: React.FC = () => {
     }
   );
 
-  const handlerSubmit = async () => {
+  const handlerLogin = async () => {
     try {
-      const response = isLoginMode
-        ? await triggerLogin()
-        : await triggerRegister();
+      const response = await triggerLogin();
       const { data } = response;
       const { token } = data.data;
       login(token);
       navigate("/comissao/dashboard");
     } catch (error: AxiosError | any) {
-      console.log(error!.response, "error");
+      const errorMsg = getErrorMessage(error);
+      setErrorMessage(errorMsg);
+      setShowSnackbar(true);
+    }
+  };
+
+  const handlerRegister = async () => {
+    try {
+      const response = await triggerRegister();
+      const { data } = response;
+      const { token } = data.data;
+      login(token);
+      navigate("/comissao/dashboard");
+    } catch (error: AxiosError | any) {
+      const errorMsg = getErrorMessage(error);
+      setErrorMessage(errorMsg);
+      setShowSnackbar(true);
     }
   };
 
@@ -128,29 +173,91 @@ const ComissaoLoginPage: React.FC = () => {
     useFormikProps.submitForm();
   };
 
-  return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        p: 2,
-        pt: 8,
-        bgcolor: "#f0f4f8",
-      }}
-    >
-      <Container maxWidth="sm">
-        <Form
+  const handlePrevStep = () => {
+    setCurrentStep(1);
+  };
+
+  const handleModeChange = (newIsLoginMode: boolean) => {
+    setIsLoginMode(newIsLoginMode);
+    setCurrentStep(1);
+    setErrorMessage(null);
+    setShowSnackbar(false);
+  };
+
+  const handleCloseSnackbar = () => {
+    setShowSnackbar(false);
+  };
+
+  if (isLoginMode) {
+    return (
+      <>
+        <ErrorSnackbar
+          open={showSnackbar}
+          message={errorMessage}
+          onClose={handleCloseSnackbar}
+        />
+        <Box
+          sx={{
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            p: 2,
+            pt: 8,
+            bgcolor: "#f0f4f8",
+          }}
+        >
+          <Container maxWidth="sm">
+            <Form
+              useFormikProps={useFormikProps}
+              handlerNextStep={handleButtonClick}
+              isMobile={isMobile}
+              isLoginMode={isLoginMode}
+              setIsLoginMode={handleModeChange}
+            />
+          </Container>
+        </Box>
+      </>
+    );
+  }
+
+  if (currentStep === 1) {
+    return (
+      <>
+        <ErrorSnackbar
+          open={showSnackbar}
+          message={errorMessage}
+          onClose={handleCloseSnackbar}
+        />
+        <StepOne
           useFormikProps={useFormikProps}
           handlerNextStep={handleButtonClick}
           isMobile={isMobile}
-          isLoginMode={isLoginMode}
-          setIsLoginMode={setIsLoginMode}
+          setIsLoginMode={handleModeChange}
         />
-      </Container>
-    </Box>
-  );
+      </>
+    );
+  }
+
+  if (currentStep === 2) {
+    return (
+      <>
+        <ErrorSnackbar
+          open={showSnackbar}
+          message={errorMessage}
+          onClose={handleCloseSnackbar}
+        />
+        <StepTwo
+          useFormikProps={useFormikProps}
+          handlerNextStep={handleButtonClick}
+          handlerPrevStep={handlePrevStep}
+          isMobile={isMobile}
+        />
+      </>
+    );
+  }
+
+  return null;
 };
 
 export default ComissaoLoginPage;
