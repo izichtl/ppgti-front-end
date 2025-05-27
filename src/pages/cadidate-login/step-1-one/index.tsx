@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -12,19 +12,46 @@ import {
   ToggleButtonGroup,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { useAuth } from '../../../hooks/auth';
+import { IMaskInput } from 'react-imask';
+import ScrollToTop from '../../../components/scroll-top';
 
-const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const TextMaskCustom = React.forwardRef<HTMLInputElement, CustomProps>(
+  function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask='000.000.000-00'
+        definitions={{
+          '#': /[1-9]/,
+        }}
+        inputRef={ref}
+        onAccept={(value: any) =>
+          onChange({ target: { name: props.name, value } })
+        }
+        overwrite
+      />
+    );
+  }
+);
+
+const StepOne = ({
+  handlerNextStep,
+  useFormikProps,
+  setAccessType,
+  accessType,
+}: any) => {
   const theme = useTheme();
-
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [accessType, setAccessType] = useState<'candidato' | 'comissao'>(
-    'candidato'
-  );
 
   const handleAccessChange = (
     event: React.MouseEvent<HTMLElement>,
-    newAccessType: 'candidato' | 'comissao' | null
+    newAccessType: 'register' | 'login' | null
   ) => {
     if (newAccessType !== null) {
       setAccessType(newAccessType);
@@ -44,6 +71,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
       }}
     >
       <Container maxWidth='sm'>
+        <ScrollToTop />
         <Paper
           elevation={isMobile ? 0 : 3}
           sx={{
@@ -56,25 +84,28 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
           }}
         >
           <Typography variant='h5' align='center' gutterBottom>
-            {accessType === 'candidato'
-              ? 'Cadastro de Candidato'
-              : 'Acesso Comissão'}
+            {accessType === 'register'
+              ? 'Faça sua inscrição'
+              : 'Acesse a plataforma'}
           </Typography>
 
           <ToggleButtonGroup
             value={accessType}
             exclusive
             onChange={handleAccessChange}
-            sx={{ mb: 3 }}
+            sx={{ mb: 3, flexWrap: 'wrap' }} // permite quebra em telas pequenas
           >
-            {['candidato', 'comissao'].map((type) => (
+            {['register', 'login'].map((type) => (
               <ToggleButton
                 key={type}
                 value={type}
-                sx={{
+                sx={(theme) => ({
                   textTransform: 'none',
-                  px: 4,
-                  borderRadius: 2,
+                  px: 3,
+                  py: 1,
+                  minWidth: 100,
+                  fontSize: 14,
+                  borderRadius: 1.5,
                   border: `1px solid ${theme.palette.primary.main}`,
                   color: 'primary.main',
                   '&.Mui-selected': {
@@ -85,19 +116,25 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
                     bgcolor: 'primary.dark',
                   },
                   '&:hover': {
-                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                    bgcolor: alpha(theme.palette.primary.main, 0.08),
                   },
-                }}
+
+                  [theme.breakpoints.down('sm')]: {
+                    flex: 1,
+                    px: 2,
+                    fontSize: 13,
+                  },
+                })}
               >
-                {type === 'candidato' ? 'Candidato' : 'Comissão'}
+                {type === 'register' ? 'Cadastrar' : 'Acessar'}
               </ToggleButton>
             ))}
           </ToggleButtonGroup>
 
           <Typography variant='body1' align='center' gutterBottom>
-            {accessType === 'candidato'
-              ? 'Preencha os campos abaixo para começar seu cadastro ou retomar.'
-              : 'Acesso exclusivo para membros da comissão.'}
+            {accessType === 'register'
+              ? 'Preencha os campos para cadastrar sua inscrição, sua senha será o CPF combinado com Email.'
+              : 'Caso tenha iniciado sua inscrição, acesse aqui.'}
           </Typography>
 
           <Box
@@ -106,7 +143,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
             autoComplete='off'
             sx={{ width: '100%' }}
           >
-            {accessType === 'candidato' ? (
+            {accessType === 'register' ? (
               <>
                 <TextField
                   label='Nome Social'
@@ -153,38 +190,46 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
                     Boolean(useFormikProps.touched.cpf)
                   }
                   helperText={useFormikProps.errors.cpf}
+                  InputProps={{
+                    inputComponent: TextMaskCustom as any,
+                  }}
                 />
               </>
             ) : (
               <>
                 <TextField
                   fullWidth
-                  label='Usuário da Comissão'
-                  name='userComissao' // Name para você ajustar depois
+                  label='Email'
+                  name='email'
                   variant='outlined'
+                  placeholder='seu-email@aqui.com'
                   margin='normal'
-                  value={useFormikProps.values.userComissao}
+                  value={useFormikProps.values.email}
                   onChange={useFormikProps.handleChange}
                   error={
-                    Boolean(useFormikProps.errors.userComissao) &&
-                    Boolean(useFormikProps.touched.userComissao)
+                    Boolean(useFormikProps.errors.email) &&
+                    Boolean(useFormikProps.touched.email)
                   }
-                  helperText={useFormikProps.errors.userComissao}
+                  helperText={useFormikProps.errors.email}
                 />
                 <TextField
                   fullWidth
-                  label='Senha'
-                  name='senhaComissao' // Name para você ajustar depois
-                  type='password'
+                  label='CPF'
+                  name='cpf'
+                  type='text'
                   variant='outlined'
+                  placeholder='111.222.333-44'
                   margin='normal'
-                  value={useFormikProps.values.senhaComissao}
+                  value={useFormikProps.values.cpf}
                   onChange={useFormikProps.handleChange}
                   error={
-                    Boolean(useFormikProps.errors.senhaComissao) &&
-                    Boolean(useFormikProps.touched.senhaComissao)
+                    Boolean(useFormikProps.errors.cpf) &&
+                    Boolean(useFormikProps.touched.cpf)
                   }
-                  helperText={useFormikProps.errors.senhaComissao}
+                  helperText={useFormikProps.errors.cpf}
+                  InputProps={{
+                    inputComponent: TextMaskCustom as any,
+                  }}
                 />
               </>
             )}
@@ -196,7 +241,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
               sx={{ mt: 2 }}
               onClick={handlerNextStep}
             >
-              {accessType === 'candidato' ? 'Cadastrar' : 'Matrícula'}
+              {accessType === 'register' ? 'Cadastrar' : 'Acessar'}
             </Button>
           </Box>
         </Paper>

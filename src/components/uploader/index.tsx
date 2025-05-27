@@ -36,6 +36,16 @@ const UploaderField = ({
                 component='span'
                 color='success'
                 onClick={() => window.open(fileUrl, '_blank')}
+                sx={(theme) => ({
+                  px: 2.5,
+                  py: 1,
+                  fontSize: 14,
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize: 13,
+                    px: 1.5,
+                    py: 0.5,
+                  },
+                })}
               >
                 Visualizar documento
               </Button>
@@ -52,7 +62,22 @@ const UploaderField = ({
                   }}
                   style={{ display: 'none' }}
                 />
-                <Button variant='outlined' component='span' color='warning'>
+                <Button
+                  variant='outlined'
+                  component='span'
+                  color='warning'
+                  sx={(theme) => ({
+                    px: 2.5,
+                    py: 1,
+                    fontSize: 14,
+                    [theme.breakpoints.down('sm')]: {
+                      fontSize: 13,
+                      px: 1.5,
+                      py: 0.5,
+                      width: '100%',
+                    },
+                  })}
+                >
                   Escolher novo arquivo
                 </Button>
               </label>
@@ -71,7 +96,21 @@ const UploaderField = ({
                   }}
                   style={{ display: 'none' }}
                 />
-                <Button variant='contained' component='span'>
+                <Button
+                  variant='contained'
+                  component='span'
+                  sx={(theme) => ({
+                    px: 2.5,
+                    py: 1,
+                    fontSize: 14,
+                    [theme.breakpoints.down('sm')]: {
+                      fontSize: 13,
+                      px: 1.5,
+                      py: 0.5,
+                      width: '100%',
+                    },
+                  })}
+                >
                   Escolher arquivo
                 </Button>
               </label>

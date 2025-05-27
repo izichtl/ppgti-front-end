@@ -11,6 +11,7 @@ export const stepOneSchema = Yup.object({
     .matches(cpfRegex, 'CPF deve conter 11 dígitos'),
   social_name: Yup.string().required('Obrigatório'),
 });
+// export const stepOneSchema =
 
 export const stepTwoSchema = Yup.object({
   name: Yup.string(),
@@ -50,10 +51,21 @@ export const stepThreeSchema = Yup.object({
   lattes_link: Yup.string().url('URL inválida'),
 });
 
-export function getValidationSchema(step: number) {
+export function getValidationSchema(step: number, accessType: string) {
+  const isCandidate = accessType === 'register';
+  const social_name_validation = isCandidate
+    ? Yup.string().required('Obrigatório')
+    : Yup.string().notRequired();
   switch (step) {
     case 1:
-      return stepOneSchema;
+      return Yup.object({
+        email: Yup.string().email('Email inválido').required('Obrigatório'),
+        cpf: Yup.string()
+          .required('Obrigatório')
+          .matches(cpfRegex, 'CPF deve conter 11 dígitos'),
+
+        social_name: social_name_validation,
+      });
     case 2:
       return stepTwoSchema;
     case 3:
