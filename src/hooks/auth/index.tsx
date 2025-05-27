@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode';
 import {
   createContext,
   FC,
@@ -15,6 +16,7 @@ interface IAuthContext {
   logout: () => void;
   isAuthenticated: () => boolean;
   getToken: () => string | null;
+  getUserFromToken: () => Record<string, any> | null;
 }
 
 const AuthContext = createContext<IAuthContext | null>(null);
@@ -59,6 +61,12 @@ export const AuthProvider: FC<PropsWithChildren<{}>> = ({
     return Boolean(token && token.trim() !== '');
   };
 
+  const getUserFromToken = (): Record<string, any> | null => {
+    const token = getToken();
+    const decoded = jwtDecode(token.replace('Bearer ', ''));
+    return decoded;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -68,6 +76,7 @@ export const AuthProvider: FC<PropsWithChildren<{}>> = ({
         logout,
         getToken,
         isAuthenticated,
+        getUserFromToken,
       }}
     >
       {children}

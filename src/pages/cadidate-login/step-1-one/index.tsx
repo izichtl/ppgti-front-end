@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { IMaskInput } from 'react-imask';
+import ScrollToTop from '../../../components/scroll-top';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -39,17 +40,18 @@ const TextMaskCustom = React.forwardRef<HTMLInputElement, CustomProps>(
   }
 );
 
-const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
+const StepOne = ({
+  handlerNextStep,
+  useFormikProps,
+  setAccessType,
+  accessType,
+}: any) => {
   const theme = useTheme();
-
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [accessType, setAccessType] = useState<'candidato' | 'comissao'>(
-    'candidato'
-  );
 
   const handleAccessChange = (
     event: React.MouseEvent<HTMLElement>,
-    newAccessType: 'candidato' | 'comissao' | null
+    newAccessType: 'register' | 'login' | null
   ) => {
     if (newAccessType !== null) {
       setAccessType(newAccessType);
@@ -69,6 +71,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
       }}
     >
       <Container maxWidth='sm'>
+        <ScrollToTop />
         <Paper
           elevation={isMobile ? 0 : 3}
           sx={{
@@ -81,7 +84,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
           }}
         >
           <Typography variant='h5' align='center' gutterBottom>
-            {accessType === 'candidato'
+            {accessType === 'register'
               ? 'Faça sua inscrição'
               : 'Acesse a plataforma'}
           </Typography>
@@ -90,16 +93,19 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
             value={accessType}
             exclusive
             onChange={handleAccessChange}
-            sx={{ mb: 3 }}
+            sx={{ mb: 3, flexWrap: 'wrap' }} // permite quebra em telas pequenas
           >
-            {['candidato', 'comissao'].map((type) => (
+            {['register', 'login'].map((type) => (
               <ToggleButton
                 key={type}
                 value={type}
-                sx={{
+                sx={(theme) => ({
                   textTransform: 'none',
-                  px: 4,
-                  borderRadius: 2,
+                  px: 3,
+                  py: 1,
+                  minWidth: 100,
+                  fontSize: 14,
+                  borderRadius: 1.5,
                   border: `1px solid ${theme.palette.primary.main}`,
                   color: 'primary.main',
                   '&.Mui-selected': {
@@ -110,17 +116,23 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
                     bgcolor: 'primary.dark',
                   },
                   '&:hover': {
-                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                    bgcolor: alpha(theme.palette.primary.main, 0.08),
                   },
-                }}
+
+                  [theme.breakpoints.down('sm')]: {
+                    flex: 1,
+                    px: 2,
+                    fontSize: 13,
+                  },
+                })}
               >
-                {type === 'candidato' ? 'Cadastrar' : 'Acessar'}
+                {type === 'register' ? 'Cadastrar' : 'Acessar'}
               </ToggleButton>
             ))}
           </ToggleButtonGroup>
 
           <Typography variant='body1' align='center' gutterBottom>
-            {accessType === 'candidato'
+            {accessType === 'register'
               ? 'Preencha os campos para cadastrar sua inscrição, sua senha será o CPF combinado com Email.'
               : 'Caso tenha iniciado sua inscrição, acesse aqui.'}
           </Typography>
@@ -131,7 +143,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
             autoComplete='off'
             sx={{ width: '100%' }}
           >
-            {accessType === 'candidato' ? (
+            {accessType === 'register' ? (
               <>
                 <TextField
                   label='Nome Social'
@@ -229,7 +241,7 @@ const StepOne = ({ handlerNextStep, useFormikProps }: any) => {
               sx={{ mt: 2 }}
               onClick={handlerNextStep}
             >
-              {accessType === 'candidato' ? 'Cadastrar' : 'Acessar'}
+              {accessType === 'register' ? 'Cadastrar' : 'Acessar'}
             </Button>
           </Box>
         </Paper>

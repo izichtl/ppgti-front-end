@@ -18,8 +18,8 @@ function Copyright() {
   return (
     <Typography variant='body2' sx={{ color: 'text.secondary', mt: 1 }}>
       {'Copyright © '}
-      <Link color='text.secondary' href='https://mui.com/'>
-        Sitemark
+      <Link color='text.secondary' href='#'>
+        Eng. Software - Equipe 01
       </Link>
       &nbsp;
       {new Date().getFullYear()}
@@ -64,40 +64,38 @@ export default function Footer() {
                 gutterBottom
                 sx={{ fontWeight: 600, mt: 2 }}
               >
-                Join the newsletter
+                Programa de Pós-Graduação em Tecnologia da Informação
               </Typography>
               <Typography
                 variant='body2'
                 sx={{ color: 'text.secondary', mb: 2 }}
               >
-                Subscribe for weekly updates. No spams ever!
+                Mestrado em ciencia da computação pelo IFPB.
               </Typography>
-              <InputLabel htmlFor='email-newsletter'>Email</InputLabel>
-              <Stack direction='row' spacing={1} useFlexGap>
-                <TextField
-                  id='email-newsletter'
-                  hiddenLabel
-                  size='small'
-                  variant='outlined'
-                  fullWidth
-                  aria-label='Enter your email address'
-                  placeholder='Your email address'
-                  slotProps={{
-                    htmlInput: {
-                      autoComplete: 'off',
-                      'aria-label': 'Enter your email address',
-                    },
-                  }}
-                  sx={{ width: '250px' }}
-                />
-                <Button
-                  variant='contained'
-                  color='primary'
-                  size='small'
-                  sx={{ flexShrink: 0 }}
-                >
-                  Subscribe
-                </Button>
+              <Typography variant='subtitle1' fontWeight='bold' sx={{ mb: 1 }}>
+                E-mails
+              </Typography>
+              <Stack spacing={0.5} sx={{ mb: 2 }}>
+                <Typography variant='subtitle2' color='text.secondary'>
+                  coordenacao.ppgti@ifpb.edu.br
+                </Typography>
+                <Typography variant='subtitle2' color='text.secondary'>
+                  secretaria.cpos.jp@ifpb.edu.br
+                </Typography>
+                <Typography variant='subtitle2' color='text.secondary'>
+                  sac.jp@ifpb.edu.br
+                </Typography>
+              </Stack>
+              <Typography variant='subtitle1' fontWeight='bold' sx={{ mb: 1 }}>
+                Telefones Secretaria
+              </Typography>
+              <Stack spacing={0.5}>
+                <Typography variant='subtitle2' color='text.secondary'>
+                  (83) 98159-0350
+                </Typography>
+                <Typography variant='subtitle2' color='text.secondary'>
+                  (83) 3612-1394
+                </Typography>
               </Stack>
             </Box>
           </Box>
@@ -109,22 +107,23 @@ export default function Footer() {
             }}
           >
             <Typography variant='body2' sx={{ fontWeight: 'medium' }}>
-              Product
+              Redes Sociais
             </Typography>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Features
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='https://www.linkedin.com/company/programa-de-p%C3%B3s-gradua%C3%A7%C3%A3o-em-tecnologia-da-informa%C3%A7%C3%A3o/posts/?feedView=all'
+            >
+              Linkedin
             </Link>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Testimonials
-            </Link>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Highlights
-            </Link>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Pricing
-            </Link>
-            <Link color='text.secondary' variant='body2' href='#'>
-              FAQs
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='https://www.instagram.com/ppgti_ifpb'
+            >
+              Instagram
             </Link>
           </Box>
           <Box
@@ -135,16 +134,31 @@ export default function Footer() {
             }}
           >
             <Typography variant='body2' sx={{ fontWeight: 'medium' }}>
-              Company
+              PPGTI
             </Typography>
-            <Link color='text.secondary' variant='body2' href='#'>
-              About us
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='https://www.ifpb.edu.br/ppgti'
+            >
+              Institucional
             </Link>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Careers
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='https://www.ifpb.edu.br/ppgti/publicacoes/producao-tecnica'
+            >
+              Produção Técnica
             </Link>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Press
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='https://www.ifpb.edu.br/ppgti/publicacoes/dissertacoes'
+            >
+              Dissertações
             </Link>
           </Box>
           <Box
@@ -155,16 +169,31 @@ export default function Footer() {
             }}
           >
             <Typography variant='body2' sx={{ fontWeight: 'medium' }}>
-              Legal
+              IFPB
             </Typography>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Terms
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='https://www.ifpb.edu.br/'
+            >
+              Institucional
             </Link>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Privacy
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='https://www.ifpb.edu.br/prpipg'
+            >
+              Pesquisa e Inovação
             </Link>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Contact
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='https://repositorio.ifpb.edu.br/handle/177683/986'
+            >
+              Repositório Digital
             </Link>
           </Box>
         </Box>
@@ -179,51 +208,27 @@ export default function Footer() {
           }}
         >
           <div>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Privacy Policy
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='/about'
+            >
+              Política de Privacidade
             </Link>
             <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
               &nbsp;•&nbsp;
             </Typography>
-            <Link color='text.secondary' variant='body2' href='#'>
-              Terms of Service
+            <Link
+              color='text.secondary'
+              variant='body2'
+              target='_blank'
+              href='/about'
+            >
+              Termos de Uso e Serviço
             </Link>
             <Copyright />
           </div>
-          <Stack
-            direction='row'
-            spacing={1}
-            useFlexGap
-            sx={{ justifyContent: 'left', color: 'text.secondary' }}
-          >
-            <IconButton
-              color='inherit'
-              size='small'
-              href='https://github.com/mui'
-              aria-label='GitHub'
-              sx={{ alignSelf: 'center' }}
-            >
-              <GitHubIcon />
-            </IconButton>
-            <IconButton
-              color='inherit'
-              size='small'
-              href='https://x.com/MaterialUI'
-              aria-label='X'
-              sx={{ alignSelf: 'center' }}
-            >
-              <TwitterIcon />
-            </IconButton>
-            <IconButton
-              color='inherit'
-              size='small'
-              href='https://www.linkedin.com/company/mui/'
-              aria-label='LinkedIn'
-              sx={{ alignSelf: 'center' }}
-            >
-              <LinkedInIcon />
-            </IconButton>
-          </Stack>
         </Box>
       </Container>
     </React.Fragment>

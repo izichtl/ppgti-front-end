@@ -2,22 +2,29 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../../hooks/auth';
 
 export default function CardAlert() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
-    <Card variant="outlined" sx={{ m: 1.5, flexShrink: 0 }}>
+    <Card sx={{ m: 1.5, flexShrink: 0 }}>
       <CardContent>
-        <AutoAwesomeRoundedIcon fontSize="small" />
-        <Typography gutterBottom sx={{ fontWeight: 600 }}>
-          Plan about to expire
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-          Enjoy 10% off when renewing your plan today.
-        </Typography>
-        <Button variant="contained" size="small" fullWidth>
-          Get the discount
+        <Button
+          variant='contained'
+          color='error'
+          size='small'
+          fullWidth
+          onClick={handleLogout}
+        >
+          Deslogar - Sair
         </Button>
       </CardContent>
     </Card>

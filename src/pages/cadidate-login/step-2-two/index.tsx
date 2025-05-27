@@ -17,6 +17,7 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import brazilianStates from '../../../utils/state-list';
 import { quotaOptionsPros } from '..';
+import ScrollToTop from '../../../components/scroll-top';
 
 const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
   // const [selected, setSelected] = useState('');
@@ -50,6 +51,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
           bgcolor: '#fff',
         }}
       >
+        <ScrollToTop />
         <Typography variant='h5' align='center' gutterBottom>
           Dados Pessoais
         </Typography>
