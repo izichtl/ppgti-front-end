@@ -87,7 +87,15 @@ export default function AppAppBar() {
               variant='contained'
               size='small'
             >
-              Acessar
+              Acessar Candidato
+            </Button>
+            <Button
+              href='/comissao/login'
+              color='primary'
+              variant='outlined'
+              size='small'
+            >
+              Acesso Comissão
             </Button>
             {/* ColorModeIconDropdown removido daqui */}
           </Box>
@@ -151,7 +159,17 @@ export default function AppAppBar() {
                   variant='contained'
                   fullWidth
                 >
-                  Acessar
+                  Acesso Candidato
+                </Button>
+              </MenuItem>
+              <MenuItem>
+                <Button
+                  href='/comissao/login'
+                  color='primary'
+                  variant='outlined'
+                  fullWidth
+                >
+                  Acesso Comissão
                 </Button>
               </MenuItem>
             </Box>
