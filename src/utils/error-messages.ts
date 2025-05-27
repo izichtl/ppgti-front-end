@@ -92,5 +92,5 @@ export const getErrorMessage = (error: ErrorResponse): string => {
     return error.message;
   }
 
-  return;
+  return "Ocorreu um erro inesperado. Tente novamente.";
 };
