@@ -5,6 +5,7 @@ import LandingPage from '../pages/landpage';
 import Blog from '../pages/blog';
 import Layout from '../pages/layout';
 import UnderConstructionComponent from '../pages/under-contruction';
+import EditaisTable from '../pages/documents';
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,8 @@ const router = createBrowserRouter([
       },
       {
         path: '/blog',
-        element: <Blog />,
+        element: <UnderConstructionComponent />,
+        // element: <Blog />,
         handle: { title: 'Blog' },
       },
       {
@@ -33,6 +35,7 @@ const router = createBrowserRouter([
       {
         path: '/documents',
         element: <UnderConstructionComponent />,
+        // element: <EditaisTable />,
         handle: { title: 'Documentos' },
       },
       {
