@@ -14,6 +14,7 @@ import { getValidationSchema } from '../../utils/candidate-form-validation';
 import { useCandidateUpdate } from '../../hooks/candidate-data';
 import StepFour from './step-4-four';
 import { mapUserToFormikValues } from '../../utils/formik-modeler';
+import FullScreenLoader from '../../components/loading';
 
 // TODO
 // revisar os dados do step 1
@@ -91,8 +92,8 @@ const Login: React.FC = () => {
   };
 
   const initial: initialCandidateProps = {
-    email: '',
-    cpf: '',
+    email: 'ivan@gmail.com',
+    cpf: '11065994702',
     name: '',
     social_name: '',
     sex: '',
@@ -173,7 +174,7 @@ const Login: React.FC = () => {
       const response = await triggerLogin();
       const { data } = response;
       // isLogin controla se ele esta sendo cadastrado ou logado
-      const { token, islogin } = data.data;
+      const { token } = data.data;
       login(token);
       const user = await getUserFromToken(token);
       useFormikProps.setValues(mapUserToFormikValues(user, initial));
@@ -216,56 +217,61 @@ const Login: React.FC = () => {
   }, []);
   return (
     <Box>
-      {loginError && (
-        <Box mb={2}>
-          <Snackbar
-            open={showSnackbar}
-            autoHideDuration={5000}
-            onClose={() => setShowSnackbar(false)}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          >
-            <Alert
-              severity='error'
-              onClose={() => setShowSnackbar(false)}
-              sx={{ width: '100%' }}
-            >
-              {loginError}
-            </Alert>
-          </Snackbar>
-        </Box>
-      )}
-      {currentStep === 1 && (
-        <StepOne
-          setAccessType={setAccessType}
-          accessType={accessType}
-          useFormikProps={useFormikProps}
-          setCurrentStep={setCurrentStep}
-          handlerNextStep={handleButtonClick}
-        />
-      )}
-      {currentStep === 2 && (
-        <StepTwo
-          useFormikProps={useFormikProps}
-          setCurrentStep={setCurrentStep}
-          handlerNextStep={handleButtonClick}
-          quotaOptions={quotaOptions}
-        />
-      )}
-      {currentStep === 3 && (
-        <StepThree
-          useFormikProps={useFormikProps}
-          setCurrentStep={setCurrentStep}
-          handlerNextStep={handleButtonClick}
-          quotaOptions={quotaOptions}
-        />
-      )}
-      {currentStep === 4 && (
-        <StepFour
-          cpf={useFormikProps.values.cpf}
-          sex={useFormikProps.values.sex}
-          quota={useFormikProps.values.quota}
-          handlerNextStep={handleButtonClick}
-        />
+      {isMutating && <FullScreenLoader />}
+      {!isMutating && (
+        <>
+          {loginError && (
+            <Box mb={2}>
+              <Snackbar
+                open={showSnackbar}
+                autoHideDuration={5000}
+                onClose={() => setShowSnackbar(false)}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              >
+                <Alert
+                  severity='error'
+                  onClose={() => setShowSnackbar(false)}
+                  sx={{ width: '100%' }}
+                >
+                  {loginError}
+                </Alert>
+              </Snackbar>
+            </Box>
+          )}
+          {currentStep === 1 && (
+            <StepOne
+              setAccessType={setAccessType}
+              accessType={accessType}
+              useFormikProps={useFormikProps}
+              setCurrentStep={setCurrentStep}
+              handlerNextStep={handleButtonClick}
+            />
+          )}
+          {currentStep === 2 && (
+            <StepTwo
+              useFormikProps={useFormikProps}
+              setCurrentStep={setCurrentStep}
+              handlerNextStep={handleButtonClick}
+              quotaOptions={quotaOptions}
+            />
+          )}
+          {currentStep === 3 && (
+            <StepThree
+              useFormikProps={useFormikProps}
+              setCurrentStep={setCurrentStep}
+              handlerNextStep={handleButtonClick}
+              quotaOptions={quotaOptions}
+            />
+          )}
+          {currentStep === 4 && (
+            <StepFour
+              cpf={useFormikProps.values.cpf}
+              sex={useFormikProps.values.sex}
+              quota={useFormikProps.values.quota}
+              handlerNextStep={handleButtonClick}
+            />
+          )}
+        </>
       )}
     </Box>
   );
