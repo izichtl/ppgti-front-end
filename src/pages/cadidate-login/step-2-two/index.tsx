@@ -303,43 +303,45 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
             </Box>
           </Grid>
           <Grid item xs={12}>
+            
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: 'center',
                 justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
                 mt: 4,
                 gap: 2,
               }}
             >
               <Typography
-                variant='subtitle1'
+                variant="subtitle1"
                 sx={{
                   flex: 1,
                   textAlign: { xs: 'center', sm: 'left' },
                   fontWeight: 500,
-                }}
-              >
-                Preencha todos os campos para avançar
+                    }}
+                  >
+                    Preencha todos os campos para avançar
               </Typography>
 
               <Button
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
                 disabled={disabled}
-                size='large'
+                size="large"
                 sx={{
-                  width: { xs: '100%', sm: '100%' },
                   py: 1.5,
                   fontSize: '1.1rem',
                   borderRadius: 2,
-                  alignSelf: { sm: 'flex-start' },
-                }}
+                  width: { xs: 'auto', sm: 'auto' },
+                  ml: '25rem', // largura automática
+                  }}
                 onClick={handlerNextStep}
-              >
-                Avançar
+                >
+                  Avançar
               </Button>
+              
             </Box>
           </Grid>
         </Grid>

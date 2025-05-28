@@ -40,6 +40,7 @@ export const stepTwoSchema = Yup.object({
   // quota_id: Yup.number().required('Obrigatório'),
 });
 
+
 export const stepThreeSchema = Yup.object({
   education_level: Yup.string(),
   graduation_course: Yup.string().required('Obrigatório'),
