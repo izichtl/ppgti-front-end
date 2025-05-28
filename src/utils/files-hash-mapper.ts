@@ -1,8 +1,7 @@
 export const filePrefixes = [
   {
     id: 'score_form',
-    label:
-      'Formulário de pontuação preenchido e documentos comprobatórios (anexo I):',
+    label: 'Formulário de pontuação preenchido e documentos comprobatórios:',
     control: '',
   },
   {

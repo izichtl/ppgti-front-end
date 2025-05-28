@@ -15,6 +15,7 @@ import { useCandidateUpdate } from '../../hooks/candidate-data';
 import StepFour from './step-4-four';
 import { mapUserToFormikValues } from '../../utils/formik-modeler';
 import FullScreenLoader from '../../components/loading';
+import LoadingBox from '../../components/loading-box';
 
 // TODO
 // revisar os dados do step 1
@@ -217,8 +218,12 @@ const Login: React.FC = () => {
   }, []);
   return (
     <Box>
-      {isMutating && <FullScreenLoader />}
-      {!isMutating && (
+      {(isMutating || isMutatingStepTwo) && (
+        <LoadingBox>
+          <FullScreenLoader />
+        </LoadingBox>
+      )}
+      {(!isMutating || !isMutatingStepTwo) && (
         <>
           {loginError && (
             <Box mb={2}>
