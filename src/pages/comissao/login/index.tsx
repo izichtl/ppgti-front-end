@@ -1,28 +1,28 @@
-import React, { useState } from "react";
-import { AxiosError } from "axios";
-import * as Yup from "yup";
-import { useFormik, FormikProps } from "formik";
-import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
-import useSWRMutation, { SWRMutationResponse } from "swr/mutation";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { AxiosError } from 'axios';
+import * as Yup from 'yup';
+import { useFormik, FormikProps } from 'formik';
+import { Box, Container, useMediaQuery, useTheme } from '@mui/material';
+import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { useNavigate } from 'react-router-dom';
 
 import {
   useComissaoLogin,
   useComissaoRegister,
-} from "../../../hooks/comissao-login";
-import { useAuth } from "../../../hooks/auth";
-import { getErrorMessage } from "../../../utils/error-messages";
-import ErrorSnackbar from "../../../components/error-snackbar";
+} from '../../../hooks/comissao-login';
+import { useAuth } from '../../../hooks/auth';
+import { getErrorMessage } from '../../../utils/error-messages';
+import ErrorSnackbar from '../../../components/error-snackbar';
 
-import Form from "./form";
-import StepOne from "./step-one";
-import StepTwo from "./step-two";
+import Form from './form';
+import StepOne from './step-one';
+import StepTwo from './step-two';
 
 const ComissaoLoginPage: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [isLoginMode, setIsLoginMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -38,47 +38,47 @@ const ComissaoLoginPage: React.FC = () => {
   };
 
   const initial: initialComissaoLoginProps = {
-    email: "",
-    matricula: "",
-    name: "",
-    authorizationCode: "",
-    cpf: "",
-    password: "",
+    email: '',
+    matricula: '',
+    name: '',
+    authorizationCode: '',
+    cpf: '',
+    password: '',
   };
 
   const getValidationSchema = (step: number, isLogin: boolean) => {
     if (isLogin) {
       return Yup.object().shape({
-        matricula: Yup.string().required("Matrícula é obrigatório"),
+        matricula: Yup.string().required('Matrícula é obrigatório'),
         password: Yup.string()
-          .min(6, "Senha deve ter pelo menos 6 caracteres")
-          .required("Senha é obrigatória"),
+          .min(6, 'Senha deve ter pelo menos 6 caracteres')
+          .required('Senha é obrigatória'),
       });
     }
 
     if (step === 1) {
       return Yup.object().shape({
-        matricula: Yup.string().required("Matrícula é obrigatório"),
+        matricula: Yup.string().required('Matrícula é obrigatório'),
         authorizationCode: Yup.string().required(
-          "Código de autorização é obrigatório"
+          'Código de autorização é obrigatório',
         ),
       });
     }
 
     if (step === 2) {
       return Yup.object().shape({
-        matricula: Yup.string().required("Matrícula é obrigatório"),
+        matricula: Yup.string().required('Matrícula é obrigatório'),
         authorizationCode: Yup.string().required(
-          "Código de autorização é obrigatório"
+          'Código de autorização é obrigatório',
         ),
-        name: Yup.string().required("Nome é obrigatório"),
+        name: Yup.string().required('Nome é obrigatório'),
         email: Yup.string()
-          .email("Email inválido")
-          .required("Email é obrigatório"),
-        cpf: Yup.string().required("CPF é obrigatório"),
+          .email('Email inválido')
+          .required('Email é obrigatório'),
+        cpf: Yup.string().required('CPF é obrigatório'),
         password: Yup.string()
-          .min(6, "Senha deve ter pelo menos 6 caracteres")
-          .required("Senha é obrigatória"),
+          .min(6, 'Senha deve ter pelo menos 6 caracteres')
+          .required('Senha é obrigatória'),
       });
     }
 
@@ -123,31 +123,32 @@ const ComissaoLoginPage: React.FC = () => {
     trigger: triggerRegister,
     isMutating: isMutatingRegister,
   }: SWRMutationResponse<any> = useSWRMutation(
-    "useComissaoRegisterFetcher",
+    'useComissaoRegisterFetcher',
     useComissaoRegisterFetcher,
     {
       revalidate: false,
-    }
+    },
   );
 
   const {
     trigger: triggerLogin,
     isMutating: isMutatingLogin,
   }: SWRMutationResponse<any> = useSWRMutation(
-    "useComissaoLoginFetcher",
+    'useComissaoLoginFetcher',
     useComissaoLoginFetcher,
     {
       revalidate: false,
-    }
+    },
   );
 
   const handlerLogin = async () => {
     try {
       const response = await triggerLogin();
+      console.log('response', response);
       const { data } = response;
-      const { token } = data.data;
+      const token = data.data;
       login(token);
-      navigate("/comissao/dashboard");
+      navigate('/comissao/dashboard');
     } catch (error: AxiosError | any) {
       const errorMsg = getErrorMessage(error);
       setErrorMessage(errorMsg);
@@ -161,7 +162,7 @@ const ComissaoLoginPage: React.FC = () => {
       const { data } = response;
       const { token } = data.data;
       login(token);
-      navigate("/comissao/dashboard");
+      navigate('/comissao/dashboard');
     } catch (error: AxiosError | any) {
       const errorMsg = getErrorMessage(error);
       setErrorMessage(errorMsg);
@@ -198,13 +199,13 @@ const ComissaoLoginPage: React.FC = () => {
         />
         <Box
           sx={{
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "center",
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
             p: 2,
             pt: 8,
-            bgcolor: "#f0f4f8",
+            bgcolor: '#f0f4f8',
           }}
         >
           <Container maxWidth="sm">

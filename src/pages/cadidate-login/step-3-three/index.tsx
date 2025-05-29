@@ -59,7 +59,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.education_level}
+              value={useFormikProps.values.education_level ?? ''}
               onChange={useFormikProps.handleChange}
               error={
                 !!useFormikProps.errors.education_level &&
@@ -73,7 +73,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.graduation_course}
+              value={useFormikProps.values.graduation_course ?? ''}
               onChange={useFormikProps.handleChange}
               error={
                 !!useFormikProps.errors.graduation_course &&
@@ -87,7 +87,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.graduation_year}
+              value={useFormikProps.values.graduation_year ?? ''}
               onChange={useFormikProps.handleChange}
               error={
                 !!useFormikProps.errors.graduation_year &&
@@ -101,7 +101,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.graduation_institution}
+              value={useFormikProps.values.graduation_institution ?? ''}
               onChange={useFormikProps.handleChange}
               error={
                 !!useFormikProps.errors.graduation_institution &&
@@ -118,7 +118,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.specialization_course}
+              value={useFormikProps.values.specialization_course ?? ''}
               onChange={useFormikProps.handleChange}
               error={
                 !!useFormikProps.errors.specialization_course &&
@@ -132,7 +132,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.specialization_year}
+              value={useFormikProps.values.specialization_year ?? ''}
               onChange={useFormikProps.handleChange}
               error={
                 !!useFormikProps.errors.specialization_year &&
@@ -146,7 +146,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.specialization_institution}
+              value={useFormikProps.values.specialization_institution ?? ''}
               onChange={useFormikProps.handleChange}
               error={
                 !!useFormikProps.errors.specialization_institution &&
@@ -160,7 +160,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               variant='outlined'
               fullWidth
               margin='normal'
-              value={useFormikProps.values.lattes_link}
+              value={useFormikProps.values.lattes_link ?? ''}
               onChange={useFormikProps.handleChange}
               error={
                 !!useFormikProps.errors.lattes_link &&
@@ -173,40 +173,40 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
           <Grid item xs={12}>
             <Box
               sx={{
-                display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: 'center',
+               display: 'flex',
                 justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
                 mt: 4,
                 gap: 2,
               }}
             >
               <Typography
-                variant='subtitle1'
+                variant="subtitle1"
                 sx={{
                   flex: 1,
                   textAlign: { xs: 'center', sm: 'left' },
                   fontWeight: 500,
-                }}
-              >
-                Preencha todos os campos obrigatórios para avançar
+                    }}
+                    >
+                  Preencha todos os campos para avançar
               </Typography>
 
               <Button
-                variant='contained'
-                color='primary'
+               variant="contained"
+                color="primary"
                 disabled={disabled}
-                size='large'
+                size="large"
                 sx={{
-                  width: { xs: '100%', sm: '100%' },
                   py: 1.5,
                   fontSize: '1.1rem',
                   borderRadius: 2,
-                  alignSelf: { sm: 'flex-start' },
-                }}
+                  width: { xs: 'auto', sm: 'auto' },
+                  ml: '25rem', // largura automática
+                  }}
                 onClick={handlerNextStep}
-              >
-                Avançar
+                >
+                  Avançar
               </Button>
             </Box>
           </Grid>

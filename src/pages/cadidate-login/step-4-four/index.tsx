@@ -19,6 +19,7 @@ import { mutate } from 'swr';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import ScrollToTop from '../../../components/scroll-top';
+import LoadingBox from '../../../components/loading-box';
 
 type FileNameProps = {
   prefix: string;
@@ -149,22 +150,9 @@ const StepFour = ({ cpf, sex, quota }: any) => {
 
   if (refreshing || filesLoading) {
     return (
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1300,
-          bgcolor: 'rgba(255,255,255,0.8)',
-        }}
-      >
+      <LoadingBox>
         <FullScreenLoader />
-      </Box>
+      </LoadingBox>
     );
   }
 

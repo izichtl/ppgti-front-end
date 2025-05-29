@@ -40,15 +40,18 @@ export const stepTwoSchema = Yup.object({
   // quota_id: Yup.number().required('Obrigatório'),
 });
 
+
 export const stepThreeSchema = Yup.object({
-  education_level: Yup.string(),
+  education_level: Yup.string().required('Obrigatório'),
   graduation_course: Yup.string().required('Obrigatório'),
-  graduation_year: Yup.string().required('Obrigatório'),
+  graduation_year: Yup.string().required('Obrigatório').matches(/^\d{4}$/, 'Ano inválido'),
   graduation_institution: Yup.string().required('Obrigatório'),
   specialization_course: Yup.string(),
-  specialization_year: Yup.string(),
+  specialization_year: Yup.string().matches(/^\d{4}$/, 'Ano inválido'),
   specialization_institution: Yup.string(),
-  lattes_link: Yup.string().url('URL inválida'),
+  lattes_link: Yup.string().url('URL inválida')
+    .test('contains-lattes', 'A URL deve conter "lattes.cnpq.br"', value => !value || value.includes('lattes.cnpq.br')
+  ),
 });
 
 export function getValidationSchema(step: number, accessType: string) {
