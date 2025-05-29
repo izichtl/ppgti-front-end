@@ -8,6 +8,7 @@ import {
   useState,
   useCallback,
 } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface IAuthContext {
   accessToken: string;
@@ -51,32 +52,42 @@ export const AuthProvider: FC<PropsWithChildren<{}>> = ({
     return localStorage.getItem('userJWT');
   }, []);
 
+  // const isAuthenticated = (): boolean => {
+  //   const token = localStorage.getItem('userJWT');
+
+  //   if (!token || token.trim() === '') {
+  //     return false;
+  //   }
+
+  //   try {
+  //     // Remove "Bearer " prefix if present
+  //     const cleanToken = token.replace('Bearer ', '');
+  //     const decoded = jwtDecode(cleanToken);
+
+  //     // Check if token is expired
+  //     const currentTime = Date.now() / 1000;
+  //     if (decoded.exp && decoded.exp < currentTime) {
+  //       // Token expired, remove it
+  //       localStorage.removeItem('userJWT');
+  //       return false;
+  //     }
+
+  //     return true;
+  //   } catch (error) {
+  //     // Invalid token, remove it
+  //     localStorage.removeItem('userJWT');
+  //     return false;
+  //   }
+  // };
+
   const isAuthenticated = (): boolean => {
+    const location = useLocation();
     const token = localStorage.getItem('userJWT');
 
-    if (!token || token.trim() === '') {
-      return false;
-    }
+    // Retorna false se estiver na página de login
+    if (location.pathname === '/login') return false;
 
-    try {
-      // Remove "Bearer " prefix if present
-      const cleanToken = token.replace('Bearer ', '');
-      const decoded = jwtDecode(cleanToken);
-
-      // Check if token is expired
-      const currentTime = Date.now() / 1000;
-      if (decoded.exp && decoded.exp < currentTime) {
-        // Token expired, remove it
-        localStorage.removeItem('userJWT');
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      // Invalid token, remove it
-      localStorage.removeItem('userJWT');
-      return false;
-    }
+    return Boolean(token && token.trim() !== '');
   };
 
   const getUserFromToken = useCallback((): Record<string, any> | null => {
