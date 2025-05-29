@@ -1,4 +1,4 @@
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import {
   createContext,
   FC,
@@ -7,8 +7,8 @@ import {
   useContext,
   useState,
   useCallback,
-} from "react";
-import { useLocation } from "react-router-dom";
+} from 'react';
+
 interface IAuthContext {
   accessToken: string;
   setAccessToken: (token: string) => void;
@@ -24,7 +24,7 @@ const AuthContext = createContext<IAuthContext | null>(null);
 export const useAuth = (): IAuthContext => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthContext");
+    throw new Error('useAuth must be used within an AuthContext');
   }
   return context;
 };
@@ -33,42 +33,68 @@ export const AuthProvider: FC<PropsWithChildren<{}>> = ({
   children,
 }): ReactElement => {
   const [accessToken, setAccessToken] = useState<string>(
-    localStorage.getItem("userJWT") || ""
+    localStorage.getItem('userJWT') || '',
   );
 
   const login = useCallback((token: string): void => {
-    console.log("Login token:", token);
+    console.log('Login token:', token);
     setAccessToken(token);
-    localStorage.setItem("userJWT", token);
+    localStorage.setItem('userJWT', token);
   }, []);
 
   const logout = useCallback((): void => {
-    setAccessToken("");
-    localStorage.removeItem("userJWT");
+    setAccessToken('');
+    localStorage.removeItem('userJWT');
   }, []);
 
   const getToken = useCallback((): string | null => {
-    return localStorage.getItem("userJWT");
+    return localStorage.getItem('userJWT');
   }, []);
 
   const isAuthenticated = (): boolean => {
-    const location = useLocation();
-    const token = localStorage.getItem("userJWT");
+    const token = localStorage.getItem('userJWT');
 
-    // Retorna false se estiver na página de login
-    if (location.pathname === "/login") return false;
+    if (!token || token.trim() === '') {
+      return false;
+    }
 
-    // Retorna false para todas as rotas da comissão (elas têm seu próprio sistema de layout)
-    if (location.pathname.startsWith("/comissao")) return false;
+    try {
+      // Remove "Bearer " prefix if present
+      const cleanToken = token.replace('Bearer ', '');
+      const decoded = jwtDecode(cleanToken);
 
-    return Boolean(token && token.trim() !== "");
+      // Check if token is expired
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp && decoded.exp < currentTime) {
+        // Token expired, remove it
+        localStorage.removeItem('userJWT');
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      // Invalid token, remove it
+      localStorage.removeItem('userJWT');
+      return false;
+    }
   };
 
-  const getUserFromToken = (): Record<string, any> | null => {
+  const getUserFromToken = useCallback((): Record<string, any> | null => {
     const token = getToken();
-    const decoded = jwtDecode(token.replace("Bearer ", ""));
-    return decoded;
-  };
+
+    if (!token || token.trim() === '') {
+      return null;
+    }
+
+    try {
+      const cleanToken = token.replace('Bearer ', '');
+      const decoded = jwtDecode(cleanToken);
+      return decoded;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }, [getToken]);
 
   return (
     <AuthContext.Provider

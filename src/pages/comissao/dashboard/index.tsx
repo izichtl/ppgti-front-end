@@ -22,10 +22,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import useSWR from 'swr';
 import { useNavigate } from 'react-router-dom';
 import { useGetSelectionProcesses } from '../../../hooks/selection-processes';
-import {
-  getCommitteeUserInfo,
-  removeCommitteeToken,
-} from '../../../utils/auth-committee';
+import { useAuth } from '../../../hooks/auth';
 import SelectionProcessForm from './selection-process-form';
 
 interface SelectionProcess {
@@ -51,8 +48,9 @@ const ComissaoDashboardPage: React.FC = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const navigate = useNavigate();
+  const { getUserFromToken, logout } = useAuth();
 
-  const userInfo = getCommitteeUserInfo();
+  const userInfo = getUserFromToken();
   const { useGetSelectionProcessesFetcher } = useGetSelectionProcesses();
 
   const { data, error, isLoading, mutate } = useSWR(
@@ -75,7 +73,7 @@ const ComissaoDashboardPage: React.FC = () => {
   };
 
   const handleLogout = () => {
-    removeCommitteeToken();
+    logout();
     navigate('/comissao/login');
   };
 
@@ -119,10 +117,9 @@ const ComissaoDashboardPage: React.FC = () => {
   // Handle authentication errors from API calls
   useEffect(() => {
     if (error?.response?.status === 401) {
-      removeCommitteeToken();
-      navigate('/comissao/login');
+      console.error('Error:', error);
     }
-  }, [error, navigate]);
+  }, [error]);
 
   return (
     <Box>

@@ -6,7 +6,7 @@ export const instanceAXIOS = axios.create({
 });
 
 export const APIDecoratorWithBaseURI = (
-  base: string | undefined = VITE_API_URL
+  base: string | undefined = VITE_API_URL,
 ): AxiosInstance => {
   instanceAXIOS.defaults.baseURL = base;
 
@@ -14,11 +14,12 @@ export const APIDecoratorWithBaseURI = (
   const hasAuthToken = VITE_IS_LOCAL === 'true';
   const accessToken = hasAuthToken ? VITE_LOCAL_TOKEN : tokenFromStorage;
 
-  // console.log(VITE_IS_LOCAL, 'VITE_IS_LOCAL');
-  // console.log(VITE_LOCAL_TOKEN, 'VITE_LOCAL_TOKEN');
-  // console.log(tokenFromStorage, 'tokenFromStorage');
-
-  instanceAXIOS.defaults.headers.common['Authorization'] = accessToken;
+  if (accessToken && accessToken.trim() !== '') {
+    instanceAXIOS.defaults.headers.common['Authorization'] =
+      accessToken.replace('Bearer ', '');
+  } else {
+    delete instanceAXIOS.defaults.headers.common['Authorization'];
+  }
 
   return instanceAXIOS;
 };
