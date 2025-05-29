@@ -119,7 +119,7 @@ const StepFour = ({ cpf, sex, quota }: any) => {
   };
 
   const useGoToDashboard = () => {
-    navigate('/dashboard');
+    navigate('/candidate-dashboard');
   };
 
   useEffect(() => {
