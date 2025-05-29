@@ -47,7 +47,7 @@ const Login: React.FC = () => {
   const [loginError, setLoginError] = useState<string | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [accessType, setAccessType] = useState<'register' | 'login'>(
-    'register'
+    'register',
   );
 
   const { login, logout } = useAuth();
@@ -93,8 +93,8 @@ const Login: React.FC = () => {
   };
 
   const initial: initialCandidateProps = {
-    email: 'ivan@gmail.com',
-    cpf: '11065994702',
+    email: '',
+    cpf: '',
     name: '',
     social_name: '',
     sex: '',
@@ -156,7 +156,7 @@ const Login: React.FC = () => {
 
   const { useCandidateUpdateFetcher } = useCandidateUpdate(
     useFormikProps.values,
-    currentStep === 2 ? 'stepTwo' : 'stepThree'
+    currentStep === 2 ? 'stepTwo' : 'stepThree',
   );
 
   const {
@@ -167,7 +167,7 @@ const Login: React.FC = () => {
     useCandidateUpdateFetcher,
     {
       revalidate: false,
-    }
+    },
   );
 
   const handlerLogin = async () => {
@@ -184,11 +184,11 @@ const Login: React.FC = () => {
       const response = error?.response?.data;
       if (response?.code === '23505') {
         setLoginError(
-          'O email ou CPF já estão em uso. A combinação precisa ser única.'
+          'O email ou CPF já estão em uso. A combinação precisa ser única.',
         );
       } else {
         setLoginError(
-          'Ocorreu um erro ao tentar fazer login. Tente novamente.'
+          'Ocorreu um erro ao tentar fazer login. Tente novamente.',
         );
       }
       setShowSnackbar(true);
@@ -234,7 +234,7 @@ const Login: React.FC = () => {
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
               >
                 <Alert
-                  severity='error'
+                  severity="error"
                   onClose={() => setShowSnackbar(false)}
                   sx={{ width: '100%' }}
                 >
