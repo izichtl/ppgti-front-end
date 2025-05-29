@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -10,20 +10,60 @@ import {
   Grid,
 } from '@mui/material';
 import ScrollToTop from '../../components/scroll-top';
+import { useBoolean } from '../../hooks/use-boolean';
+import CadastroFormModal, {
+  DadosFormulario,
+} from '../../components/process-register-modal';
+
+const processosAbertos = [
+  {
+    programa: 'PPGTI - IFPB',
+    nome: 'Seleção PPGTI 2025.1',
+    inicio: '10/03/2025',
+    fim: '30/04/2025',
+    periodo: '2025.1',
+    statusColor: '#4CAF50',
+  },
+];
+
+const suasInscricoes = [
+  {
+    programa: 'PPGTI - IFPB',
+    periodo: '2025.1',
+    linha: 'Ciência de Dados e Inteligência Artificial',
+    tema: 'Mineração de Dados',
+    titulo: 'Aplicações de Data Mining em Saúde Pública',
+    data: '01/04/2025',
+  },
+  {
+    programa: 'PPGTI - IFPB',
+    periodo: '2025.1',
+    linha: 'Redes e Sistemas Distribuídos',
+    tema: 'IoT',
+    titulo: 'Monitoramento Ambiental com Dispositivos IoT',
+    data: '04/04/2025',
+  },
+];
 
 const DashboardCandidato = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const currentDateTime = new Date().toLocaleString('pt-BR');
 
-  const handleCardClick = (nome: string) => {
-    alert(`Você clicou em: ${nome}`);
-  };
+  const modal = useBoolean();
+  const [dadosIniciais, setDadosIniciais] = useState<
+    DadosFormulario | undefined
+  >();
+
+  useEffect(() => {
+    if (dadosIniciais) {
+      modal.onTrue();
+    }
+  }, [dadosIniciais]);
 
   return (
     <Box
       sx={{
-        // bgcolor: '#ffffff',
         width: { xs: '100%', md: '80%' },
         minHeight: '100vh',
         mx: 'auto',
@@ -33,7 +73,6 @@ const DashboardCandidato = () => {
     >
       <ScrollToTop />
 
-      {/* Cabeçalho com título e data/hora */}
       <Grid container spacing={2} alignItems="center" mb={4}>
         <Grid item xs={12} md={6}>
           <Typography variant="h3" fontWeight="bold">
@@ -51,29 +90,11 @@ const DashboardCandidato = () => {
         </Grid>
       </Grid>
 
-      {/* Processos Seletivos Abertos */}
       <Typography variant="h5" fontWeight="bold" gutterBottom>
         Processos Seletivos Abertos
       </Typography>
       <Stack spacing={2} mb={4}>
-        {[
-          {
-            programa: 'Mestrado em Educação',
-            nome: 'Seleção Mestrado 2025.1',
-            inicio: '10/03/2025',
-            fim: '30/04/2025',
-            periodo: '2025.1',
-            statusColor: '#4CAF50',
-          },
-          {
-            programa: 'Mestrado em Ciências',
-            nome: 'Processo Ciências 2025',
-            inicio: '15/03/2025',
-            fim: '15/05/2025',
-            periodo: '2025.1',
-            statusColor: '#FF9800',
-          },
-        ].map((item, index) => (
+        {processosAbertos.map((item, index) => (
           <Paper
             key={index}
             elevation={2}
@@ -86,7 +107,6 @@ const DashboardCandidato = () => {
               width: '100%',
               '&:hover': { boxShadow: 6 },
             }}
-            onClick={() => handleCardClick(item.nome)}
           >
             <Typography variant="body1">
               <strong>Programa:</strong> {item.programa}
@@ -103,36 +123,25 @@ const DashboardCandidato = () => {
             <Typography variant="body1">
               <strong>Ano/Semestre:</strong> {item.periodo}
             </Typography>
-            <Button variant="contained" sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              sx={{ mt: 2 }}
+              onClick={() => {
+                setDadosIniciais(undefined);
+                modal.onTrue();
+              }}
+            >
               Inscrever
             </Button>
           </Paper>
         ))}
       </Stack>
 
-      {/* Suas Inscrições */}
       <Typography variant="h5" fontWeight="bold" gutterBottom>
         Suas Inscrições
       </Typography>
       <Stack spacing={2}>
-        {[
-          {
-            programa: 'Mestrado em Educação',
-            periodo: '2025.1',
-            linha: 'Educação, Cultura e Sociedade',
-            tema: 'Práticas Pedagógicas',
-            titulo: 'Educação Inclusiva e Ensino Público',
-            data: '01/04/2025',
-          },
-          {
-            programa: 'Mestrado em Ciências',
-            periodo: '2025.1',
-            linha: 'Pesquisa Científica Aplicada',
-            tema: 'Tecnologia e Sociedade',
-            titulo: 'Aplicações de IA na Educação',
-            data: '04/04/2025',
-          },
-        ].map((item, index) => (
+        {suasInscricoes.map((item, index) => (
           <Paper
             key={index}
             elevation={2}
@@ -145,7 +154,6 @@ const DashboardCandidato = () => {
               width: '100%',
               '&:hover': { boxShadow: 6 },
             }}
-            onClick={() => handleCardClick(item.titulo)}
           >
             <Typography variant="body1">
               <strong>Programa:</strong> {item.programa}
@@ -165,12 +173,28 @@ const DashboardCandidato = () => {
             <Typography variant="body1">
               <strong>Data da Inscrição:</strong> {item.data}
             </Typography>
-            <Button variant="contained" sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              sx={{ mt: 2 }}
+              onClick={() => {
+                setDadosIniciais({
+                  linha: item.linha,
+                  tema: item.tema,
+                  titulo: item.titulo,
+                });
+              }}
+            >
               Visualizar
             </Button>
           </Paper>
         ))}
       </Stack>
+
+      <CadastroFormModal
+        open={modal.value}
+        onClose={modal.onFalse}
+        dadosIniciais={dadosIniciais}
+      />
     </Box>
   );
 };
