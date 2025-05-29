@@ -14,6 +14,7 @@ export const APIDecoratorWithBaseURI = (
   const hasAuthToken = VITE_IS_LOCAL === 'true';
   const accessToken = hasAuthToken ? VITE_LOCAL_TOKEN : tokenFromStorage;
 
+  // instanceAXIOS.defaults.headers.common['Authorization'] = accessToken;
   if (accessToken && accessToken.trim() !== '') {
     instanceAXIOS.defaults.headers.common['Authorization'] =
       accessToken.replace('Bearer ', '');
