@@ -39,13 +39,13 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
         }}
       >
         <ScrollToTop />
-        <Typography variant='h5' align='center' gutterBottom>
+        <Typography variant="h5" align="center" gutterBottom>
           Formação Acadêmica
         </Typography>
         <Typography
-          variant='body2'
-          align='center'
-          color='text.secondary'
+          variant="body2"
+          align="center"
+          color="text.secondary"
           gutterBottom
         >
           Preencha os dados da sua formação acadêmica para prosseguir.
@@ -54,11 +54,11 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
-              label='Maior Titulação'
-              name='education_level'
-              variant='outlined'
+              label="Maior Titulação"
+              name="education_level"
+              variant="outlined"
               fullWidth
-              margin='normal'
+              margin="normal"
               value={useFormikProps.values.education_level ?? ''}
               onChange={useFormikProps.handleChange}
               error={
@@ -68,11 +68,11 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.education_level}
             />
             <TextField
-              label='Curso de Graduação'
-              name='graduation_course'
-              variant='outlined'
+              label="Curso de Graduação"
+              name="graduation_course"
+              variant="outlined"
               fullWidth
-              margin='normal'
+              margin="normal"
               value={useFormikProps.values.graduation_course ?? ''}
               onChange={useFormikProps.handleChange}
               error={
@@ -82,11 +82,11 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.graduation_course}
             />
             <TextField
-              label='Ano da Graduação'
-              name='graduation_year'
-              variant='outlined'
+              label="Ano da Graduação"
+              name="graduation_year"
+              variant="outlined"
               fullWidth
-              margin='normal'
+              margin="normal"
               value={useFormikProps.values.graduation_year ?? ''}
               onChange={useFormikProps.handleChange}
               error={
@@ -96,11 +96,11 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.graduation_year}
             />
             <TextField
-              label='Instituição de Graduação'
-              name='graduation_institution'
-              variant='outlined'
+              label="Instituição de Graduação"
+              name="graduation_institution"
+              variant="outlined"
               fullWidth
-              margin='normal'
+              margin="normal"
               value={useFormikProps.values.graduation_institution ?? ''}
               onChange={useFormikProps.handleChange}
               error={
@@ -113,11 +113,11 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
 
           <Grid item xs={12} md={6}>
             <TextField
-              label='Curso de Especialização'
-              name='specialization_course'
-              variant='outlined'
+              label="Curso de Especialização"
+              name="specialization_course"
+              variant="outlined"
               fullWidth
-              margin='normal'
+              margin="normal"
               value={useFormikProps.values.specialization_course ?? ''}
               onChange={useFormikProps.handleChange}
               error={
@@ -127,11 +127,11 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.specialization_course}
             />
             <TextField
-              label='Ano da Especialização'
-              name='specialization_year'
-              variant='outlined'
+              label="Ano da Especialização"
+              name="specialization_year"
+              variant="outlined"
               fullWidth
-              margin='normal'
+              margin="normal"
               value={useFormikProps.values.specialization_year ?? ''}
               onChange={useFormikProps.handleChange}
               error={
@@ -141,11 +141,11 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.specialization_year}
             />
             <TextField
-              label='Instituição da Especialização'
-              name='specialization_institution'
-              variant='outlined'
+              label="Instituição da Especialização"
+              name="specialization_institution"
+              variant="outlined"
               fullWidth
-              margin='normal'
+              margin="normal"
               value={useFormikProps.values.specialization_institution ?? ''}
               onChange={useFormikProps.handleChange}
               error={
@@ -155,11 +155,11 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.specialization_institution}
             />
             <TextField
-              label='Link do Currículo Lattes'
-              name='lattes_link'
-              variant='outlined'
+              label="Link do Currículo Lattes"
+              name="lattes_link"
+              variant="outlined"
               fullWidth
-              margin='normal'
+              margin="normal"
               value={useFormikProps.values.lattes_link ?? ''}
               onChange={useFormikProps.handleChange}
               error={
@@ -173,7 +173,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
           <Grid item xs={12}>
             <Box
               sx={{
-               display: 'flex',
+                display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 width: '100%',
@@ -187,13 +187,12 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
                   flex: 1,
                   textAlign: { xs: 'center', sm: 'left' },
                   fontWeight: 500,
-                    }}
-                    >
-                  Preencha todos os campos para avançar
+                }}
+              >
+                Preencha todos os campos para avançar
               </Typography>
-
               <Button
-               variant="contained"
+                variant="contained"
                 color="primary"
                 disabled={disabled}
                 size="large"
@@ -201,12 +200,12 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
                   py: 1.5,
                   fontSize: '1.1rem',
                   borderRadius: 2,
-                  width: { xs: 'auto', sm: 'auto' },
-                  ml: '25rem', // largura automática
-                  }}
+                  width: { xs: '100%', sm: 'auto' },
+                  ml: { xs: 0, sm: 'auto' },
+                }}
                 onClick={handlerNextStep}
-                >
-                  Avançar
+              >
+                Avançar
               </Button>
             </Box>
           </Grid>
