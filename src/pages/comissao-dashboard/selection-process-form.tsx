@@ -24,8 +24,8 @@ import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import {
   useCreateSelectionProcess,
   SelectionProcessProps,
-} from '../../../hooks/selection-processes';
-import { getErrorMessage } from '../../../utils/error-messages';
+} from '../../hooks/selection-processes';
+import { getErrorMessage } from '../../utils/error-messages';
 
 interface SelectionProcessFormProps {
   open: boolean;
