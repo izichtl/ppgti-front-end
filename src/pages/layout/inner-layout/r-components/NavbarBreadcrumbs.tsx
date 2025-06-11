@@ -51,7 +51,6 @@ export default function NavbarBreadcrumbs() {
       {pathnames.map((value, index) => {
         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
         const isLast = index === pathnames.length - 1;
-        console.log(value);
         const label = breadcrumbMap[value] || value;
 
         return isLast ? (
