@@ -53,11 +53,6 @@ const CommitteeSidebar: React.FC = () => {
 
   const secondaryMenuItems: MenuItem[] = [
     {
-      text: 'Ajuda',
-      path: '/help',
-      icon: <HelpIcon />,
-    },
-    {
       text: 'Sobre',
       path: '/about',
       icon: <InfoIcon />,

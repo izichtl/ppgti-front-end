@@ -58,7 +58,6 @@ export default function MenuContent() {
     : candidateMenuItems;
 
   const secondaryListItems = [
-    { href: '/help', text: 'Ajuda', icon: <InfoRoundedIcon /> },
     { href: '/about', text: 'Sobre', icon: <InfoRoundedIcon /> },
   ];
 
