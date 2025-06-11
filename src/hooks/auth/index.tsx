@@ -84,8 +84,12 @@ export const AuthProvider: FC<PropsWithChildren<{}>> = ({
     const location = useLocation();
     const token = localStorage.getItem('userJWT');
 
-    // Retorna false se estiver na página de login
-    if (location.pathname === '/login') return false;
+    // Retorna false se estiver nas páginas de login
+    if (
+      location.pathname === '/login' ||
+      location.pathname === '/comissao/login'
+    )
+      return false;
 
     return Boolean(token && token.trim() !== '');
   };

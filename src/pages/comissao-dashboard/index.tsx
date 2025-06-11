@@ -122,247 +122,223 @@ const ComissaoDashboardPage: React.FC = () => {
   }, [error]);
 
   return (
-    <Box>
-      {/* Header with user info and logout */}
-      <AppBar position="static" sx={{ mb: 3 }}>
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Painel da Comissão
-          </Typography>
-          {userInfo && (
-            <Typography variant="body2" sx={{ mr: 2 }}>
-              Olá, {userInfo.name} ({userInfo.matricula})
+    <Box sx={{ padding: 3 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 4,
+        }}
+      >
+        <Typography variant="h5" gutterBottom>
+          Processos Seletivos
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => setFormOpen(true)}
+          size="large"
+        >
+          Novo Processo Seletivo
+        </Button>
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          Erro ao carregar processos seletivos. Tente novamente.
+          {error.response?.status === 401 && (
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              Sua sessão expirou. Redirecionando para login...
             </Typography>
           )}
-          <IconButton color="inherit" onClick={handleLogout} title="Sair">
-            <LogoutIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+        </Alert>
+      )}
 
-      <Box sx={{ padding: 3 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 4,
-          }}
-        >
-          <Typography variant="h5" gutterBottom>
-            Processos Seletivos
+      {isLoading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+          <CircularProgress />
+        </Box>
+      ) : selectionProcesses.length === 0 ? (
+        <Paper sx={{ p: 4, textAlign: 'center' }}>
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            Nenhum processo seletivo encontrado
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            Crie seu primeiro processo seletivo para começar a gerenciar
+            candidatos.
           </Typography>
           <Button
             variant="contained"
             startIcon={<AddIcon />}
             onClick={() => setFormOpen(true)}
-            size="large"
           >
-            Novo Processo Seletivo
+            Criar Processo Seletivo
           </Button>
-        </Box>
-
-        {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
-            Erro ao carregar processos seletivos. Tente novamente.
-            {error.response?.status === 401 && (
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                Sua sessão expirou. Redirecionando para login...
-              </Typography>
-            )}
-          </Alert>
-        )}
-
-        {isLoading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-            <CircularProgress />
-          </Box>
-        ) : selectionProcesses.length === 0 ? (
-          <Paper sx={{ p: 4, textAlign: 'center' }}>
-            <Typography variant="h6" color="text.secondary" gutterBottom>
-              Nenhum processo seletivo encontrado
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Crie seu primeiro processo seletivo para começar a gerenciar
-              candidatos.
-            </Typography>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={() => setFormOpen(true)}
+        </Paper>
+      ) : (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              md: 'repeat(2, 1fr)',
+              lg: 'repeat(3, 1fr)',
+            },
+            gap: 3,
+          }}
+        >
+          {selectionProcesses.map((process) => (
+            <Card
+              key={process.id}
+              sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
             >
-              Criar Processo Seletivo
-            </Button>
-          </Paper>
-        ) : (
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: {
-                xs: '1fr',
-                md: 'repeat(2, 1fr)',
-                lg: 'repeat(3, 1fr)',
-              },
-              gap: 3,
-            }}
-          >
-            {selectionProcesses.map((process) => (
-              <Card
-                key={process.id}
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'flex-start',
-                      mb: 2,
-                    }}
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    mb: 2,
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    component="h3"
+                    sx={{ flexGrow: 1, mr: 1 }}
                   >
-                    <Typography
-                      variant="h6"
-                      component="h3"
-                      sx={{ flexGrow: 1, mr: 1 }}
-                    >
-                      {process.title}
-                    </Typography>
+                    {process.title}
+                  </Typography>
+                  <Chip
+                    label={getStatusLabel(process.status)}
+                    color={getStatusColor(process.status) as any}
+                    size="small"
+                  />
+                </Box>
+
+                <Box sx={{ mb: 2 }}>
+                  <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     <Chip
-                      label={getStatusLabel(process.status)}
-                      color={getStatusColor(process.status) as any}
+                      label={process.program}
+                      variant="outlined"
                       size="small"
+                      color="primary"
+                    />
+                    <Chip
+                      label={`${process.year}.${process.semester}`}
+                      variant="outlined"
+                      size="small"
+                      color="secondary"
                     />
                   </Box>
+                </Box>
 
-                  {/* Program, Year and Semester Info */}
-                  <Box sx={{ mb: 2 }}>
-                    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                      <Chip
-                        label={process.program}
-                        variant="outlined"
-                        size="small"
-                        color="primary"
-                      />
-                      <Chip
-                        label={`${process.year}/${process.semester}`}
-                        variant="outlined"
-                        size="small"
-                        color="secondary"
-                      />
-                    </Box>
-                  </Box>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 2 }}
+                >
+                  {process.description.length > 100
+                    ? `${process.description.substring(0, 100)}...`
+                    : process.description}
+                </Typography>
 
+                <Box sx={{ mb: 2 }}>
                   <Typography
-                    variant="body2"
+                    variant="caption"
                     color="text.secondary"
-                    sx={{ mb: 2 }}
+                    component="div"
                   >
-                    {process.description.length > 100
-                      ? `${process.description.substring(0, 100)}...`
-                      : process.description}
+                    <strong>Início:</strong> {formatDate(process.start_date)}
                   </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    component="div"
+                  >
+                    <strong>Fim:</strong> {formatDate(process.end_date)}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    component="div"
+                  >
+                    <strong>Prazo de Inscrição:</strong>{' '}
+                    {formatDate(process.application_deadline)}
+                  </Typography>
+                </Box>
 
-                  <Box sx={{ mb: 2 }}>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      component="div"
-                    >
-                      <strong>Início:</strong> {formatDate(process.start_date)}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      component="div"
-                    >
-                      <strong>Fim:</strong> {formatDate(process.end_date)}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      component="div"
-                    >
-                      <strong>Prazo de Inscrição:</strong>{' '}
-                      {formatDate(process.application_deadline)}
-                    </Typography>
-                  </Box>
-
-                  {process.documents_required &&
-                    process.documents_required.length > 0 && (
-                      <Box sx={{ mb: 2 }}>
-                        <Typography
-                          variant="caption"
-                          color="text.secondary"
-                          component="div"
-                          sx={{ mb: 1 }}
-                        >
-                          <strong>Documentos Obrigatórios:</strong>
-                        </Typography>
-                        <Box
-                          sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}
-                        >
-                          {process.documents_required
-                            .slice(0, 3)
-                            .map((doc, index) => (
-                              <Chip
-                                key={index}
-                                label={doc}
-                                size="small"
-                                variant="outlined"
-                              />
-                            ))}
-                          {process.documents_required.length > 3 && (
+                {process.documents_required &&
+                  process.documents_required.length > 0 && (
+                    <Box sx={{ mb: 2 }}>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        component="div"
+                        sx={{ mb: 1 }}
+                      >
+                        <strong>Documentos Obrigatórios:</strong>
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {process.documents_required
+                          .slice(0, 3)
+                          .map((doc, index) => (
                             <Chip
-                              label={`+${
-                                process.documents_required.length - 3
-                              } mais`}
+                              key={index}
+                              label={doc}
                               size="small"
                               variant="outlined"
                             />
-                          )}
-                        </Box>
+                          ))}
+                        {process.documents_required.length > 3 && (
+                          <Chip
+                            label={`+${process.documents_required.length - 3}`}
+                            size="small"
+                            variant="outlined"
+                          />
+                        )}
                       </Box>
-                    )}
-                </CardContent>
+                    </Box>
+                  )}
+              </CardContent>
 
-                <CardActions sx={{ p: 2, pt: 0 }}>
-                  <Button
-                    size="small"
-                    startIcon={<EditIcon />}
-                    onClick={() => {
-                      // TODO: Implement edit functionality
-                      console.log('Edit process:', process.id);
-                    }}
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    size="small"
-                    color="error"
-                    startIcon={<DeleteIcon />}
-                    onClick={() => {
-                      // TODO: Implement delete functionality
-                      console.log('Delete process:', process.id);
-                    }}
-                  >
-                    Excluir
-                  </Button>
-                </CardActions>
-              </Card>
-            ))}
-          </Box>
-        )}
+              <CardActions sx={{ p: 2, pt: 0 }}>
+                <Button
+                  size="small"
+                  startIcon={<EditIcon />}
+                  onClick={() => {
+                    // TODO: Implement edit functionality
+                    console.log('Edit process:', process.id);
+                  }}
+                >
+                  Editar
+                </Button>
+                <Button
+                  size="small"
+                  color="error"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => {
+                    // TODO: Implement delete functionality
+                    console.log('Delete process:', process.id);
+                  }}
+                >
+                  Excluir
+                </Button>
+              </CardActions>
+            </Card>
+          ))}
+        </Box>
+      )}
 
-        <SelectionProcessForm
-          open={formOpen}
-          onClose={handleFormClose}
-          onSuccess={handleFormSuccess}
-        />
-      </Box>
+      <SelectionProcessForm
+        open={formOpen}
+        onClose={handleFormClose}
+        onSuccess={handleFormSuccess}
+      />
     </Box>
   );
 };
