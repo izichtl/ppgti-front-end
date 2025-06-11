@@ -11,6 +11,8 @@ import RssFeedIcon from '@mui/icons-material/RssFeed';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import DescriptionIcon from '@mui/icons-material/Description';
 import { useAuth } from '../../../../hooks/auth';
 
 export default function MenuContent() {
@@ -32,7 +34,12 @@ export default function MenuContent() {
       icon: <AppRegistrationIcon />,
     },
     { href: '/comissao/candidatos', text: 'Candidatos', icon: <GroupIcon /> },
-    { href: '/comissao/relatorios', text: 'Relatórios', icon: <ArticleIcon /> },
+    { href: '/comissao/documentos', text: 'Documentos', icon: <ArticleIcon /> },
+    {
+      href: '/comissao/relatorios',
+      text: 'Relatórios',
+      icon: <AssessmentIcon />,
+    },
   ];
 
   const candidateMenuItems = [
@@ -42,7 +49,7 @@ export default function MenuContent() {
       icon: <DashboardIcon />,
     },
     { href: '/process', text: 'Inscrever', icon: <AppRegistrationIcon /> },
-    { href: '/documents', text: 'Documentos', icon: <ArticleIcon /> },
+    { href: '/documents', text: 'Documentos', icon: <DescriptionIcon /> },
     { href: '/blog', text: 'Notícias', icon: <RssFeedIcon /> },
   ];
 
@@ -64,23 +71,6 @@ export default function MenuContent() {
               component={Link}
               to={item.href}
               selected={location.pathname === item.href}
-              sx={{
-                borderRadius: 1,
-                '&.Mui-selected': {
-                  backgroundColor: 'primary.main',
-                  color: 'primary.contrastText',
-                  '& .MuiListItemIcon-root': {
-                    color: 'primary.contrastText',
-                  },
-                },
-                '&:hover': {
-                  backgroundColor: 'primary.light',
-                  color: 'primary.contrastText',
-                  '& .MuiListItemIcon-root': {
-                    color: 'primary.contrastText',
-                  },
-                },
-              }}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
@@ -91,16 +81,7 @@ export default function MenuContent() {
       <List dense>
         {secondaryListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              component={Link}
-              to={item.href}
-              sx={{
-                borderRadius: 1,
-                '&:hover': {
-                  backgroundColor: 'action.hover',
-                },
-              }}
-            >
+            <ListItemButton component={Link} to={item.href}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
