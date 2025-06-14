@@ -47,6 +47,8 @@ export type DadosFormulario = {
 type CadastroFormModalProps = {
   open: boolean;
   onClose: () => void;
+  // opcoesTemaPesquisa: any;
+  opcoesLinhaPesquisa: any;
   dadosIniciais?: DadosFormulario;
 };
 
@@ -54,7 +56,10 @@ const CadastroFormModal: React.FC<CadastroFormModalProps> = ({
   open,
   onClose,
   dadosIniciais,
+  // opcoesTemaPesquisa,
+  opcoesLinhaPesquisa,
 }) => {
+  console.log('@@@@@@@@@@');
   const [linha, setLinha] = useState('');
   const [tema, setTema] = useState('');
   const [titulo, setTitulo] = useState('');

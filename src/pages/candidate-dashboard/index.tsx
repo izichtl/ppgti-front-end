@@ -14,6 +14,9 @@ import { useBoolean } from '../../hooks/use-boolean';
 import CadastroFormModal, {
   DadosFormulario,
 } from '../../components/process-register-modal';
+import { useGetSelectionProcesses } from '../../hooks/get-processes';
+import SelectionProcessCard from '../../components/card-processes';
+import { useStatusColor } from '../../hooks/use-status-color';
 
 const processosAbertos = [
   {
@@ -49,17 +52,45 @@ const DashboardCandidato = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const currentDateTime = new Date().toLocaleString('pt-BR');
+  const [researshLines, setResearhLines] = useState([]);
+  const [selectionsProcesses, setSelectionProcesses] = useState([]);
+  const getStatusColor = useStatusColor();
+  const { processes, processesLoading, processesError } =
+    useGetSelectionProcesses();
 
   const modal = useBoolean();
   const [dadosIniciais, setDadosIniciais] = useState<
     DadosFormulario | undefined
   >();
 
-  useEffect(() => {
-    if (dadosIniciais) {
-      modal.onTrue();
+  const handlerSelectionProcesses = (id: number) => {
+    const selected = selectionsProcesses.filter((item: any) => id === item.id);
+    const lines = selected[0].research_lines;
+
+    if (selected[0] !== null) {
+      const selectedLines = lines.map((line: any) => {
+        return {
+          value: line.name,
+          label: line.name,
+        };
+      });
+      setResearhLines(selectedLines);
     }
-  }, [dadosIniciais]);
+  };
+
+  useEffect(() => {
+    console.log(selectionsProcesses, 's');
+    console.log(processes, 's');
+    if (processes[0] !== null) {
+      setSelectionProcesses(processes);
+    }
+  }, [processes, processesLoading, processesError]);
+
+  // useEffect(() => {
+  //   if (dadosIniciais) {
+  //     modal.onTrue();
+  //   }
+  // }, [dadosIniciais]);
 
   return (
     <Box
@@ -94,47 +125,32 @@ const DashboardCandidato = () => {
         Processos Seletivos Abertos
       </Typography>
       <Stack spacing={2} mb={4}>
-        {processosAbertos.map((item, index) => (
-          <Paper
-            key={index}
-            elevation={2}
-            sx={{
-              p: 2,
-              borderLeft: `6px solid ${item.statusColor}`,
-              borderRadius: 2,
-              cursor: 'pointer',
-              transition: '0.2s',
-              width: '100%',
-              '&:hover': { boxShadow: 6 },
-            }}
-          >
-            <Typography variant="body1">
-              <strong>Programa:</strong> {item.programa}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Nome:</strong> {item.nome}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Data Início:</strong> {item.inicio}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Data Fim:</strong> {item.fim}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Ano/Semestre:</strong> {item.periodo}
-            </Typography>
-            <Button
-              variant="contained"
-              sx={{ mt: 2 }}
-              onClick={() => {
-                setDadosIniciais(undefined);
-                modal.onTrue();
-              }}
-            >
-              Inscrever
-            </Button>
-          </Paper>
-        ))}
+        {selectionsProcesses !== null &&
+          selectionsProcesses.map((item: any) => {
+            const color = getStatusColor(item.status);
+            return (
+              <SelectionProcessCard
+                id={item.id}
+                title={item.title}
+                program={item.description}
+                start_date={item.start_date}
+                end_date={item.application_deadline}
+                year={item.year}
+                semester={item.semester}
+                contact_info={item.contact_info}
+                statusColor={color}
+                edital_url={
+                  'https://estudante.ifpb.edu.br/media/Edital_37_Selecao_Geral_MPTI_2025.1-assinado_T4osYnz.pdf'
+                }
+                onApply={() => {
+                  // setDadosIniciais(undefined);
+                  console.log(item.id, 'ididididid');
+                  handlerSelectionProcesses(item.id);
+                  modal.onTrue();
+                }}
+              />
+            );
+          })}
       </Stack>
 
       <Typography variant="h5" fontWeight="bold" gutterBottom>
@@ -194,6 +210,8 @@ const DashboardCandidato = () => {
         open={modal.value}
         onClose={modal.onFalse}
         dadosIniciais={dadosIniciais}
+        // opcoesTemaPesquisa={researshThems}
+        opcoesLinhaPesquisa={researshLines}
       />
     </Box>
   );
