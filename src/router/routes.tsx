@@ -8,6 +8,7 @@ import UnderConstructionComponent from '../pages/under-contruction';
 import ComissaoLoginPage from '../pages/comissao-login';
 import ComissaoDashboardPage from '../pages/comissao-dashboard';
 import CandidateDashboard from '../pages/candidate-dashboard';
+import PersonalData from '../pages/candidate-dashboard/personal-data';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,11 @@ const router = createBrowserRouter([
         path: '/candidate-dashboard',
         element: <CandidateDashboard />,
         handle: { title: 'Dashboard' },
+      },
+      {
+        path: '/personal-data',
+        element: <PersonalData />,
+        handle: { title: 'Dados Pessoais' },
       },
       {
         path: '/documents',

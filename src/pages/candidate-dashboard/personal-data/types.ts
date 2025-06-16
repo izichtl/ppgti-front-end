@@ -1,0 +1,30 @@
+export interface initialCandidateProps {
+  email: string;
+  cpf: string;
+  name: string;
+  social_name: string;
+  sex: string;
+  registration_: string;
+  registration_state: string;
+  registration_place: string;
+  address: string;
+  address_number: string;
+  address_complement: string;
+  address_neighborhood: string;
+  address_city: string;
+  address_state: string;
+  address_zipcode: string;
+  cell_phone: string;
+  phone: string;
+  other_email: string;
+  quota: string;
+  quota_id: number;
+  education_level?: string;
+  graduation_course?: string;
+  graduation_year?: string;
+  graduation_institution?: string;
+  specialization_course?: string;
+  specialization_year?: string;
+  specialization_institution?: string;
+  lattes_link?: string;
+}

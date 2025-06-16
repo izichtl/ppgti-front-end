@@ -122,7 +122,12 @@ function Author({ authors }: { authors: { name: string; avatar: string }[] }) {
       }}
     >
       <Box
-        sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center' }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 1,
+          alignItems: 'center',
+        }}
       >
         <AvatarGroup max={3}>
           {authors.map((author, index) => (
@@ -187,7 +192,9 @@ export default function MainContent() {
         <Typography variant="h1" gutterBottom>
           Blog
         </Typography>
-        <Typography>Stay in the loop with the latest about our products</Typography>
+        <Typography>
+          Stay in the loop with the latest about our products
+        </Typography>
       </div>
       <Box
         sx={{
@@ -301,7 +308,11 @@ export default function MainContent() {
               <Typography gutterBottom variant="h6" component="div">
                 {cardData[0].title}
               </Typography>
-              <StyledTypography variant="body2" color="text.secondary" gutterBottom>
+              <StyledTypography
+                variant="body2"
+                color="text.secondary"
+                gutterBottom
+              >
                 {cardData[0].description}
               </StyledTypography>
             </SyledCardContent>
@@ -333,7 +344,11 @@ export default function MainContent() {
               <Typography gutterBottom variant="h6" component="div">
                 {cardData[1].title}
               </Typography>
-              <StyledTypography variant="body2" color="text.secondary" gutterBottom>
+              <StyledTypography
+                variant="body2"
+                color="text.secondary"
+                gutterBottom
+              >
                 {cardData[1].description}
               </StyledTypography>
             </SyledCardContent>
@@ -365,7 +380,11 @@ export default function MainContent() {
               <Typography gutterBottom variant="h6" component="div">
                 {cardData[2].title}
               </Typography>
-              <StyledTypography variant="body2" color="text.secondary" gutterBottom>
+              <StyledTypography
+                variant="body2"
+                color="text.secondary"
+                gutterBottom
+              >
                 {cardData[2].description}
               </StyledTypography>
             </SyledCardContent>
@@ -374,7 +393,12 @@ export default function MainContent() {
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <Box
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              height: '100%',
+            }}
           >
             <SyledCard
               variant="outlined"
@@ -471,7 +495,11 @@ export default function MainContent() {
               <Typography gutterBottom variant="h6" component="div">
                 {cardData[5].title}
               </Typography>
-              <StyledTypography variant="body2" color="text.secondary" gutterBottom>
+              <StyledTypography
+                variant="body2"
+                color="text.secondary"
+                gutterBottom
+              >
                 {cardData[5].description}
               </StyledTypography>
             </SyledCardContent>
