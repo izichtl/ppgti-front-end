@@ -9,6 +9,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import PersonIcon from '@mui/icons-material/Person';
+import { useLocation } from 'react-router-dom';
 
 const mainListItems = [
   { href: '/process', text: 'Inscrever', icon: <AppRegistrationIcon /> },
@@ -22,6 +23,8 @@ const secondaryListItems = [
 ];
 
 export default function MenuContent() {
+  const location = useLocation();
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
@@ -30,7 +33,7 @@ export default function MenuContent() {
             <ListItemButton
               component="a"
               href={item.href}
-              selected={index === 0}
+              selected={location.pathname === item.href}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
@@ -41,7 +44,11 @@ export default function MenuContent() {
       <List dense>
         {secondaryListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton component="a" href={item.href}>
+            <ListItemButton
+              component="a"
+              href={item.href}
+              selected={location.pathname === item.href}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
