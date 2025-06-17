@@ -1,9 +1,9 @@
 import React from 'react';
 import { Typography, Grid, Divider } from '@mui/material';
-import { initialCandidateProps } from '../types';
+import { PersonalDataFormValues } from './types';
 
 interface PersonalDataViewProps {
-  personalData: initialCandidateProps;
+  personalData: PersonalDataFormValues;
 }
 
 const PersonalDataView: React.FC<PersonalDataViewProps> = ({
@@ -91,7 +91,7 @@ const PersonalDataView: React.FC<PersonalDataViewProps> = ({
         </Typography>
         <Divider sx={{ mb: 2 }} />
         <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 8 }}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Typography variant="body1">
               <strong>Logradouro:</strong> {personalData.address}
             </Typography>

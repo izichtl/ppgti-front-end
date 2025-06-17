@@ -1,24 +1,22 @@
-export interface initialCandidateProps {
-  email: string;
-  cpf: string;
+export type PersonalDataFormValues = {
   name: string;
   social_name: string;
-  sex: string;
+  cpf: string;
+  email: string;
   registration_: string;
-  registration_state: string;
   registration_place: string;
+  registration_state: string;
+  sex: string;
   address: string;
   address_number: string;
-  address_complement: string;
+  address_complement?: string;
   address_neighborhood: string;
   address_city: string;
   address_state: string;
   address_zipcode: string;
+  other_email?: string;
+  phone?: string;
   cell_phone: string;
-  phone: string;
-  other_email: string;
-  quota: string;
-  quota_id: number;
   education_level?: string;
   graduation_course?: string;
   graduation_year?: string;
@@ -27,4 +25,4 @@ export interface initialCandidateProps {
   specialization_year?: string;
   specialization_institution?: string;
   lattes_link?: string;
-}
+};

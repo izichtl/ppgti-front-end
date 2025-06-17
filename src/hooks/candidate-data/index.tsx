@@ -13,7 +13,7 @@ export interface CourtesySaleRequesteResponse {
 
 export const useCandidateUpdate = (
   payload: CandidateLoginProps,
-  step: string = ''
+  step: string = '',
 ) => {
   const url =
     step === 'stepTwo'

@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-import useSWRMutation from 'swr/mutation';
 import { Box, Typography, Paper, Button, Stack } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import { useAuth } from '../../../hooks/auth';
-import { useCandidateUpdate } from '../../../hooks/candidate-data';
 
 import ScrollToTop from '../../../components/scroll-top';
 import PersonalDataView from './components/view';
@@ -22,22 +20,6 @@ const PersonalData = () => {
     user as initialCandidateProps,
   );
 
-  const { useCandidateUpdateFetcher } = useCandidateUpdate(
-    {
-      email: personalData.email,
-      cpf: personalData.cpf,
-      name: personalData.name,
-    },
-    'stepTwo',
-  );
-  const { trigger: triggerUpdate, isMutating } = useSWRMutation(
-    'useCandidateUpdateFetcher',
-    useCandidateUpdateFetcher,
-    {
-      revalidate: false,
-    },
-  );
-
   useEffect(() => {
     if (user) {
       setPersonalData(user as initialCandidateProps);
@@ -48,25 +30,13 @@ const PersonalData = () => {
     setIsEditing(true);
   };
 
-  const handleSave = async () => {
-    try {
-      await triggerUpdate();
-      setIsEditing(false);
-    } catch (error) {
-      console.error('Error updating personal data:', error);
-    }
+  const handleSave = () => {
+    setIsEditing(false);
   };
 
   const handleCancel = () => {
     setPersonalData(user as initialCandidateProps);
     setIsEditing(false);
-  };
-
-  const handleChange = (field: keyof initialCandidateProps, value: string) => {
-    setPersonalData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
   };
 
   return (
@@ -114,8 +84,8 @@ const PersonalData = () => {
               variant="contained"
               color="primary"
               startIcon={<SaveIcon />}
-              onClick={handleSave}
-              disabled={isMutating}
+              form="personal-data-form"
+              type="submit"
             >
               Salvar
             </Button>
@@ -134,7 +104,8 @@ const PersonalData = () => {
         {isEditing ? (
           <PersonalDataForm
             personalData={personalData}
-            handleChange={handleChange}
+            onSave={handleSave}
+            onCancel={handleCancel}
           />
         ) : (
           <PersonalDataView personalData={personalData} />
