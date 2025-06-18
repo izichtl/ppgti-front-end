@@ -8,8 +8,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import MenuContent from './MenuContent';
 import CardAlert from './CardAlert';
-// import OptionsMenu from './OptionsMenu';
 import { useAuth } from '../../../../hooks/auth';
+import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -26,12 +26,17 @@ const Drawer = styled(MuiDrawer)({
 
 export default function SideMenu() {
   const { getUserFromToken } = useAuth();
+  const location = useLocation();
 
-  // Previne re-render infinito
   const user = React.useMemo(() => getUserFromToken(), [getUserFromToken]);
 
   const userName = user?.name || user?.social_name || 'Usuario';
-  const userEmail = user?.email || '';
+
+  const isCommitteeUser =
+    user &&
+    (user.role === 'committee' ||
+      user.user_type === 'committee' ||
+      location.pathname.includes('/comissao'));
 
   return (
     <Drawer
@@ -69,10 +74,9 @@ export default function SideMenu() {
             {userName}
           </Typography>
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-            {userEmail}
+            {isCommitteeUser ? 'Comissão' : 'Candidato'}
           </Typography>
         </Box>
-        {/* <OptionsMenu /> */}
       </Stack>
       <Divider />
       <Box

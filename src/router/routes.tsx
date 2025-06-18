@@ -76,6 +76,26 @@ const router = createBrowserRouter([
         element: <ComissaoDashboardPage />,
         handle: { title: 'Dashboard Comissão' },
       },
+      {
+        path: '/comissao/processos',
+        element: <ComissaoDashboardPage />, // Reusing the same component for now
+        handle: { title: 'Processos Seletivos' },
+      },
+      {
+        path: '/comissao/candidatos',
+        element: <UnderConstructionComponent />,
+        handle: { title: 'Candidatos' },
+      },
+      {
+        path: '/comissao/documentos',
+        element: <UnderConstructionComponent />,
+        handle: { title: 'Documentos da Comissão' },
+      },
+      {
+        path: '/comissao/relatorios',
+        element: <UnderConstructionComponent />,
+        handle: { title: 'Relatórios' },
+      },
     ],
   },
 ]);
