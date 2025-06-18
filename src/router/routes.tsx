@@ -8,7 +8,6 @@ import UnderConstructionComponent from '../pages/under-contruction';
 import ComissaoLoginPage from '../pages/comissao/login';
 import ComissaoDashboardPage from '../pages/comissao/dashboard';
 import CandidateDashboard from '../pages/candidate-dashboard';
-import CandidateHomolog from '../pages/candidate-dashboard copy';
 
 const router = createBrowserRouter([
   {
@@ -33,11 +32,6 @@ const router = createBrowserRouter([
       {
         path: '/candidate-dashboard',
         element: <CandidateDashboard />,
-        handle: { title: 'Dashboard' },
-      },
-      {
-        path: '/homolog',
-        element: <CandidateHomolog />,
         handle: { title: 'Dashboard' },
       },
       {

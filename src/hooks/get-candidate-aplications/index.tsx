@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { APIDecoratorWithBaseURI } from '../../service';
-// TODO AJUSTAR OS TIPOS
+// TODO AJUSTAR TYPES
 export type SelectionProcessProps = {
   title: string;
   description: string;
@@ -19,18 +19,18 @@ export type SelectionProcessProps = {
 
 export type UpdateSelectionProcessProps = Partial<SelectionProcessProps>;
 
-export const useGetSelectionProcesses = () => {
-  const url: string = '/v1/selection-processes';
+export const useGetCandidateAplications = () => {
+  const url: string = '/v1/candidate/aplications';
 
   const fetchData = async () => {
     return await APIDecoratorWithBaseURI().get(url);
   };
   const { data, error, isLoading } = useSWR<any>(url, fetchData);
-  const processes = data?.data?.data || [];
+  const aplications = data?.data?.data || [];
 
   return {
-    processes,
-    processesLoading: isLoading,
-    processesError: error,
+    aplications,
+    aplicationsLoading: isLoading,
+    aplicationsError: error,
   };
 };
