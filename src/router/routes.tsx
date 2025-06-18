@@ -5,8 +5,8 @@ import LandingPage from '../pages/landpage';
 import Layout from '../pages/layout';
 import UnderConstructionComponent from '../pages/under-contruction';
 // import EditaisTable from '../pages/documents';
-import ComissaoLoginPage from '../pages/comissao/login';
-import ComissaoDashboardPage from '../pages/comissao/dashboard';
+import ComissaoLoginPage from '../pages/comissao-login';
+import ComissaoDashboardPage from '../pages/comissao-dashboard';
 import CandidateDashboard from '../pages/candidate-dashboard';
 import ApplicationsHomolog from '../pages/application-homolog';
 

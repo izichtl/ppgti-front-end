@@ -17,7 +17,7 @@ export type ComissaoLoginProps = {
 export const useComissaoRegister = (payload: ComissaoRegisterProps) => {
   const useComissaoRegisterFetcher = async () => {
     return await APIDecoratorWithBaseURI().post(
-      '/v1/auth/comissao/register',
+      '/v1/auth/committee/register',
       payload,
     );
   };

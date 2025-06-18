@@ -9,10 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import {
   useComissaoLogin,
   useComissaoRegister,
-} from '../../../hooks/comissao-login';
-import { useAuth } from '../../../hooks/auth';
-import { getErrorMessage } from '../../../utils/error-messages';
-import ErrorSnackbar from '../../../components/error-snackbar';
+} from '../../hooks/comissao-login';
+import { useAuth } from '../../hooks/auth';
+import { getErrorMessage } from '../../utils/error-messages';
+import ErrorSnackbar from '../../components/error-snackbar';
 
 import Form from './form';
 import StepOne from './step-one';

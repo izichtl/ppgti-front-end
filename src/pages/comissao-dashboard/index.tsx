@@ -21,8 +21,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import LogoutIcon from '@mui/icons-material/Logout';
 import useSWR from 'swr';
 import { useNavigate } from 'react-router-dom';
-import { useGetSelectionProcesses } from '../../../hooks/selection-processes';
-import { useAuth } from '../../../hooks/auth';
+import { useGetSelectionProcesses } from '../../hooks/selection-processes';
+import { useAuth } from '../../hooks/auth';
 import SelectionProcessForm from './selection-process-form';
 
 interface SelectionProcess {
