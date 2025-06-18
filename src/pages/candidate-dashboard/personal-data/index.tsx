@@ -4,38 +4,65 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-import { useAuth } from '../../../hooks/auth';
+import { useCandidate } from '../../../hooks/candidate-data';
 
 import ScrollToTop from '../../../components/scroll-top';
 import PersonalDataView from './components/view';
 import PersonalDataForm from './components/form';
 
-import { initialCandidateProps } from './types';
+type PersonalDataType = {
+  name: string;
+  social_name: string;
+  cpf: string;
+  email: string;
+  registration_: string;
+  registration_place: string;
+  registration_state: string;
+  sex: string;
+  address: string;
+  address_number: string;
+  address_complement?: string;
+  address_neighborhood: string;
+  address_city: string;
+  address_state: string;
+  address_zipcode: string;
+  other_email?: string;
+  phone?: string | null;
+  cell_phone: string;
+  education_level?: string;
+  graduation_course?: string;
+  graduation_year?: string;
+  graduation_institution?: string;
+  specialization_course?: string;
+  specialization_year?: string;
+  specialization_institution?: string;
+  lattes_link?: string;
+};
 
 const PersonalData = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const { getUserFromToken } = useAuth();
-  const user = getUserFromToken();
-  const [personalData, setPersonalData] = useState<initialCandidateProps>(
-    user as initialCandidateProps,
+  const { data, mutate } = useCandidate();
+  const [personalData, setPersonalData] = useState<PersonalDataType | null>(
+    null,
   );
 
   useEffect(() => {
-    if (user) {
-      setPersonalData(user as initialCandidateProps);
+    if (data) {
+      setPersonalData(data as PersonalDataType);
     }
-  }, [user]);
+  }, [data]);
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    await mutate();
     setIsEditing(false);
   };
 
   const handleCancel = () => {
-    setPersonalData(user as initialCandidateProps);
+    setPersonalData(data as PersonalDataType);
     setIsEditing(false);
   };
 
@@ -101,15 +128,15 @@ const PersonalData = () => {
           mt: 3,
         }}
       >
-        {isEditing ? (
+        {isEditing && personalData ? (
           <PersonalDataForm
             personalData={personalData}
             onSave={handleSave}
             onCancel={handleCancel}
           />
-        ) : (
+        ) : personalData ? (
           <PersonalDataView personalData={personalData} />
-        )}
+        ) : null}
       </Paper>
     </Box>
   );

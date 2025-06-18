@@ -25,4 +25,6 @@ export type PersonalDataFormValues = {
   specialization_year?: string;
   specialization_institution?: string;
   lattes_link?: string;
+  quota?: string;
+  quota_id?: number;
 };

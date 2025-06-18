@@ -1,6 +1,7 @@
 import React from 'react';
 import { Typography, Grid, Divider } from '@mui/material';
 import { PersonalDataFormValues } from './types';
+import { getQuotaLabel } from '../../../../utils/quota';
 
 interface PersonalDataViewProps {
   personalData: PersonalDataFormValues;
@@ -51,6 +52,11 @@ const PersonalDataView: React.FC<PersonalDataViewProps> = ({
           <Grid size={{ xs: 12, md: 6 }}>
             <Typography variant="body1">
               <strong>UF do RG:</strong> {personalData.registration_state}
+            </Typography>
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Typography variant="body1">
+              <strong>Cota:</strong> {getQuotaLabel(personalData.quota_id)}
             </Typography>
           </Grid>
         </Grid>
