@@ -1,4 +1,4 @@
-import { APIDecoratorWithBaseURI } from "../../service";
+import { APIDecoratorWithBaseURI } from '../../service';
 
 export type ComissaoRegisterProps = {
   email: string;
@@ -17,8 +17,8 @@ export type ComissaoLoginProps = {
 export const useComissaoRegister = (payload: ComissaoRegisterProps) => {
   const useComissaoRegisterFetcher = async () => {
     return await APIDecoratorWithBaseURI().post(
-      "/v1/auth/comissao/register",
-      payload
+      '/v1/auth/comissao/register',
+      payload,
     );
   };
 
@@ -30,8 +30,8 @@ export const useComissaoRegister = (payload: ComissaoRegisterProps) => {
 export const useComissaoLogin = (payload: ComissaoLoginProps) => {
   const useComissaoLoginFetcher = async () => {
     return await APIDecoratorWithBaseURI().post(
-      "/v1/auth/comissao/login",
-      payload
+      '/v1/auth/committee/login',
+      payload,
     );
   };
 
