@@ -1,166 +1,91 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Typography,
-  Paper,
-  Button,
-  Stack,
-  useMediaQuery,
-  useTheme,
-  Grid,
-} from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Grid, useMediaQuery, useTheme } from '@mui/material';
 import ScrollToTop from '../../components/scroll-top';
 import { useBoolean } from '../../hooks/use-boolean';
-import CadastroFormModal, {
-  DadosFormulario,
-} from '../../components/process-register-modal';
-import { useGetSelectionProcesses } from '../../hooks/get-processes';
-import SelectionProcessCard from '../../components/card-processes';
-import { useStatusColor } from '../../hooks/use-status-color';
+import CadastroFormModal, { DadosFormulario } from '../../components/process-register-modal';
+import SelectionProcessCard from '../../components/card-processes copy';
 
-const processosAbertos = [
-  {
-    programa: 'PPGTI - IFPB',
-    nome: 'Seleção PPGTI 2025.1',
-    inicio: '10/03/2025',
-    fim: '30/04/2025',
-    periodo: '2025.1',
-    statusColor: '#4CAF50',
-  },
-];
-
-const suasInscricoes = [
-  {
-    programa: 'PPGTI - IFPB',
-    periodo: '2025.1',
-    linha: 'Ciência de Dados e Inteligência Artificial',
-    tema: 'Mineração de Dados',
-    titulo: 'Aplicações de Data Mining em Saúde Pública',
-    data: '01/04/2025',
-  },
-  {
-    programa: 'PPGTI - IFPB',
-    periodo: '2025.1',
-    linha: 'Redes e Sistemas Distribuídos',
-    tema: 'IoT',
-    titulo: 'Monitoramento Ambiental com Dispositivos IoT',
-    data: '04/04/2025',
-  },
-];
-
-const CandidateHomolog = () => {
+const SelectionProcessPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const currentDateTime = new Date().toLocaleString('pt-BR');
-  const [researshLines, setResearhLines] = useState([]);
-  const [selectionsProcesses, setSelectionProcesses] = useState([]);
-  const getStatusColor = useStatusColor();
-  const { processes, processesLoading, processesError } =
-    useGetSelectionProcesses();
-
-  const modal = useBoolean();
-  const [dadosIniciais, setDadosIniciais] = useState<
-    DadosFormulario | undefined
-  >();
-
-  const handlerSelectionProcesses = (id: number) => {
-    const selected = selectionsProcesses.filter((item: any) => id === item.id);
-    const lines = selected[0].research_lines;
-
-    if (selected[0] !== null) {
-      const selectedLines = lines.map((line: any) => {
-        return {
-          value: line.name,
-          label: line.name,
-        };
-      });
-      setResearhLines(selectedLines);
-    }
+  
+  // Dados mock de um candidato
+  const mockCandidate = {
+    email: "aluno@gmail.com",
+    nome: "Pedro Silva",
+    cpf: "111.111.111-11",
+    rg: "1234567",
+    endereco: "Rua Duque de Caxias, 123, Bairro Centro",
+    telFixo: "(11) 1111-1111",
+    telCel: "(11) 11111-1111",
+    email2: "aluno2@gmail.com",
+    graduacao: "Ciências da Computação",
+    anoGraduacao: "2015",
+    instituicaoGraduacao: "UFPB",
+    cursoEspecializacao: "Inteligência Artificial",
+    anoEspecializacao: "2018",
+    instituicaoEspecializacao: "Instituto de Tecnologia da Paraíba",
+    linkLattes: "https://lattes.cnpq.br/1234567890",
+    idCota: "1",
+    cota: "Cota Escolhida",
+    linhaPesquisa: "Inteligência Artificial Aplicada",
+    temaPesquisa: "Aplicações de IA na Saúde Pública",
   };
 
-  useEffect(() => {
-    // console.log(selectionsProcesses, 's');
-    // console.log(processes, 's');
-    if (processes[0] !== null) {
-      setSelectionProcesses(processes);
-    }
-  }, [processes, processesLoading, processesError]);
-
-  // useEffect(() => {
-  //   if (dadosIniciais) {
-  //     modal.onTrue();
-  //   }
-  // }, [dadosIniciais]);
+  // Controla o modal
+  const modal = useBoolean();
+  const [dadosIniciais, setDadosIniciais] = useState<DadosFormulario | undefined>();
 
   return (
-    <Box
-      sx={{
-        width: { xs: '100%', md: '80%' },
-        minHeight: '100vh',
-        mx: 'auto',
-        p: { xs: 2, md: 4 },
-        pt: 8,
-      }}
-    >
+    <Box sx={{ width: { xs: '100%', md: '80%' }, minHeight: '100vh', mx: 'auto', p: { xs: 2, md: 4 }, pt: 8 }}>
       <ScrollToTop />
 
       <Grid container spacing={2} alignItems="center" mb={4}>
         <Grid item xs={12} md={6}>
           <Typography variant="h3" fontWeight="bold">
-            Processos Seletivos
+            Homologação de Candidato
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography
-            variant="h6"
-            color="text.secondary"
-            textAlign={isMobile ? 'left' : 'right'}
-          >
+          <Typography variant="h6" color="text.secondary" textAlign={isMobile ? 'left' : 'right'}>
             {currentDateTime}
           </Typography>
         </Grid>
       </Grid>
 
-      <Typography variant="h5" fontWeight="bold" gutterBottom>
-        Dados do Usuário
-      </Typography>
-      <Stack spacing={2} mb={4}>
-        {selectionsProcesses !== null &&
-          selectionsProcesses.map((item: any) => {
-            const color = getStatusColor(item.status);
-            return (
-              <SelectionProcessCard
-                id={item.id}
-                title={item.title}
-                program={item.description}
-                start_date={item.start_date}
-                end_date={item.application_deadline}
-                year={item.year}
-                semester={item.semester}
-                contact_info={item.contact_info}
-                statusColor={color}
-                edital_url={
-                  'https://estudante.ifpb.edu.br/media/Edital_37_Selecao_Geral_MPTI_2025.1-assinado_T4osYnz.pdf'
-                }
-                onApply={() => {
-                  // setDadosIniciais(undefined);
-                  console.log(item.id, 'ididididid');
-                  handlerSelectionProcesses(item.id);
-                  modal.onTrue();
-                }}
-              />
-            );
-          })}
-      </Stack>
-      <CadastroFormModal
-        open={modal.value}
-        onClose={modal.onFalse}
-        dadosIniciais={dadosIniciais}
-        // opcoesTemaPesquisa={researshThems}
-        opcoesLinhaPesquisa={researshLines}
+      {/* Passando os dados mock para o SelectionProcessCard */}
+      <SelectionProcessCard
+        id={1}
+        email={mockCandidate.email}
+        nome={mockCandidate.nome}
+        cpf={mockCandidate.cpf}
+        rg={mockCandidate.rg}
+        endereco={mockCandidate.endereco}
+        telFixo={mockCandidate.telFixo}
+        telCel={mockCandidate.telCel}
+        email2={mockCandidate.email2}
+        graduacao={mockCandidate.graduacao}
+        anoGraduacao={mockCandidate.anoGraduacao}
+        instituicaoGraduacao={mockCandidate.instituicaoGraduacao}
+        cursoEspecializacao={mockCandidate.cursoEspecializacao}
+        anoEspecializacao={mockCandidate.anoEspecializacao}
+        instituicaoEspecializacao={mockCandidate.instituicaoEspecializacao}
+        linkLattes={mockCandidate.linkLattes}
+        idCota={mockCandidate.idCota}
+        cota={mockCandidate.cota}
+        linhaPesquisa={mockCandidate.linhaPesquisa}
+        temaPesquisa={mockCandidate.temaPesquisa}
+        statusColor="#4CAF50"
+        onApply={() => {
+          setDadosIniciais(undefined);
+          modal.onTrue();
+        }}
       />
+
+      <CadastroFormModal open={modal.value} onClose={modal.onFalse} dadosIniciais={dadosIniciais} opcoesLinhaPesquisa={[]} />
     </Box>
   );
 };
 
-export default CandidateHomolog;
+export default SelectionProcessPage;
