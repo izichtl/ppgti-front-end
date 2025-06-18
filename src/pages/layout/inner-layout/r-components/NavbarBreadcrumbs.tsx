@@ -27,6 +27,7 @@ const breadcrumbMap: Record<string, string> = {
   about: 'Sobre',
   login: 'Login',
   error: 'Erro',
+  'personal-data': 'Dados Pessoais',
 };
 
 export default function NavbarBreadcrumbs() {
@@ -35,11 +36,11 @@ export default function NavbarBreadcrumbs() {
 
   return (
     <StyledBreadcrumbs
-      aria-label='breadcrumb'
-      separator={<NavigateNextRoundedIcon fontSize='small' />}
+      aria-label="breadcrumb"
+      separator={<NavigateNextRoundedIcon fontSize="small" />}
     >
       {/* Home sempre como o primeiro */}
-      <Link underline='hover' color='inherit' component={RouterLink} to='/'>
+      <Link underline="hover" color="inherit" component={RouterLink} to="/">
         Home
       </Link>
 
@@ -51,7 +52,7 @@ export default function NavbarBreadcrumbs() {
         return isLast ? (
           <Typography
             key={to}
-            variant='body1'
+            variant="body1"
             sx={{ color: 'text.primary', fontWeight: 600 }}
           >
             {label}
@@ -59,8 +60,8 @@ export default function NavbarBreadcrumbs() {
         ) : (
           <Link
             key={to}
-            underline='hover'
-            color='inherit'
+            underline="hover"
+            color="inherit"
             component={RouterLink}
             to={to}
           >

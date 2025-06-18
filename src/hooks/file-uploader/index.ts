@@ -24,7 +24,7 @@ export const useFileUpload = (payload: FileUploadProps) => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }
+      },
     );
   };
 
