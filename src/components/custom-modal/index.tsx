@@ -17,7 +17,6 @@ const style = {
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 4,
   borderRadius: 2,
   minWidth: 300,
 };
@@ -31,7 +30,19 @@ const CustomModal: React.FC<CustomModalProps> = ({
 }) => {
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={{ ...style, width }}>
+      <Box
+        sx={{
+          ...style,
+          width: '90%',
+          maxWidth: width,
+          maxHeight: 'calc(100vh - 32px)',
+          overflowY: 'auto',
+          padding: 30,
+          mx: 0,
+          p: { xs: 2, sm: 3 },
+          boxSizing: 'border-box',
+        }}
+      >
         <Box
           display="flex"
           justifyContent="space-between"
@@ -43,7 +54,15 @@ const CustomModal: React.FC<CustomModalProps> = ({
             <CloseIcon />
           </IconButton>
         </Box>
-        {children}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
+        >
+          {children}
+        </Box>
       </Box>
     </Modal>
   );

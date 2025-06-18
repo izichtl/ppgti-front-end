@@ -88,7 +88,7 @@ const StepFour = ({ cpf, sex, quota }: any) => {
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    prefix: string
+    prefix: string,
   ) => {
     const selectedFile = event.target.files?.[0];
     const name = selectedFile?.name as string;
@@ -171,13 +171,13 @@ const StepFour = ({ cpf, sex, quota }: any) => {
             }}
           >
             <ScrollToTop />
-            <Typography variant='h5' align='center' gutterBottom>
+            <Typography variant="h5" align="center" gutterBottom>
               Comprovantes
             </Typography>
             <Typography
-              variant='body2'
-              align='center'
-              color='text.secondary'
+              variant="body2"
+              align="center"
+              color="text.secondary"
               gutterBottom
             >
               Anexe os documentos solicitados abaixo.
@@ -212,10 +212,10 @@ const StepFour = ({ cpf, sex, quota }: any) => {
 
             <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end' }}>
               <Button
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
                 disabled={hasUploadedFile}
-                size='large'
+                size="large"
                 sx={{
                   px: 4,
                   py: 1.5,

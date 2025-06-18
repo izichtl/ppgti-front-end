@@ -8,35 +8,17 @@ import {
   InputLabel,
   Button,
   Stack,
+  Box,
 } from '@mui/material';
 import CustomModal from '../custom-modal';
-
-const opcoesLinhaPesquisa = [
-  {
-    value: 'Ciência de Dados e Inteligência Artificial',
-    label: 'Ciência de Dados e Inteligência Artificial',
-  },
-  {
-    value: 'Gestão e Desenvolvimento de Sistemas',
-    label: 'Gestão e Desenvolvimento de Sistemas',
-  },
-  {
-    value: 'Redes e Sistemas Distribuídos',
-    label: 'Redes e Sistemas Distribuídos',
-  },
-];
+import ProjectUploaderField from '../project-uploader';
+import { sanitizeFilename } from '../../utils/file-sanitazer';
+import FullScreenLoader from '../loading';
 
 const opcoesTemaPesquisa = [
-  { value: 'Aprendizado de Máquina', label: 'Aprendizado de Máquina' },
-  { value: 'Mineração de Dados', label: 'Mineração de Dados' },
-  { value: 'Engenharia de Software', label: 'Engenharia de Software' },
-  { value: 'UX e Inovação', label: 'UX e Inovação' },
-  { value: 'Computação em Nuvem', label: 'Computação em Nuvem' },
-  { value: 'IoT', label: 'IoT' },
   { value: 'Edge Computing', label: 'Edge Computing' },
 ];
 
-// Tipo dos dados do formulário
 export type DadosFormulario = {
   linha: string;
   tema: string;
@@ -47,129 +29,161 @@ export type DadosFormulario = {
 type CadastroFormModalProps = {
   open: boolean;
   onClose: () => void;
-  dadosIniciais?: DadosFormulario;
+  opcoesLinhaPesquisa: any;
+  useFormikProps: any;
+  loading: boolean;
 };
 
 const CadastroFormModal: React.FC<CadastroFormModalProps> = ({
   open,
   onClose,
-  dadosIniciais,
+  opcoesLinhaPesquisa,
+  useFormikProps,
+  loading,
 }) => {
-  const [linha, setLinha] = useState('');
-  const [tema, setTema] = useState('');
-  const [titulo, setTitulo] = useState('');
-  const [arquivo, setArquivo] = useState<File | null>(null);
+  const [themes, setThemes] = useState<any>(opcoesTemaPesquisa);
 
-  // Preencher ou limpar os campos com base nos dados iniciais
   useEffect(() => {
-    if (dadosIniciais) {
-      setLinha(dadosIniciais.linha || '');
-      setTema(dadosIniciais.tema || '');
-      setTitulo(dadosIniciais.titulo || '');
-      setArquivo(dadosIniciais.arquivo || null);
-    } else {
-      setLinha('');
-      setTema('');
-      setTitulo('');
-      setArquivo(null);
+    if (useFormikProps.values.research_line_id !== 'Selecione uma linha') {
+      const themes = opcoesLinhaPesquisa.filter(
+        (line: any) => line.value === useFormikProps.values.research_line_id,
+      );
+      const newThemes = themes[0].research_topics.map((theme: any) => {
+        return {
+          id: theme.id,
+          label: theme.name,
+          value: theme.name,
+        };
+      });
+      newThemes.unshift({
+        id: 0,
+        value: 'Selecione um tema',
+        label: 'Selecione um tema',
+      });
+      setThemes(newThemes);
     }
-  }, [dadosIniciais, open]);
+  }, [useFormikProps]);
 
-  const handleSubmit = () => {
-    const dados = { linha, tema, titulo, arquivo };
-    console.log(dadosIniciais ? 'Edição:' : 'Inscrição:', dados);
-    onClose();
-  };
-
-  const isEdicao = Boolean(dadosIniciais);
+  const parsedName = sanitizeFilename(useFormikProps.values.project_title);
 
   return (
     <CustomModal
       open={open}
       onClose={onClose}
-      title={
-        isEdicao
-          ? 'Visualizar/Editar Inscrição'
-          : 'Cadastro no Processo Seletivo'
-      }
+      title={'Cadastro no Processo Seletivo'}
       width={500}
     >
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        textAlign="center"
-        mb={3}
-      >
-        {isEdicao
-          ? 'Altere os dados da sua inscrição conforme necessário'
-          : 'Preencha os dados para enviar seu pré-projeto'}
-      </Typography>
-
-      <Stack spacing={3}>
-        <FormControl fullWidth>
-          <InputLabel>Linha de Pesquisa</InputLabel>
-          <Select
-            value={linha}
-            label="Linha de Pesquisa"
-            onChange={(e) => setLinha(e.target.value)}
+      {loading && <FullScreenLoader />}
+      {!loading && (
+        <>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            textAlign="center"
+            mb={3}
           >
-            <MenuItem value="">Selecione uma linha</MenuItem>
-            {opcoesLinhaPesquisa.map((opcao) => (
-              <MenuItem key={opcao.value} value={opcao.value}>
-                {opcao.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            {'Preencha os dados para enviar seu pré-projeto'}
+          </Typography>
 
-        <FormControl fullWidth>
-          <InputLabel>Tema de Pesquisa</InputLabel>
-          <Select
-            value={tema}
-            label="Tema de Pesquisa"
-            onChange={(e) => setTema(e.target.value)}
-          >
-            <MenuItem value="">Selecione um tema</MenuItem>
-            {opcoesTemaPesquisa.map((opcao) => (
-              <MenuItem key={opcao.value} value={opcao.value}>
-                {opcao.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          <Stack spacing={3}>
+            <FormControl margin="normal" fullWidth>
+              <InputLabel>Linhas de Pesquisa</InputLabel>
+              <Select
+                fullWidth
+                name="research_line_id"
+                label="Linha de Pesquisa"
+                value={useFormikProps.values.research_line_id}
+                onChange={useFormikProps.handleChange}
+                error={
+                  !!useFormikProps.errors.research_line_id &&
+                  !!useFormikProps.touched.research_line_id
+                }
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      maxHeight: 300,
+                      maxWidth: '90vw',
+                      overflowX: 'auto',
+                    },
+                  },
+                }}
+              >
+                {opcoesLinhaPesquisa.map((opcao) => (
+                  <MenuItem key={opcao.value} value={opcao.value}>
+                    {opcao.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl margin="normal" fullWidth>
+              <InputLabel>Tema de Pesquisa</InputLabel>
+              <Select
+                fullWidth
+                name="research_topic_id"
+                label="Linha de Pesquisa"
+                disabled={
+                  useFormikProps.values.research_line_id ===
+                  'Selecione uma linha'
+                }
+                value={useFormikProps.values.research_topic_id}
+                onChange={useFormikProps.handleChange}
+                error={
+                  !!useFormikProps.errors.research_topic_id &&
+                  !!useFormikProps.touched.research_topic_id
+                }
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      maxHeight: 300,
+                      maxWidth: '90vw',
+                      overflowX: 'auto',
+                    },
+                  },
+                }}
+              >
+                {themes.map((opcao) => (
+                  <MenuItem key={opcao.value} value={opcao.value}>
+                    {opcao.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-        <TextField
-          label="Título do Pré-Projeto"
-          fullWidth
-          value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
-        />
-
-        <Button variant="outlined" component="label" fullWidth>
-          Upload do Pré-Projeto (PDF)
-          <input
-            type="file"
-            accept=".pdf"
-            hidden
-            onChange={(e) => setArquivo(e.target.files?.[0] ?? null)}
-          />
-        </Button>
-
-        <Typography variant="body2" color="text.secondary">
-          {arquivo
-            ? `Arquivo selecionado: ${arquivo.name}`
-            : 'Somente arquivos PDF são aceitos.'}
-        </Typography>
-
-        <Stack direction="row" spacing={2} mt={2}>
-          <Button fullWidth variant="outlined" onClick={onClose}>
-            Cancelar
-          </Button>
-          <Button fullWidth variant="contained" onClick={handleSubmit}>
-            {isEdicao ? 'Salvar' : 'Enviar'}
-          </Button>
-        </Stack>
-      </Stack>
+            <TextField
+              label="Título do Pré-Projeto"
+              fullWidth
+              name={'project_title'}
+              value={useFormikProps.values.project_title}
+              onChange={useFormikProps.handleChange}
+              error={
+                !!useFormikProps.errors.project_title &&
+                !!useFormikProps.touched.project_title
+              }
+              helperText={useFormikProps.errors.project_title}
+            />
+            <Box key={'project-uploader'}>
+              <ProjectUploaderField
+                name={parsedName}
+                useFormikProps={useFormikProps}
+                filePrefix={'project'}
+              />
+            </Box>
+            <Stack direction="row" spacing={2} mt={2}>
+              <Button fullWidth variant="outlined" onClick={onClose}>
+                Cancelar
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                disabled={loading}
+                onClick={useFormikProps.submitForm}
+              >
+                {'Enviar'}
+              </Button>
+            </Stack>
+          </Stack>
+        </>
+      )}
     </CustomModal>
   );
 };
