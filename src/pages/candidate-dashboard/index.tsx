@@ -224,14 +224,6 @@ const DashboardCandidato = () => {
     }
   }, [aplications, aplicationsLoading, aplicationsError]);
 
-  // if (refreshing || filesLoading) {
-  //   return (
-  //     <LoadingBox>
-  //       <FullScreenLoader />
-  //     </LoadingBox>
-  //   );
-  // }
-
   return (
     <Box
       sx={{

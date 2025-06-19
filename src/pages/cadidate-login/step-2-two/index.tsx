@@ -74,8 +74,10 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
 
         <Grid container spacing={2}>
           {/* Coluna Esquerda */}
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}> */}
+          <Grid size={{ xs: 12 }}>
             <TextField
+              required
               label="Nome de Registro"
               name="name"
               variant="outlined"
@@ -89,6 +91,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               helperText={useFormikProps.errors.name}
             />
             <TextField
+              required
               label="Registro Geral - RG"
               name="registration_"
               variant="outlined"
@@ -103,6 +106,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               helperText={useFormikProps.errors.registration_}
             />
             <TextField
+              required
               label="Orgão Expedidor"
               name="registration_place"
               variant="outlined"
@@ -116,7 +120,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               }
               helperText={useFormikProps.errors.registration_place}
             />
-            <FormControl margin="normal" fullWidth>
+            <FormControl margin="normal" required fullWidth>
               <InputLabel>Estado</InputLabel>
               <Select
                 fullWidth
@@ -142,6 +146,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               </Select>
             </FormControl>
             <TextField
+              required
               label="Outro Email"
               name="other_email"
               variant="outlined"
@@ -155,7 +160,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               }
               helperText={useFormikProps.errors.other_email}
             />
-            <FormControl fullWidth margin="normal">
+            <FormControl fullWidth required margin="normal">
               <InputLabel>Sexo Biológico</InputLabel>
               <Select
                 name="sex"
@@ -170,8 +175,9 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
           </Grid>
 
           {/* Coluna Direita */}
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12 }}>
             <TextField
+              required
               label="Endereço"
               name="address"
               variant="outlined"
@@ -186,6 +192,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               helperText={useFormikProps.errors.address}
             />
             <TextField
+              required
               label="Número"
               name="address_number"
               variant="outlined"
@@ -200,6 +207,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               helperText={useFormikProps.errors.address_number}
             />
             <TextField
+              required
               label="Complemento"
               name="address_complement"
               variant="outlined"
@@ -214,6 +222,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               helperText={useFormikProps.errors.address_complement}
             />
             <TextField
+              required
               label="Bairro"
               name="address_neighborhood"
               variant="outlined"
@@ -228,6 +237,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               helperText={useFormikProps.errors.address_neighborhood}
             />
             <TextField
+              required
               label="Cidade"
               name="address_city"
               variant="outlined"
@@ -241,7 +251,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               }
               helperText={useFormikProps.errors.address_city}
             />
-            <FormControl fullWidth margin="normal">
+            <FormControl required fullWidth margin="normal">
               <InputLabel>UF</InputLabel>
               <Select
                 fullWidth
@@ -267,6 +277,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               </Select>
             </FormControl>
             <TextField
+              required
               label="CEP"
               name="address_zipcode"
               variant="outlined"
@@ -281,6 +292,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               helperText={useFormikProps.errors.address_zipcode}
             />
             <TextField
+              required
               label="Telefone Celular"
               name="cell_phone"
               variant="outlined"
@@ -295,6 +307,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               helperText={useFormikProps.errors.cell_phone}
             />
             <TextField
+              required
               label="Telefone Fixo"
               name="phone"
               variant="outlined"
@@ -309,7 +322,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Box p={2} border={1} borderRadius={2} borderColor="grey.400">
               <Typography variant="h6" gutterBottom>
                 Optante por Cota
@@ -330,7 +343,7 @@ const StepTwo = ({ handlerNextStep, useFormikProps, quotaOptions }: any) => {
               })}
             </Box>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Box
               sx={{
                 display: 'flex',

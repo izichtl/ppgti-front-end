@@ -23,7 +23,7 @@ export const useProcessAplication = (payload: any) => {
     formData.append('project_file_name', payload.project_file_name);
 
     return await APIDecoratorWithBaseURI().post(
-      `/v1/selection-processes/aplication`,
+      `/v1/applications/register`,
       formData,
       {
         headers: {

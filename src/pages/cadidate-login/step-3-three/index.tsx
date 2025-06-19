@@ -52,8 +52,9 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
         </Typography>
 
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12 }}>
             <TextField
+              required
               label="Maior Titulação"
               name="education_level"
               variant="outlined"
@@ -68,6 +69,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.education_level}
             />
             <TextField
+              required
               label="Curso de Graduação"
               name="graduation_course"
               variant="outlined"
@@ -82,6 +84,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.graduation_course}
             />
             <TextField
+              required
               label="Ano da Graduação"
               name="graduation_year"
               variant="outlined"
@@ -96,6 +99,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.graduation_year}
             />
             <TextField
+              required
               label="Instituição de Graduação"
               name="graduation_institution"
               variant="outlined"
@@ -111,8 +115,9 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12 }}>
             <TextField
+              required
               label="Curso de Especialização"
               name="specialization_course"
               variant="outlined"
@@ -127,6 +132,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.specialization_course}
             />
             <TextField
+              required
               label="Ano da Especialização"
               name="specialization_year"
               variant="outlined"
@@ -141,6 +147,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.specialization_year}
             />
             <TextField
+              required
               label="Instituição da Especialização"
               name="specialization_institution"
               variant="outlined"
@@ -155,6 +162,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
               helperText={useFormikProps.errors.specialization_institution}
             />
             <TextField
+              required
               label="Link do Currículo Lattes"
               name="lattes_link"
               variant="outlined"
@@ -170,7 +178,7 @@ const StepThree = ({ handlerNextStep, useFormikProps }: any) => {
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Box
               sx={{
                 display: 'flex',
