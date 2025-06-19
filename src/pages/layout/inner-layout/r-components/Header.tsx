@@ -1,13 +1,11 @@
 import Stack from '@mui/material/Stack';
-import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import NavbarBreadcrumbs from './NavbarBreadcrumbs';
-import MenuButton from './MenuButton';
 import ColorModeIconDropdown from '../../../../components/r-icon';
 
 export default function Header() {
   return (
     <Stack
-      direction='row'
+      direction="row"
       sx={{
         display: { xs: 'none', md: 'flex' },
         width: '100%',
@@ -19,10 +17,7 @@ export default function Header() {
       spacing={2}
     >
       <NavbarBreadcrumbs />
-      <Stack direction='row' sx={{ gap: 1 }}>
-        <MenuButton showBadge aria-label='Open notifications'>
-          <NotificationsRoundedIcon />
-        </MenuButton>
+      <Stack direction="row" sx={{ gap: 1 }}>
         <ColorModeIconDropdown />
       </Stack>
     </Stack>

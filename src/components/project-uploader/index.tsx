@@ -13,7 +13,7 @@ const ProjectUploaderField = ({
 
   const fileName = hasFile
     ? useFormikProps.values.project_file_name
-    : 'Nenhum documento enviado';
+    : 'Obrigatório - nenhum documento enviado';
 
   const buttonName = hasFile
     ? 'Carregado / Carregar Novo'
@@ -43,6 +43,7 @@ const ProjectUploaderField = ({
           <label htmlFor={`file-input-${filePrefix}`}>
             <Input
               id={`file-input-${filePrefix}`}
+              required
               type="file"
               data-id={filePrefix}
               onChange={(e) => onChange(e, filePrefix)}

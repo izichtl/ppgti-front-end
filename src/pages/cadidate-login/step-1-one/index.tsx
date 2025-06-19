@@ -26,7 +26,7 @@ const TextMaskCustom = React.forwardRef<HTMLInputElement, CustomProps>(
     return (
       <IMaskInput
         {...other}
-        mask='000.000.000-00'
+        mask="000.000.000-00"
         definitions={{
           '#': /[1-9]/,
         }}
@@ -37,7 +37,7 @@ const TextMaskCustom = React.forwardRef<HTMLInputElement, CustomProps>(
         overwrite
       />
     );
-  }
+  },
 );
 
 const StepOne = ({
@@ -51,7 +51,7 @@ const StepOne = ({
 
   const handleAccessChange = (
     event: React.MouseEvent<HTMLElement>,
-    newAccessType: 'register' | 'login' | null
+    newAccessType: 'register' | 'login' | null,
   ) => {
     if (newAccessType !== null) {
       setAccessType(newAccessType);
@@ -70,7 +70,7 @@ const StepOne = ({
         bgcolor: '#f0f4f8',
       }}
     >
-      <Container maxWidth='sm'>
+      <Container maxWidth="sm">
         <ScrollToTop />
         <Paper
           elevation={isMobile ? 0 : 3}
@@ -83,7 +83,7 @@ const StepOne = ({
             alignItems: 'center',
           }}
         >
-          <Typography variant='h5' align='center' gutterBottom>
+          <Typography variant="h5" align="center" gutterBottom>
             {accessType === 'register'
               ? 'Faça sua inscrição'
               : 'Acesse a plataforma'}
@@ -131,27 +131,28 @@ const StepOne = ({
             ))}
           </ToggleButtonGroup>
 
-          <Typography variant='body1' align='center' gutterBottom>
+          <Typography variant="body1" align="center" gutterBottom>
             {accessType === 'register'
               ? 'Preencha os campos para cadastrar sua inscrição, sua senha será o CPF combinado com Email.'
               : 'Caso tenha iniciado sua inscrição, acesse aqui.'}
           </Typography>
 
           <Box
-            component='form'
+            component="form"
             noValidate
-            autoComplete='off'
+            autoComplete="off"
             sx={{ width: '100%' }}
           >
             {accessType === 'register' ? (
               <>
                 <TextField
-                  label='Nome Social'
-                  name='social_name'
-                  variant='outlined'
-                  placeholder='Nome social'
+                  required
+                  label="Nome Social"
+                  name="social_name"
+                  variant="outlined"
+                  placeholder="Nome social"
                   fullWidth
-                  margin='normal'
+                  margin="normal"
                   value={useFormikProps.values.social_name}
                   onChange={useFormikProps.handleChange}
                   error={
@@ -161,13 +162,14 @@ const StepOne = ({
                   helperText={useFormikProps.errors.social_name}
                 />
                 <TextField
-                  label='Email'
-                  name='email'
-                  variant='outlined'
-                  placeholder='seu-email@aqui.com'
-                  type='email'
+                  required
+                  label="Email"
+                  name="email"
+                  variant="outlined"
+                  placeholder="seu-email@aqui.com"
+                  type="email"
                   fullWidth
-                  margin='normal'
+                  margin="normal"
                   value={useFormikProps.values.email}
                   onChange={useFormikProps.handleChange}
                   error={
@@ -177,12 +179,13 @@ const StepOne = ({
                   helperText={useFormikProps.errors.email}
                 />
                 <TextField
-                  label='CPF'
-                  name='cpf'
-                  variant='outlined'
-                  placeholder='111.222.333-44'
+                  required
+                  label="CPF"
+                  name="cpf"
+                  variant="outlined"
+                  placeholder="111.222.333-44"
                   fullWidth
-                  margin='normal'
+                  margin="normal"
                   value={useFormikProps.values.cpf}
                   onChange={useFormikProps.handleChange}
                   error={
@@ -198,12 +201,13 @@ const StepOne = ({
             ) : (
               <>
                 <TextField
+                  required
                   fullWidth
-                  label='Email'
-                  name='email'
-                  variant='outlined'
-                  placeholder='seu-email@aqui.com'
-                  margin='normal'
+                  label="Email"
+                  name="email"
+                  variant="outlined"
+                  placeholder="seu-email@aqui.com"
+                  margin="normal"
                   value={useFormikProps.values.email}
                   onChange={useFormikProps.handleChange}
                   error={
@@ -213,13 +217,14 @@ const StepOne = ({
                   helperText={useFormikProps.errors.email}
                 />
                 <TextField
+                  required
                   fullWidth
-                  label='CPF'
-                  name='cpf'
-                  type='text'
-                  variant='outlined'
-                  placeholder='111.222.333-44'
-                  margin='normal'
+                  label="CPF"
+                  name="cpf"
+                  type="text"
+                  variant="outlined"
+                  placeholder="111.222.333-44"
+                  margin="normal"
                   value={useFormikProps.values.cpf}
                   onChange={useFormikProps.handleChange}
                   error={
@@ -236,8 +241,8 @@ const StepOne = ({
 
             <Button
               fullWidth
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
               sx={{ mt: 2 }}
               onClick={handlerNextStep}
             >

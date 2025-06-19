@@ -86,10 +86,11 @@ const CadastroFormModal: React.FC<CadastroFormModalProps> = ({
           </Typography>
 
           <Stack spacing={3}>
-            <FormControl margin="normal" fullWidth>
+            <FormControl margin="normal" required fullWidth>
               <InputLabel>Linhas de Pesquisa</InputLabel>
               <Select
                 fullWidth
+                required
                 name="research_line_id"
                 label="Linha de Pesquisa"
                 value={useFormikProps.values.research_line_id}
@@ -115,7 +116,7 @@ const CadastroFormModal: React.FC<CadastroFormModalProps> = ({
                 ))}
               </Select>
             </FormControl>
-            <FormControl margin="normal" fullWidth>
+            <FormControl margin="normal" required fullWidth>
               <InputLabel>Tema de Pesquisa</InputLabel>
               <Select
                 fullWidth
@@ -152,6 +153,7 @@ const CadastroFormModal: React.FC<CadastroFormModalProps> = ({
             <TextField
               label="Título do Pré-Projeto"
               fullWidth
+              required
               name={'project_title'}
               value={useFormikProps.values.project_title}
               onChange={useFormikProps.handleChange}
