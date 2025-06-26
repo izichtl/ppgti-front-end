@@ -24,6 +24,8 @@ import { useGetCandidateAplications } from '../../hooks/get-candidate-aplication
 import CardApplication from '../../components/card-application';
 import LoadingBox from '../../components/loading-box';
 import FullScreenLoader from '../../components/loading';
+import { useAuth } from '../../hooks/auth';
+import { useNavigate } from 'react-router-dom';
 
 type initialCandidateProps = {
   process_id: number;
@@ -36,6 +38,9 @@ type initialCandidateProps = {
 const DashboardCandidato = () => {
   const theme = useTheme();
   const modal = useBoolean();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const auth = isAuthenticated();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const currentDateTime = new Date().toLocaleString('pt-BR');
@@ -223,6 +228,12 @@ const DashboardCandidato = () => {
       setApplicationsProcesses(aplications);
     }
   }, [aplications, aplicationsLoading, aplicationsError]);
+
+  useEffect(() => {
+    if (!auth) {
+      navigate('/');
+    }
+  }, [auth]);
 
   return (
     <Box

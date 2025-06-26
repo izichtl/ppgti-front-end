@@ -9,6 +9,7 @@ import ComissaoLoginPage from '../pages/comissao-login';
 import ComissaoDashboardPage from '../pages/comissao-dashboard';
 import CandidateDashboard from '../pages/candidate-dashboard';
 import ApplicationsHomolog from '../pages/application-homolog';
+import DocumentsPage from '../pages/documents';
 
 const router = createBrowserRouter([
   {
@@ -42,8 +43,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/documents',
-        element: <UnderConstructionComponent />,
-        // element: <EditaisTable />,
+        element: <DocumentsPage />,
         handle: { title: 'Documentos' },
       },
       {

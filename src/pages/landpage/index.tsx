@@ -1,23 +1,40 @@
-import React from 'react';
 import {
   Box,
   Container,
   Typography,
   Button,
-  Card,
-  CardContent,
-  Grid,
-  Link,
+  // Card,
+  // CardContent,
+  // Grid,
+  // Link,
 } from '@mui/material';
 import { ArrowRight } from 'lucide-react';
+import { useAuth } from '../../hooks/auth';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ScrollToTop from '../../components/scroll-top';
 
 export default function LandingPage() {
+  const { isAuthenticated, getUserFromToken } = useAuth();
+  const navigate = useNavigate();
+  const auth = isAuthenticated();
+  const userInfo = getUserFromToken();
+
+  useEffect(() => {
+    if (auth) {
+      if (userInfo.if_registration === undefined) {
+        navigate('/candidate-dashboard');
+      } else {
+        navigate('/comissao/dashboard');
+      }
+    }
+  }, [auth]);
+
   return (
     <>
       {/* Sessão Principal */}
       <Box
         sx={{
-          // backgroundImage: 'url(https://www.ifpb.edu.br/logo.png)',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           backgroundSize: 'contain',
@@ -29,19 +46,20 @@ export default function LandingPage() {
           p: 4,
         }}
       >
-        <Container maxWidth='md'>
-          <Typography variant='h2' gutterBottom>
+        <ScrollToTop />
+        <Container maxWidth="md">
+          <Typography variant="h2" gutterBottom>
             Inscrição no Mestrado Profissional em Tecnologia da Informação
           </Typography>
-          <Typography variant='h5' color='text.secondary' paragraph>
+          <Typography variant="h5" color="text.secondary" paragraph>
             Faça parte de um dos programas de pós-graduação mais inovadores da
-            região. Inscrições abertas de 16/10/2024 a 18/11/2024.
+            região. Inscrições abertas!.
           </Typography>
           <Button
-            variant='contained'
-            size='large'
+            variant="contained"
+            size="large"
             endIcon={<ArrowRight />}
-            href='/login'
+            href="/login"
           >
             Inscreva-se Agora
           </Button>

@@ -83,7 +83,7 @@ export const AuthProvider: FC<PropsWithChildren<{}>> = ({
   const isAuthenticated = (): boolean => {
     const location = useLocation();
     const token = localStorage.getItem('userJWT');
-
+    console.log('Token:', token);
     // Retorna false se estiver nas páginas de login
     if (
       location.pathname === '/login' ||
@@ -91,7 +91,7 @@ export const AuthProvider: FC<PropsWithChildren<{}>> = ({
     )
       return false;
 
-    return Boolean(token && token.trim() !== '');
+    return token !== null;
   };
 
   const getUserFromToken = useCallback((): Record<string, any> | null => {

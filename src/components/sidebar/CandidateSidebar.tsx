@@ -45,7 +45,7 @@ const CandidateSidebar: React.FC = () => {
       icon: <ArticleIcon />,
     },
     {
-      text: 'Notícias',
+      text: 'Notícias1',
       path: '/blog',
       icon: <RssFeedIcon />,
     },
