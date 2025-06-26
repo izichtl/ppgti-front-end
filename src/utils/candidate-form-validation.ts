@@ -16,7 +16,9 @@ export const stepOneSchema = Yup.object({
 export const stepTwoSchema = Yup.object({
   name: Yup.string(),
   sex: Yup.string().required('Obrigatório'),
-  registration_: Yup.string().required('Obrigatório'),
+  registration_: Yup.string()
+    .required('Obrigatório')
+    .matches(phoneRegex, 'Apenas números são permitidos'),
   registration_state: Yup.string().required('Obrigatório'),
   registration_place: Yup.string().required('Obrigatório'),
   address: Yup.string().required('Obrigatório'),
@@ -31,26 +33,24 @@ export const stepTwoSchema = Yup.object({
   cell_phone: Yup.string()
     .required('Obrigatório')
     .matches(phoneRegex, 'Número de celular inválido'),
-  // phone: Yup.string()
-  //   .nullable()
-  //   .matches(phoneRegex, 'Telefone inválido')
-  //   .notRequired(),
   other_email: Yup.string().email('Email inválido'),
   quota: Yup.string().required('Obrigatório'),
-  // quota_id: Yup.number().required('Obrigatório'),
 });
-
 
 export const stepThreeSchema = Yup.object({
   education_level: Yup.string().required('Obrigatório'),
   graduation_course: Yup.string().required('Obrigatório'),
-  graduation_year: Yup.string().required('Obrigatório').matches(/^\d{4}$/, 'Ano inválido'),
+  graduation_year: Yup.string()
+    .required('Obrigatório')
+    .matches(/^\d{4}$/, 'Ano inválido'),
   graduation_institution: Yup.string().required('Obrigatório'),
   specialization_course: Yup.string(),
   specialization_year: Yup.string().matches(/^\d{4}$/, 'Ano inválido'),
   specialization_institution: Yup.string(),
-  lattes_link: Yup.string().url('URL inválida')
-    .test('contains-lattes', 'A URL deve conter "lattes.cnpq.br"', value => !value || value.includes('lattes.cnpq.br')
+  lattes_link: Yup.string().test(
+    'contains-lattes',
+    'A URL deve conter "lattes.cnpq.br"',
+    (value) => !value || value.includes('lattes.cnpq.br'),
   ),
 });
 
