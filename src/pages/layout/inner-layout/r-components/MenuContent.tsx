@@ -45,12 +45,10 @@ export default function MenuContent() {
   const candidateMenuItems = [
     {
       href: '/candidate-dashboard',
-      text: 'Dashboard',
+      text: 'Processos e Inscrições',
       icon: <DashboardIcon />,
     },
-    { href: '/process', text: 'Inscrever', icon: <AppRegistrationIcon /> },
     { href: '/documents', text: 'Documentos', icon: <DescriptionIcon /> },
-    { href: '/blog', text: 'Notícias', icon: <RssFeedIcon /> },
   ];
 
   const mainListItems = isCommitteeUser

@@ -8,30 +8,59 @@ import {
   Paper,
   Typography,
   Link,
+  Divider,
 } from '@mui/material';
 
-const editais = [
+const requerimentos_documentos = [
   {
-    title: 'Edital Credenciamento PPGTI 2021 10 de agosto de 2021.pdf',
-    url: '/docs/edital-credenciamento-2021.pdf',
-    description:
-      'Edital de credenciamento para docentes permanentes e colaboradores do Programa de Pós-Graduação em Tecnologia da Informação',
-    publishedAt: '13/08/2021 10h18',
+    title: 'Requerimento-do-discente-ppgti.docx',
+    url: 'https://www.ifpb.edu.br/ppgti/documentos/requerimentos-1/requerimento-do-discente-ppgti.docx',
+    description: 'Requerimento do discente no modelo do PPGTI',
+    publishedAt: '30/01/2025 11h47',
   },
   {
-    title: 'Resultado do edital de credenciamento 2021 Assinado.pdf',
-    url: '/docs/resultado-edital-2021.pdf',
-    description: 'Resultado do edital de credenciamento do PPGTI 2021',
-    publishedAt: '08/09/2021 14h32',
+    title: 'Formulário Avaliação Bolsista Mensal.docx',
+    url: 'https://www.ifpb.edu.br/ppgti/documentos/requerimentos-1/formulario-avaliacao-bolsista-mensal.docx',
+    description: 'Formulário de Avaliação Mensal dos Bolsistas do PPGTI',
+    publishedAt: '15/03/2022 19h13',
+  },
+  {
+    title: 'Formulário Avaliação Semestral Bolsista.docx',
+    url: 'https://www.ifpb.edu.br/ppgti/documentos/requerimentos-1/formulario-avaliacao-semestral-bolsista.docx',
+    description: 'Formulário de Avaliação Semestral dos Bolsistas do PPGTI',
+    publishedAt: '15/03/2022 19h13',
+  },
+  {
+    title: 'Formulário Matrícula PPGTI Aluno novo.docx',
+    url: 'https://www.ifpb.edu.br/ppgti/documentos/requerimentos-1/formulario-matricula-ppgti-aluno-novo.docx',
+    description: 'Formulário para matrícula de alunos novos no PPGTI',
+    publishedAt: '01/10/2024 13h30',
+  },
+  {
+    title: 'Formulário para agendamento de bancas PPGTI.docx',
+    url: 'https://www.ifpb.edu.br/ppgti/documentos/requerimentos-1/formulario-para-agendamento-de-bancas-ppgti.docx',
+    description: 'Formulário para agendamento de bancas no PPGTI',
+    publishedAt: '01/10/2024 13h31',
+  },
+  {
+    title: 'IFPB-PPGTI-Template-Pre-ProjetoPesquisa.docx',
+    url: 'https://www.ifpb.edu.br/ppgti/documentos/requerimentos-1/ifpb-ppgti-template-pre-projetopesquisa.docx',
+    description:
+      'Modelo para pré-projeto de pesquisa para Edital de Seleção de Estudantes',
+    publishedAt: '09/10/2024 11h22',
   },
 ];
 
-export default function EditaisTable() {
+export default function DocumentsPage() {
   return (
     <>
-      <Typography variant='h5' sx={{ mb: 2 }}>
-        Documentos
+      <Typography
+        variant="h4"
+        sx={{ textAlign: 'left', fontWeight: 'bold', mb: 1 }}
+      >
+        Requerimentos e Documentos
       </Typography>
+      <Divider sx={{ mb: 2 }} />
 
       <TableContainer component={Paper}>
         <Table>
@@ -49,10 +78,10 @@ export default function EditaisTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {editais.map((edital, index) => (
+            {requerimentos_documentos.map((edital, index) => (
               <TableRow key={index}>
                 <TableCell>
-                  <Link href={edital.url} target='_blank' rel='noopener'>
+                  <Link href={edital.url} target="_blank" rel="noopener">
                     {edital.title}
                   </Link>
                 </TableCell>

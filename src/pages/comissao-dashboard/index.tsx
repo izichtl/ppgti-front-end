@@ -51,6 +51,7 @@ const ComissaoDashboardPage: React.FC = () => {
   const { getUserFromToken, logout } = useAuth();
 
   const userInfo = getUserFromToken();
+
   const { useGetSelectionProcessesFetcher } = useGetSelectionProcesses();
 
   const { data, error, isLoading, mutate } = useSWR(
@@ -120,6 +121,19 @@ const ComissaoDashboardPage: React.FC = () => {
       console.error('Error:', error);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (userInfo === null) {
+      logout();
+      navigate('/');
+    }
+    if (userInfo !== null) {
+      if (userInfo.if_registration === undefined) {
+        logout();
+        navigate('/');
+      }
+    }
+  }, []);
 
   return (
     <Box sx={{ padding: 3 }}>

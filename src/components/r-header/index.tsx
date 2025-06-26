@@ -35,7 +35,7 @@ export default function AppAppBar() {
 
   return (
     <AppBar
-      position='fixed'
+      position="fixed"
       enableColorOnDark
       sx={{
         boxShadow: 0,
@@ -44,32 +44,32 @@ export default function AppAppBar() {
         mt: 'calc(var(--template-frame-height, 0px) + 28px)',
       }}
     >
-      <Container maxWidth='lg'>
-        <StyledToolbar variant='dense' disableGutters>
+      <Container maxWidth="lg">
+        <StyledToolbar variant="dense" disableGutters>
           <Box
             sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}
           >
-            <Link to='/'>
+            <Link to="/">
               <Sitemark />
             </Link>
             <Box sx={{ display: { xs: 'none', md: 'flex' }, ml: 4 }}>
-              <Button href='/login' variant='text' color='info' size='small'>
+              <Button href="/login" variant="text" color="info" size="small">
                 Inscrições
               </Button>
               <Button
-                href='/documents'
-                variant='text'
-                color='info'
-                size='small'
+                href="/documents"
+                variant="text"
+                color="info"
+                size="small"
               >
                 Documentos
               </Button>
-              <Button href='/about' variant='text' color='info' size='small'>
+              <Button href="/about" variant="text" color="info" size="small">
                 Sobre
               </Button>
-              <Button href='/blog' variant='text' color='info' size='small'>
+              {/* <Button href="/blog" variant="text" color="info" size="small">
                 Notícias
-              </Button>
+              </Button> */}
             </Box>
           </Box>
 
@@ -82,18 +82,18 @@ export default function AppAppBar() {
             }}
           >
             <Button
-              href='/login'
-              color='primary'
-              variant='contained'
-              size='small'
+              href="/login"
+              color="primary"
+              variant="contained"
+              size="small"
             >
               Acessar Candidato
             </Button>
             <Button
-              href='/comissao/login'
-              color='primary'
-              variant='outlined'
-              size='small'
+              href="/comissao/login"
+              color="primary"
+              variant="outlined"
+              size="small"
             >
               Acesso Comissão
             </Button>
@@ -103,14 +103,14 @@ export default function AppAppBar() {
           {/* Ações Mobile */}
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
             {/* Opcional: Se quiser manter o seletor de tema apenas no mobile, adicione aqui */}
-            <IconButton aria-label='Menu button' onClick={toggleDrawer(true)}>
+            <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
           </Box>
 
           {/* Drawer Mobile Menu */}
           <Drawer
-            anchor='top'
+            anchor="top"
             open={open}
             onClose={toggleDrawer(false)}
             PaperProps={{
@@ -124,39 +124,39 @@ export default function AppAppBar() {
                 </IconButton>
               </Box>
               <Link
-                to='/login'
+                to="/login"
                 onClick={toggleDrawer(false)}
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >
                 <MenuItem>Inscrições</MenuItem>
               </Link>
               <Link
-                to='/documents'
+                to="/documents"
                 onClick={toggleDrawer(false)}
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >
                 <MenuItem>Documentos</MenuItem>
               </Link>
               <Link
-                to='/about'
+                to="/about"
                 onClick={toggleDrawer(false)}
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >
                 <MenuItem>Sobre</MenuItem>
               </Link>
-              <Link
+              {/* <Link
                 to='/blog'
                 onClick={toggleDrawer(false)}
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >
                 <MenuItem>Notícias</MenuItem>
-              </Link>
+              </Link> */}
               <Divider sx={{ my: 3 }} />
               <MenuItem>
                 <Button
-                  href='/login'
-                  color='primary'
-                  variant='contained'
+                  href="/login"
+                  color="primary"
+                  variant="contained"
                   fullWidth
                 >
                   Acesso Candidato
@@ -164,9 +164,9 @@ export default function AppAppBar() {
               </MenuItem>
               <MenuItem>
                 <Button
-                  href='/comissao/login'
-                  color='primary'
-                  variant='outlined'
+                  href="/comissao/login"
+                  color="primary"
+                  variant="outlined"
                   fullWidth
                 >
                   Acesso Comissão
