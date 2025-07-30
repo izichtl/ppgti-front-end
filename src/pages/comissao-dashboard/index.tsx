@@ -14,7 +14,6 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import LogoutIcon from '@mui/icons-material/Logout';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { useNavigate } from 'react-router-dom';
@@ -52,6 +51,9 @@ const ComissaoDashboardPage: React.FC = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [processToDelete, setProcessToDelete] =
     useState<SelectionProcess | null>(null);
+  const [processToEdit, setProcessToEdit] = useState<SelectionProcess | null>(
+    null,
+  );
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
@@ -85,11 +87,22 @@ const ComissaoDashboardPage: React.FC = () => {
 
   const handleFormClose = () => {
     setFormOpen(false);
+    setProcessToEdit(null);
   };
 
   const handleFormSuccess = () => {
     setRefreshKey((prev) => prev + 1);
     mutate();
+
+    setSnackbar({
+      open: true,
+      message: processToEdit
+        ? 'Processo seletivo atualizado com sucesso!'
+        : 'Processo seletivo criado com sucesso!',
+      severity: 'success',
+    });
+
+    setProcessToEdit(null);
   };
 
   const handleLogout = () => {
@@ -136,6 +149,11 @@ const ComissaoDashboardPage: React.FC = () => {
 
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleEditClick = (process: SelectionProcess) => {
+    setProcessToEdit(process);
+    setFormOpen(true);
   };
 
   const getStatusColor = (status: string) => {
@@ -384,10 +402,7 @@ const ComissaoDashboardPage: React.FC = () => {
                 <Button
                   size="small"
                   startIcon={<EditIcon />}
-                  onClick={() => {
-                    // TODO: Implement edit functionality
-                    console.log('Edit process:', process.id);
-                  }}
+                  onClick={() => handleEditClick(process)}
                 >
                   Editar
                 </Button>
@@ -410,6 +425,7 @@ const ComissaoDashboardPage: React.FC = () => {
         open={formOpen}
         onClose={handleFormClose}
         onSuccess={handleFormSuccess}
+        editingProcess={processToEdit}
       />
 
       <DeleteConfirmationDialog
