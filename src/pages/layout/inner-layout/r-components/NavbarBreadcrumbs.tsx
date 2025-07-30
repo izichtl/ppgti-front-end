@@ -19,8 +19,8 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
 
 // Mapeia os segmentos do path para nomes legíveis
 const breadcrumbMap: Record<string, string> = {
-  '': 'Home',
-  dashboard: 'Dashboard',
+  '': 'Início',
+  candidate: 'Candidato',
   blog: 'Blog',
   documents: 'Documentos',
   process: 'Processo Seletivo',
@@ -32,6 +32,9 @@ const breadcrumbMap: Record<string, string> = {
   candidatos: 'Candidatos',
   documentos: 'Documentos',
   relatorios: 'Relatórios',
+  confirmation: 'Confirmação',
+  selection: 'Inscrição',
+  dashboard: 'Processos e Inscrições',
 };
 
 export default function NavbarBreadcrumbs() {

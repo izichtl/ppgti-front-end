@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 const cpfRegex = /^\d{3}[\.\s-]?\d{3}[\.\s-]?\d{3}[\.\s-]?\d{2}$/;
 const cepRegex = /^\d{5}-?\d{3}$/;
 const phoneRegex = /^\(?\d{2}\)?[\s.-]?\d{4,5}[\s.-]?\d{4}$/;
+const rgRegex = /^\d{7,9}[xX]?$/;
 
 export const stepOneSchema = Yup.object({
   email: Yup.string().email('Email inválido').required('Obrigatório'),
@@ -18,7 +19,10 @@ export const stepTwoSchema = Yup.object({
   sex: Yup.string().required('Obrigatório'),
   registration_: Yup.string()
     .required('Obrigatório')
-    .matches(phoneRegex, 'Apenas números são permitidos'),
+    .matches(
+      rgRegex,
+      'RG deve ter entre 7 e 9 dígitos, podendo terminar com X',
+    ),
   registration_state: Yup.string().required('Obrigatório'),
   registration_place: Yup.string().required('Obrigatório'),
   address: Yup.string().required('Obrigatório'),

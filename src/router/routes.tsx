@@ -8,6 +8,7 @@ import UnderConstructionComponent from '../pages/under-contruction';
 import ComissaoLoginPage from '../pages/comissao-login';
 import ComissaoDashboardPage from '../pages/comissao-dashboard';
 import CandidateDashboard from '../pages/candidate-dashboard';
+import CandidateConfirmation from '../pages/candidate-confirmation';
 import ApplicationsHomolog from '../pages/application-homolog';
 import DocumentsPage from '../pages/documents';
 
@@ -32,9 +33,14 @@ const router = createBrowserRouter([
         handle: { title: 'Blog' },
       },
       {
-        path: '/candidate-dashboard',
+        path: '/candidate/dashboard',
         element: <CandidateDashboard />,
         handle: { title: 'Dashboard' },
+      },
+      {
+        path: '/selection/confirmation',
+        element: <CandidateConfirmation />,
+        handle: { title: 'Confirmação' },
       },
       {
         path: '/application-homolog',

@@ -168,12 +168,34 @@ const DashboardCandidato = () => {
   const handleUpload = async () => {
     try {
       await triggerAplication();
-      setSnackbar({
-        open: true,
-        message: 'Inscrição Realizada com Sucesso',
-        severity: 'success',
-      });
+
+      // Get process details for confirmation page
+      const selectedProcess = selectionsProcesses.find(
+        (p) => p.id === useFormikProps.values.process_id,
+      );
+      const selectedLine = selectedProcess?.research_lines?.find(
+        (l) => l.name === useFormikProps.values.research_line_id,
+      );
+      const selectedTopic = selectedLine?.research_topics?.find(
+        (t) => t.name === useFormikProps.values.research_topic_id,
+      );
+
+      modal.onFalse();
       useFormikProps.resetForm();
+
+      // Navigate to confirmation page with application data
+      navigate('/selection/confirmation', {
+        state: {
+          applicationType: 'process',
+          applicationData: {
+            process: selectedProcess,
+            research_line: selectedLine,
+            research_topic: selectedTopic,
+            project_title: useFormikProps.values.project_title,
+            project_file_name: useFormikProps.values.project_file_name,
+          },
+        },
+      });
     } catch (error) {
       setSnackbar({
         open: true,
@@ -181,7 +203,6 @@ const DashboardCandidato = () => {
         severity: 'error',
       });
       useFormikProps.resetForm();
-    } finally {
       setTimeout(() => {
         modal.onFalse();
         setSnackbar((prev) => ({ ...prev, open: false }));

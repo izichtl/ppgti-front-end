@@ -273,6 +273,7 @@ const Login: React.FC = () => {
               cpf={useFormikProps.values.cpf}
               sex={useFormikProps.values.sex}
               quota={useFormikProps.values.quota}
+              candidateData={useFormikProps.values}
               handlerNextStep={handleButtonClick}
             />
           )}

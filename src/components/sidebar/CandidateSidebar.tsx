@@ -26,7 +26,7 @@ const CandidateSidebar: React.FC = () => {
   const menuItems: MenuItem[] = [
     {
       text: 'Dashboard',
-      path: '/candidate-dashboard',
+      path: '/candidate/dashboard',
       icon: <DashboardIcon />,
     },
     {

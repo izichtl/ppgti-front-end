@@ -44,7 +44,7 @@ export default function MenuContent() {
 
   const candidateMenuItems = [
     {
-      href: '/candidate-dashboard',
+      href: '/candidate/dashboard',
       text: 'Processos e Inscrições',
       icon: <DashboardIcon />,
     },

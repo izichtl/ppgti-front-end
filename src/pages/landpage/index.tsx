@@ -23,7 +23,7 @@ export default function LandingPage() {
   useEffect(() => {
     if (auth) {
       if (userInfo.if_registration === undefined) {
-        navigate('/candidate-dashboard');
+        navigate('/candidate/dashboard');
       } else {
         navigate('/comissao/dashboard');
       }
