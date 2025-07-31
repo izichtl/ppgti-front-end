@@ -10,6 +10,7 @@ import ComissaoDashboardPage from '../pages/comissao-dashboard';
 import CandidateDashboard from '../pages/candidate-dashboard';
 import ApplicationsHomolog from '../pages/application-homolog';
 import DocumentsPage from '../pages/documents';
+import ProcessAplicationList from '../pages/application-process-list';
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,16 @@ const router = createBrowserRouter([
         path: '/comissao/processos',
         element: <ComissaoDashboardPage />, // Reusing the same component for now
         handle: { title: 'Processos Seletivos' },
+      },
+      {
+        path: '/comissao/processos/:id',
+        element: <ProcessAplicationList />, // Reusing the same component for now
+        handle: { title: 'Processos Seletivos' },
+      },
+      {
+        path: '/comissao/processos/:processId/inscricoes/:applicationId',
+        element: <ApplicationsHomolog />,
+        handle: { title: 'Dashboard' },
       },
       {
         path: '/comissao/candidatos',

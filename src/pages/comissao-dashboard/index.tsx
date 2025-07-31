@@ -10,7 +10,7 @@ import {
   Alert,
   CircularProgress,
   Paper,
-  Fab,
+  Link,
   AppBar,
   Toolbar,
   IconButton,
@@ -18,6 +18,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import LogoutIcon from '@mui/icons-material/Logout';
 import useSWR from 'swr';
 import { useNavigate } from 'react-router-dom';
@@ -319,8 +320,16 @@ const ComissaoDashboardPage: React.FC = () => {
                     </Box>
                   )}
               </CardContent>
-
               <CardActions sx={{ p: 2, pt: 0 }}>
+                <Button
+                  size="small"
+                  startIcon={<ViewListIcon />}
+                  onClick={() => {
+                    navigate(`/comissao/processos/${process.id}`);
+                  }}
+                >
+                  Inscrições Realizadas
+                </Button>
                 <Button
                   size="small"
                   startIcon={<EditIcon />}
