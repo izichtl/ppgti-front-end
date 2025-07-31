@@ -14,7 +14,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ViewListIcon from '@mui/icons-material/ViewListIcon';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { useNavigate } from 'react-router-dom';
