@@ -23,14 +23,35 @@ import { AxiosError } from 'axios';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import {
   useCreateSelectionProcess,
+  useUpdateSelectionProcess,
   SelectionProcessProps,
 } from '../../hooks/selection-processes';
 import { getErrorMessage } from '../../utils/error-messages';
+
+interface SelectionProcess {
+  id: string;
+  title: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  application_deadline: string;
+  result_date: string;
+  documents_required: string[];
+  evaluation_criteria: string;
+  contact_info: string;
+  status: 'draft' | 'published' | 'closed';
+  created_at: string;
+  updated_at: string;
+  program: string;
+  year: string;
+  semester: string;
+}
 
 interface SelectionProcessFormProps {
   open: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  editingProcess?: SelectionProcess | null;
 }
 
 const DOCUMENT_OPTIONS = [
@@ -60,9 +81,12 @@ const SelectionProcessForm: React.FC<SelectionProcessFormProps> = ({
   open,
   onClose,
   onSuccess,
+  editingProcess = null,
 }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const isEditMode = Boolean(editingProcess);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -95,20 +119,33 @@ const SelectionProcessForm: React.FC<SelectionProcessFormProps> = ({
       .required('Status é obrigatório'),
   });
 
+  const formatDateForInput = (dateString: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 16);
+  };
+
   const initialValues: SelectionProcessProps = {
-    title: '',
-    description: '',
-    start_date: '',
-    end_date: '',
-    application_deadline: '',
-    result_date: '',
-    documents_required: [],
-    evaluation_criteria: '',
-    contact_info: '',
-    status: 'draft',
-    program: '',
-    year: new Date().getFullYear().toString(),
-    semester: new Date().getMonth() < 6 ? '1' : '2',
+    title: editingProcess?.title || '',
+    description: editingProcess?.description || '',
+    start_date: editingProcess
+      ? formatDateForInput(editingProcess.start_date)
+      : '',
+    end_date: editingProcess ? formatDateForInput(editingProcess.end_date) : '',
+    application_deadline: editingProcess
+      ? formatDateForInput(editingProcess.application_deadline)
+      : '',
+    result_date: editingProcess
+      ? formatDateForInput(editingProcess.result_date)
+      : '',
+    documents_required: editingProcess?.documents_required || [],
+    evaluation_criteria: editingProcess?.evaluation_criteria || '',
+    contact_info: editingProcess?.contact_info || '',
+    status: editingProcess?.status || 'draft',
+    program: editingProcess?.program || '',
+    year: editingProcess?.year || new Date().getFullYear().toString(),
+    semester:
+      editingProcess?.semester || (new Date().getMonth() < 6 ? '1' : '2'),
   };
 
   const formik: FormikProps<SelectionProcessProps> =
@@ -127,6 +164,10 @@ const SelectionProcessForm: React.FC<SelectionProcessFormProps> = ({
     formik.values,
   );
 
+  const { useUpdateSelectionProcessFetcher } = editingProcess
+    ? useUpdateSelectionProcess(editingProcess.id, formik.values)
+    : { useUpdateSelectionProcessFetcher: null };
+
   const {
     trigger: triggerCreate,
     isMutating: isCreating,
@@ -138,18 +179,30 @@ const SelectionProcessForm: React.FC<SelectionProcessFormProps> = ({
     },
   );
 
+  const {
+    trigger: triggerUpdate,
+    isMutating: isUpdating,
+  }: SWRMutationResponse<any> = useSWRMutation(
+    `useUpdateSelectionProcessFetcher-${editingProcess?.id}`,
+    useUpdateSelectionProcessFetcher || (() => Promise.resolve({} as any)),
+    {
+      revalidate: false,
+    },
+  );
+
   const handleSubmit = async (values: SelectionProcessProps) => {
     try {
       setErrorMessage(null);
       setSuccessMessage(null);
 
-      await triggerCreate();
-      setSuccessMessage('Processo seletivo criado com sucesso!');
-      setTimeout(() => {
-        onSuccess();
-        onClose();
-        formik.resetForm();
-      }, 2000);
+      if (isEditMode) {
+        await triggerUpdate();
+      } else {
+        await triggerCreate();
+      }
+      formik.resetForm();
+      onSuccess();
+      onClose();
     } catch (error: AxiosError | any) {
       const errorMsg = getErrorMessage(error);
       setErrorMessage(errorMsg);
@@ -166,7 +219,11 @@ const SelectionProcessForm: React.FC<SelectionProcessFormProps> = ({
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>
-        <Typography variant="h5">Cadastrar Processo Seletivo</Typography>
+        <Typography variant="h5">
+          {isEditMode
+            ? 'Editar Processo Seletivo'
+            : 'Cadastrar Processo Seletivo'}
+        </Typography>
       </DialogTitle>
 
       <DialogContent>
@@ -461,9 +518,15 @@ const SelectionProcessForm: React.FC<SelectionProcessFormProps> = ({
           onClick={formik.submitForm}
           variant="contained"
           color="primary"
-          disabled={isCreating}
+          disabled={isCreating || isUpdating}
         >
-          {isCreating ? 'Criando...' : 'Criar Processo Seletivo'}
+          {isEditMode
+            ? isUpdating
+              ? 'Atualizando...'
+              : 'Atualizar Processo Seletivo'
+            : isCreating
+            ? 'Criando...'
+            : 'Criar Processo Seletivo'}
         </Button>
       </DialogActions>
     </Dialog>

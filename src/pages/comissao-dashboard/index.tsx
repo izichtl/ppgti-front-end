@@ -10,20 +10,21 @@ import {
   Alert,
   CircularProgress,
   Paper,
-  Fab,
-  AppBar,
-  Toolbar,
-  IconButton,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import LogoutIcon from '@mui/icons-material/Logout';
 import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
 import { useNavigate } from 'react-router-dom';
-import { useGetSelectionProcesses } from '../../hooks/selection-processes';
+import {
+  useGetSelectionProcesses,
+  useDeleteSelectionProcess,
+} from '../../hooks/selection-processes';
 import { useAuth } from '../../hooks/auth';
 import SelectionProcessForm from './selection-process-form';
+import ErrorSnackbar from '../../components/error-snackbar';
+import DeleteConfirmationDialog from '../../components/delete-confirmation-dialog';
 
 interface SelectionProcess {
   id: string;
@@ -47,6 +48,17 @@ interface SelectionProcess {
 const ComissaoDashboardPage: React.FC = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [processToDelete, setProcessToDelete] =
+    useState<SelectionProcess | null>(null);
+  const [processToEdit, setProcessToEdit] = useState<SelectionProcess | null>(
+    null,
+  );
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success' as 'success' | 'error',
+  });
   const navigate = useNavigate();
   const { getUserFromToken, logout } = useAuth();
 
@@ -58,24 +70,90 @@ const ComissaoDashboardPage: React.FC = () => {
     `selection-processes-${refreshKey}`,
     useGetSelectionProcessesFetcher,
     {
-      refreshInterval: 30000, // Refresh every 30 seconds
+      refreshInterval: 30000,
     },
   );
 
   const selectionProcesses: SelectionProcess[] = data?.data?.data || [];
 
+  const deleteSelectionProcess = useSWRMutation(
+    'delete-selection-process',
+    async (key: string, { arg }: { arg: string }) => {
+      const { useDeleteSelectionProcessFetcher } =
+        useDeleteSelectionProcess(arg);
+      return await useDeleteSelectionProcessFetcher();
+    },
+  );
+
   const handleFormClose = () => {
     setFormOpen(false);
+    setProcessToEdit(null);
   };
 
   const handleFormSuccess = () => {
     setRefreshKey((prev) => prev + 1);
-    mutate(); // Force refresh
+    mutate();
+
+    setSnackbar({
+      open: true,
+      message: processToEdit
+        ? 'Processo seletivo atualizado com sucesso!'
+        : 'Processo seletivo criado com sucesso!',
+      severity: 'success',
+    });
+
+    setProcessToEdit(null);
   };
 
   const handleLogout = () => {
     logout();
     navigate('/comissao/login');
+  };
+
+  const handleDeleteClick = (process: SelectionProcess) => {
+    setProcessToDelete(process);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!processToDelete) return;
+
+    try {
+      await deleteSelectionProcess.trigger(processToDelete.id);
+      setSnackbar({
+        open: true,
+        message: 'Processo seletivo excluído com sucesso!',
+        severity: 'success',
+      });
+      setRefreshKey((prev) => prev + 1);
+      mutate();
+    } catch (error: any) {
+      console.error('Error deleting selection process:', error);
+      setSnackbar({
+        open: true,
+        message:
+          error?.response?.data?.message ||
+          'Erro ao excluir processo seletivo. Tente novamente.',
+        severity: 'error',
+      });
+    } finally {
+      setDeleteDialogOpen(false);
+      setProcessToDelete(null);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setProcessToDelete(null);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleEditClick = (process: SelectionProcess) => {
+    setProcessToEdit(process);
+    setFormOpen(true);
   };
 
   const getStatusColor = (status: string) => {
@@ -324,10 +402,7 @@ const ComissaoDashboardPage: React.FC = () => {
                 <Button
                   size="small"
                   startIcon={<EditIcon />}
-                  onClick={() => {
-                    // TODO: Implement edit functionality
-                    console.log('Edit process:', process.id);
-                  }}
+                  onClick={() => handleEditClick(process)}
                 >
                   Editar
                 </Button>
@@ -335,10 +410,8 @@ const ComissaoDashboardPage: React.FC = () => {
                   size="small"
                   color="error"
                   startIcon={<DeleteIcon />}
-                  onClick={() => {
-                    // TODO: Implement delete functionality
-                    console.log('Delete process:', process.id);
-                  }}
+                  onClick={() => handleDeleteClick(process)}
+                  disabled={deleteSelectionProcess.isMutating}
                 >
                   Excluir
                 </Button>
@@ -352,6 +425,24 @@ const ComissaoDashboardPage: React.FC = () => {
         open={formOpen}
         onClose={handleFormClose}
         onSuccess={handleFormSuccess}
+        editingProcess={processToEdit}
+      />
+
+      <DeleteConfirmationDialog
+        open={deleteDialogOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Confirmar Exclusão"
+        itemName={processToDelete?.title}
+        message={`Tem certeza que deseja excluir o processo seletivo "${processToDelete?.title}"? Este processo será permanentemente removido.`}
+        isLoading={deleteSelectionProcess.isMutating}
+      />
+
+      <ErrorSnackbar
+        open={snackbar.open}
+        message={snackbar.message}
+        onClose={handleSnackbarClose}
+        severity={snackbar.severity}
       />
     </Box>
   );
